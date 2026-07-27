@@ -76,4 +76,6 @@ Nenhum item abaixo deve ser inferido a partir dos screenshots.
   como provisório no relatório visual.
 - O FAQ publicado nesta etapa contém somente respostas NAP/contato e
   identificação dos profissionais já confirmadas.
-- As três logos de produção continuam pendentes em `src/assets/brand/`.
+- As três logos WebP foram confirmadas e aplicadas por URL Cloudinary em
+  navbar, profissionais e footer. O vetor mestre continua desejável para
+  futuras peças, mas não bloqueia esta publicação.

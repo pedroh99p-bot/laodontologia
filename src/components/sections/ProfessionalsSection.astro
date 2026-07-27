@@ -12,7 +12,12 @@ import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 
 const copy = homeCopy.professionals;
+const brandSeal = media.logoSeal.asset;
 const portraitWidths = [360, 520, 720] as const;
+
+if (!brandSeal) {
+  throw new Error("O selo confirmado da marca não está disponível.");
+}
 const buildPortraitSource = (
   sourceUrl: string,
   format: "avif" | "webp",
@@ -69,6 +74,15 @@ const cards = professionalProfiles.map((profile) => {
         eyebrow={copy.eyebrow}
         title={copy.heading}
         description={copy.body}
+      />
+      <img
+        class="brand-seal"
+        src={brandSeal.url}
+        width={brandSeal.width}
+        height={brandSeal.height}
+        alt={brandSeal.alt}
+        loading="lazy"
+        decoding="async"
       />
     </div>
 
@@ -155,6 +169,13 @@ const cards = professionalProfiles.map((profile) => {
     display: grid;
     gap: var(--space-3);
     margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .brand-seal {
+    width: clamp(4.5rem, 18vw, 6.5rem);
+    height: auto;
+    justify-self: end;
+    object-fit: contain;
   }
 
   .section-index {
@@ -265,7 +286,8 @@ const cards = professionalProfiles.map((profile) => {
 
   @media (min-width: 48rem) {
     .professionals-header {
-      grid-template-columns: 3rem minmax(0, 1fr);
+      grid-template-columns: 3rem minmax(0, 1fr) auto;
+      align-items: start;
     }
 
     .professional-list {

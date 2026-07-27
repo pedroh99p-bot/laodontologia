@@ -25,13 +25,12 @@ tratamentos, processo, clínica, diferenciais, localização, FAQ, CTA e rodapé
 - Rollers decorativos com linha e seta; marquee CSS automático; reveals por
   IntersectionObserver; reduced motion desativa movimento.
 
-## Assets e pendências
+## Assets de marca aplicados
 
-Os três arquivos abaixo não existem e não foram inventados:
-
-- `src/assets/brand/logo-navbar.webp`
-- `src/assets/brand/logo-principal.webp`
-- `src/assets/brand/logo-selo.webp`
+- `logoHorizontal`: assinatura 3:1 aprovada na navbar.
+- `logoSeal`: selo redondo aprovado em fundo claro na seção de profissionais.
+- `logoPrimary`: assinatura aprovada para o footer escuro.
+- `favicon`: selo 1:1 já conectado aos metadados globais.
 
 Continuam necessários: fotos reais da clínica/prédio, lista de tratamentos,
 casos antes/depois com consentimento, depoimentos autorizados, diferenciais
@@ -44,7 +43,7 @@ Executado com sucesso: `pnpm install --frozen-lockfile`, `pnpm format:check`,
 
 Viewports testados: 320×800, 360×800, 390×844, 430×932, 1024×768, 1365×768 e
 1440×900. Não houve overflow horizontal. Menu, FAQ, comparador, rolagem,
-carregamento das três imagens Cloudinary e presença do iframe foram verificados.
+carregamento das seis imagens Cloudinary e presença do iframe foram verificados.
 Capturas estão em `docs/audits/02c-final/`.
 
 ## Entrega Git

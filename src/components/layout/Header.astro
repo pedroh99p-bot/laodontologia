@@ -1,4 +1,5 @@
 ---
+import { media } from "../../config/media";
 import { siteConfig } from "../../config/site";
 import { buildWhatsAppUrl } from "../../lib/whatsapp";
 import Button from "../ui/Button.astro";
@@ -11,6 +12,11 @@ interface Props {
 
 const { overlay = false } = Astro.props;
 const whatsappUrl = buildWhatsAppUrl();
+const navbarLogo = media.logoHorizontal.asset;
+
+if (!navbarLogo) {
+  throw new Error("A logo horizontal confirmada não está disponível.");
+}
 ---
 
 <header
@@ -20,8 +26,14 @@ const whatsappUrl = buildWhatsAppUrl();
   <Container>
     <div class="header-shell">
       <a class="brand" href="/" aria-label={`${siteConfig.brandName}, início`}>
-        <span class="brand-mark" aria-hidden="true">LA</span>
-        <span class="brand-name">{siteConfig.brandName}</span>
+        <img
+          class="brand-logo"
+          src={navbarLogo.url}
+          width={navbarLogo.width}
+          height={navbarLogo.height}
+          alt={navbarLogo.alt}
+          decoding="async"
+        />
       </a>
 
       <nav class="desktop-nav" aria-label="Principal">
@@ -124,30 +136,15 @@ const whatsappUrl = buildWhatsAppUrl();
     min-width: 0;
     min-height: 2.75rem;
     align-items: center;
-    gap: 0.55rem;
     margin-right: auto;
-    color: var(--color-graphite);
-    font-family: var(--font-display);
-    font-size: 1.05rem;
     line-height: 1;
     text-decoration: none;
   }
 
-  .brand-mark {
-    display: grid;
-    width: 2.6rem;
-    height: 2.6rem;
-    flex: 0 0 auto;
-    place-items: center;
-    color: var(--color-copper-dark);
-    border: var(--border-width) solid var(--color-copper);
-    border-radius: 50%;
-    font-size: 1.08rem;
-    letter-spacing: -0.08em;
-  }
-
-  .brand-name {
-    white-space: nowrap;
+  .brand-logo {
+    width: clamp(6.8rem, 34vw, 10.5rem);
+    height: auto;
+    object-fit: contain;
   }
 
   .desktop-nav,
@@ -250,8 +247,8 @@ const whatsappUrl = buildWhatsAppUrl();
   }
 
   @media (max-width: 22rem) {
-    .brand-name {
-      display: none;
+    .brand-logo {
+      width: 6.15rem;
     }
   }
 
@@ -266,13 +263,8 @@ const whatsappUrl = buildWhatsAppUrl();
       padding: 0.55rem 0.6rem 0.55rem 1rem;
     }
 
-    .brand {
-      font-size: var(--text-lg);
-    }
-
-    .brand-mark {
-      width: 3rem;
-      height: 3rem;
+    .brand-logo {
+      width: clamp(10rem, 14vw, 12rem);
     }
 
     .desktop-nav,

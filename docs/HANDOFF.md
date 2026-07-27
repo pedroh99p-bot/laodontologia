@@ -1,5 +1,12 @@
 # Handoff — LA Odontologia
 
+## Atualização de marca
+
+Os quatro assets Cloudinary fornecidos em 2026-07-27 estão aplicados:
+favicon, assinatura horizontal na navbar, selo redondo na seção de profissionais
+e assinatura institucional no footer escuro. Os registros correspondentes em
+`src/config/media.ts` estão `confirmed`.
+
 Última atualização: **2026-07-27**
 
 ## Estado real encontrado
@@ -103,8 +110,8 @@ o Place ID oficial continua pendente.
 
 Rollers verticais receberam linha/seta e aparecem a partir de 70rem. Faixas
 automáticas e reveals usam CSS/IntersectionObserver e respeitam
-`prefers-reduced-motion`. As logos aprovadas continuam ausentes, portanto o
-fallback textual permanece intencional e documentado.
+`prefers-reduced-motion`. As logos WebP aprovadas foram aplicadas na navbar,
+seção de profissionais, favicon e footer.
 
 QA 02C gerou capturas em `docs/audits/02c-final/` para 320, 360, 390, 430,
 1024, 1365 e 1440 px, sem overflow horizontal.

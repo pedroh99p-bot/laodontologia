@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1] — 2026-07-27
+
+### Alterado
+
+- Navbar passou a usar a assinatura horizontal aprovada.
+- Selo redondo aplicado em fundo claro na seção de profissionais.
+- Footer passou a usar a assinatura institucional aprovada para fundo escuro.
+- Favicon confirmado e mantido nos metadados globais.
+
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
 ## [0.3.0] — 2026-07-27
@@ -72,5 +81,4 @@ Todas as mudanças relevantes deste projeto serão registradas aqui.
   suporte a reduced motion.
 - Comparador antes/depois neutro, trilho horizontal com scroll-snap, mapa
   temporário por endereço e capturas de QA em `docs/audits/02c-final/`.
-- Conteúdo clínico não confirmado permanece sinalizado; logos aprovadas ainda
-  não foram recebidas.
+- Conteúdo clínico não confirmado permanece sinalizado.

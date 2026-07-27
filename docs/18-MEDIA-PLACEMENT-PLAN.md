@@ -14,6 +14,9 @@ foram baixadas, abertas e inspecionadas em 2026-07-26.
 | `specialist_lucas`  | `lucasPortrait`  | Profissionais | 1122 × 1402 | card do Dr. Lucas                      | 4:5, rosto centralizado      | 4:5, preservar jaleco       | Dr. Lucas Ferreira na LA Odontologia                         | confirmado |
 | `og_image`          | `openGraph`      | Metadados     |  1731 × 909 | `og:image` e `twitter:image`           | sem crop                     | sem crop                    | LA Odontologia — cuidado para o seu sorriso no Recreio       | confirmado |
 | `favicon`           | `favicon`        | Metadados     | 1080 × 1080 | favicon global                         | sem crop                     | sem crop                    | vazio                                                        | confirmado |
+| `logo_navbar`       | `logoHorizontal` | Navbar        |  1080 × 360 | assinatura horizontal                  | sem crop                     | sem crop                    | LA Odontologia                                               | confirmado |
+| `logo_seal`         | `logoSeal`       | Profissionais | 1080 × 1080 | selo sobre fundo claro                 | sem crop                     | sem crop                    | Símbolo da LA Odontologia                                    | confirmado |
+| `logo_footer`       | `logoPrimary`    | Rodapé        | 1080 × 1080 | assinatura sobre fundo escuro          | sem crop                     | sem crop                    | LA Odontologia                                               | confirmado |
 
 ## Decisão responsiva do hero
 
@@ -26,9 +29,6 @@ dois profissionais visível.
 
 | Chave interna          | Finalidade                        | Prioridade | Proporção      | Crop mobile | Crop desktop | Alt planejado                                                     | Seção                              | Status   |
 | ---------------------- | --------------------------------- | ---------- | -------------- | ----------- | ------------ | ----------------------------------------------------------------- | ---------------------------------- | -------- |
-| `logoPrimary`          | marca principal                   | crítica    | vetorial livre | sem crop    | sem crop     | LA Odontologia                                                    | Navbar/Rodapé                      | pendente |
-| `logoHorizontal`       | marca em área estreita            | crítica    | vetorial livre | sem crop    | sem crop     | LA Odontologia                                                    | Navbar                             | pendente |
-| `logoSeal`             | selo auxiliar                     | baixa      | 1:1            | sem crop    | sem crop     | Símbolo da LA Odontologia                                         | Rodapé                             | pendente |
 | `clinicReception`      | apresentar recepção real          | normal     | 3:2            | 4:3         | 3:2          | Recepção da LA Odontologia no Recreio dos Bandeirantes            | Clínica                            | pendente |
 | `clinicOperatory`      | apresentar consultório real       | normal     | 3:2            | 4:3         | 3:2          | Consultório da LA Odontologia no Recreio dos Bandeirantes         | Clínica                            | pendente |
 | `clinicDetail`         | detalhe editorial do espaço       | baixa      | 1:1 ou 4:5     | 4:5         | 1:1          | Detalhe do ambiente da LA Odontologia                             | Clínica                            | pendente |

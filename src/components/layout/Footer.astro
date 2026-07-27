@@ -1,21 +1,30 @@
 ---
 import { legalNavigation } from "../../config/navigation";
+import { media } from "../../config/media";
 import { siteConfig } from "../../config/site";
 import Container from "../ui/Container.astro";
 import Icon from "../ui/Icon.astro";
 
 const currentYear = new Date().getFullYear();
+const footerLogo = media.logoPrimary.asset;
+
+if (!footerLogo) {
+  throw new Error("A logo confirmada do rodapé não está disponível.");
+}
 ---
 
 <footer class="site-footer" id="rodape">
   <Container>
     <div class="footer-lead">
       <a class="brand" href="/" aria-label={`${siteConfig.brandName}, início`}>
-        <span class="brand-mark" aria-hidden="true">LA</span>
-        <span>
-          <strong>{siteConfig.brandName}</strong>
-          <small>{siteConfig.existingTagline}</small>
-        </span>
+        <img
+          src={footerLogo.url}
+          width={footerLogo.width}
+          height={footerLogo.height}
+          alt={footerLogo.alt}
+          loading="lazy"
+          decoding="async"
+        />
       </a>
       <p>Odontologia no Recreio dos Bandeirantes.</p>
     </div>
@@ -106,40 +115,15 @@ const currentYear = new Date().getFullYear();
   }
 
   .brand {
-    display: inline-flex;
     width: fit-content;
-    align-items: center;
-    gap: var(--space-3);
+    max-width: min(72vw, 19rem);
     text-decoration: none;
   }
 
-  .brand-mark {
-    display: grid;
-    width: 3.5rem;
-    height: 3.5rem;
-    place-items: center;
-    color: #e1b9a4;
-    border: 1px solid #c5805e;
-    border-radius: 50%;
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    letter-spacing: -0.08em;
-  }
-
-  .brand > span:last-child {
-    display: grid;
-    gap: 0.15rem;
-  }
-
-  .brand strong {
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 400;
-  }
-
-  .brand small {
-    color: var(--color-sage);
-    font-size: var(--text-xs);
+  .brand img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   .footer-lead > p {
