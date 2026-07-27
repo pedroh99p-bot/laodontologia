@@ -1,22 +1,112 @@
 ---
+import { media } from "../../config/media";
+import { siteConfig } from "../../config/site";
 import { homeCopy } from "../../content/home";
+import { transformCloudinaryUrl } from "../../lib/cloudinary";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
+import Roller from "../ui/Roller.astro";
 
 const copy = homeCopy.hero;
+const asset = media.heroImage.asset;
+
+if (!asset) {
+  throw new Error("O asset confirmado do hero não está disponível.");
+}
+
+const responsiveWidths = [480, 640, 768, 960] as const;
+const buildHeroSource = (format: "avif" | "webp", width: number) =>
+  transformCloudinaryUrl(asset.url, [
+    `f_${format}`,
+    "q_auto",
+    "c_fill",
+    "g_auto",
+    `w_${width}`,
+    `h_${Math.round(width * 1.25)}`,
+  ]);
+
+const avifSrcset = responsiveWidths
+  .map((width) => `${buildHeroSource("avif", width)} ${width}w`)
+  .join(", ");
+const webpSrcset = responsiveWidths
+  .map((width) => `${buildHeroSource("webp", width)} ${width}w`)
+  .join(", ");
+const heroFallback = buildHeroSource("webp", 768);
+const [headingLead, headingAccent] = copy.heading.split(", ");
 ---
 
 <section class="hero" id="inicio" aria-labelledby="hero-title">
   <Container>
-    <div class="hero-panel">
-      <p class="status">{copy.eyebrow}</p>
-      <h1 id="hero-title">{copy.heading}</h1>
-      <p class="intro">{copy.body}</p>
-      <div class="actions">
-        <Button href={copy.primaryCta.href}>{copy.primaryCta.label}</Button>
-        <Button href={copy.secondaryCta.href} variant="secondary">
-          {copy.secondaryCta.label}
-        </Button>
+    <div class="hero-stage">
+      <div class="hero-roller hero-roller--left">
+        <Roller label="Cuidado" />
+      </div>
+      <div class="hero-roller hero-roller--right">
+        <Roller label="Confiança" />
+      </div>
+
+      <figure class="hero-media">
+        <picture>
+          <source
+            type="image/avif"
+            srcset={avifSrcset}
+            sizes="(min-width: 64rem) 58vw, calc(100vw - 2rem)"
+          />
+          <img
+            src={heroFallback}
+            srcset={webpSrcset}
+            sizes="(min-width: 64rem) 58vw, calc(100vw - 2rem)"
+            width="768"
+            height="960"
+            alt={asset.alt}
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </picture>
+      </figure>
+
+      <div class="hero-panel">
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1 id="hero-title">
+          {headingLead}, <em>{headingAccent}</em>
+        </h1>
+        <p class="intro">{copy.body}</p>
+
+        <div class="actions">
+          <Button
+            href={copy.primaryCta.href}
+            icon="chat"
+            trackingEvent="whatsapp_click"
+            trackingLocation="hero"
+          >
+            {copy.primaryCta.label}
+          </Button>
+          <Button
+            href={copy.secondaryCta.href}
+            variant="secondary"
+            icon="arrow-up-right"
+          >
+            {copy.secondaryCta.label}
+          </Button>
+        </div>
+
+        <div class="hero-proof">
+          <p class="place">
+            <span aria-hidden="true"></span>
+            {siteConfig.address.neighborhood} · {siteConfig.address.city}
+          </p>
+          <ul role="list" aria-label="Profissionais e registros">
+            {
+              siteConfig.professionals.map((professional) => (
+                <li>
+                  <strong>{professional.displayName}</strong>
+                  <span>{professional.cro}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </Container>
@@ -24,39 +114,247 @@ const copy = homeCopy.hero;
 
 <style>
   .hero {
-    padding-block: clamp(2.5rem, 7vw, 7rem) var(--section-space);
+    position: relative;
+    padding-block: 5.5rem clamp(3rem, 8vw, 6rem);
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  .hero::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: "";
+    background:
+      radial-gradient(
+        circle at 85% 24%,
+        rgb(168 84 47 / 10%),
+        transparent 28rem
+      ),
+      linear-gradient(180deg, var(--color-ivory), #f2eae1 78%, transparent);
+  }
+
+  .hero-stage {
+    position: relative;
+    display: grid;
+  }
+
+  .hero-media {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #dac9ba;
+    border: var(--border-width) solid rgb(255 255 255 / 86%);
+    border-radius: clamp(1.6rem, 5vw, 2.6rem);
+    box-shadow: 0 1.75rem 4.5rem rgb(88 52 33 / 14%);
+  }
+
+  .hero-media::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 28%;
+    pointer-events: none;
+    content: "";
+    background: linear-gradient(transparent, rgb(35 29 25 / 16%));
+  }
+
+  .hero-media picture,
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-media img {
+    object-fit: cover;
+    object-position: 50% 50%;
   }
 
   .hero-panel {
+    position: relative;
+    z-index: 2;
     display: grid;
-    gap: var(--space-5);
-    padding: clamp(var(--space-6), 7vw, var(--space-8));
-    background: var(--color-warm-white);
-    border: var(--border-width) solid var(--color-white);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-surface);
+    gap: var(--space-4);
+    margin: -7rem 0.65rem 0;
+    padding: clamp(1.25rem, 5vw, 2.15rem);
+    background: color-mix(in srgb, var(--color-warm-white) 97%, transparent);
+    border: var(--border-width) solid rgb(255 255 255 / 90%);
+    border-radius: clamp(1.35rem, 4vw, 2rem);
+    box-shadow: var(--shadow-elevated);
+    backdrop-filter: blur(8px);
   }
 
-  .status {
+  .eyebrow {
     color: var(--color-copper-dark);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1.45;
     text-transform: uppercase;
   }
 
   h1 {
-    max-width: 15ch;
+    max-width: 14ch;
+    font-size: clamp(2.05rem, 9.1vw, 4.75rem);
+    letter-spacing: -0.035em;
+  }
+
+  h1 em {
+    color: var(--color-copper-dark);
+    font-weight: 400;
   }
 
   .intro {
+    max-width: 36rem;
     color: var(--color-muted-text);
-    font-size: var(--text-lg);
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.16rem);
   }
 
   .actions {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-1);
+  }
+
+  .hero-proof {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--color-warm-border);
+  }
+
+  .place {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-copper-dark);
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .place > span {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: 0 0 auto;
+    background: var(--color-copper);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.25rem rgb(168 84 47 / 12%);
+  }
+
+  .hero-proof ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .hero-proof li {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.2rem var(--space-3);
+    color: var(--color-muted-text);
+    font-size: var(--text-sm);
+  }
+
+  .hero-proof strong {
+    color: var(--color-graphite);
+  }
+
+  .hero-proof li span {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-roller {
+    display: none;
+  }
+
+  @media (min-width: 30rem) {
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .hero-proof ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .hero-proof li {
+      display: grid;
+      justify-content: start;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      min-height: min(56rem, 100svh);
+      padding-block: 7.25rem 4rem;
+    }
+
+    .hero-stage {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: end;
+    }
+
+    .hero-media {
+      grid-row: 1;
+      grid-column: 1 / 9;
+      max-height: 44rem;
+    }
+
+    .hero-panel {
+      grid-row: 1;
+      grid-column: 7 / 13;
+      margin: 0 0 clamp(1.5rem, 4vw, 3rem);
+      padding: clamp(2rem, 3vw, 3.15rem);
+    }
+
+    h1 {
+      font-size: clamp(3.35rem, 5vw, 4.75rem);
+    }
+
+    .hero-proof {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .hero-panel {
+      transform: translateX(-2.75rem);
+    }
+  }
+
+  @media (min-width: 88rem) {
+    .hero {
+      overflow: visible;
+    }
+
+    .hero-roller {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      display: block;
+      transform: translateY(-50%);
+    }
+
+    .hero-roller--left {
+      left: -4.6rem;
+    }
+
+    .hero-roller--right {
+      right: -4.6rem;
+    }
+  }
+
+  @supports not (backdrop-filter: blur(8px)) {
+    .hero-panel {
+      background: var(--color-warm-white);
+    }
   }
 </style>

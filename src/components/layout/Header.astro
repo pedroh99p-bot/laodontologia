@@ -3,16 +3,25 @@ import { siteConfig } from "../../config/site";
 import { buildWhatsAppUrl } from "../../lib/whatsapp";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
+import Icon from "../ui/Icon.astro";
 
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
 const whatsappUrl = buildWhatsAppUrl();
 ---
 
-<header class="site-header">
+<header
+  id="topo"
+  class:list={["site-header", { "site-header--overlay": overlay }]}
+>
   <Container>
     <div class="header-shell">
       <a class="brand" href="/" aria-label={`${siteConfig.brandName}, início`}>
         <span class="brand-mark" aria-hidden="true">LA</span>
-        <span>{siteConfig.brandName}</span>
+        <span class="brand-name">{siteConfig.brandName}</span>
       </a>
 
       <nav class="desktop-nav" aria-label="Principal">
@@ -28,15 +37,34 @@ const whatsappUrl = buildWhatsAppUrl();
       </nav>
 
       <div class="desktop-cta">
-        <Button href={whatsappUrl}>Falar pelo WhatsApp</Button>
+        <Button
+          href={whatsappUrl}
+          icon="chat"
+          trackingEvent="whatsapp_click"
+          trackingLocation="header"
+        >
+          Falar pelo WhatsApp
+        </Button>
       </div>
 
-      <details class="mobile-nav">
+      <a
+        class="mobile-whatsapp"
+        href={whatsappUrl}
+        aria-label="Falar com a LA Odontologia pelo WhatsApp"
+        data-track-event="whatsapp_click"
+        data-cta-location="header"
+      >
+        <Icon name="chat" size={18} />
+        <span>WhatsApp</span>
+      </a>
+
+      <details class="mobile-nav" data-mobile-menu>
         <summary>
-          <span class="visually-hidden">Abrir menu</span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
+          <span class="visually-hidden">Abrir menu de navegação</span>
+          <span class="menu-lines" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </span>
         </summary>
         <nav aria-label="Principal em dispositivos móveis">
           <ul role="list">
@@ -47,7 +75,17 @@ const whatsappUrl = buildWhatsAppUrl();
                 </li>
               ))
             }
-            <li><a href={whatsappUrl}>Falar pelo WhatsApp</a></li>
+            <li>
+              <a
+                class="menu-contact"
+                href={whatsappUrl}
+                data-track-event="whatsapp_click"
+                data-cta-location="header"
+              >
+                Falar pelo WhatsApp
+                <Icon name="arrow-up-right" size={18} />
+              </a>
+            </li>
           </ul>
         </nav>
       </details>
@@ -59,39 +97,57 @@ const whatsappUrl = buildWhatsAppUrl();
   .site-header {
     position: relative;
     z-index: var(--z-header);
-    padding-block: var(--space-4);
+    width: 100%;
+    padding-block: var(--space-3);
+  }
+
+  .site-header--overlay {
+    position: absolute;
+    inset: 0 0 auto;
   }
 
   .header-shell {
     display: flex;
-    min-height: 4rem;
+    min-height: 3.75rem;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding: var(--space-3) var(--space-4);
-    background: color-mix(in srgb, var(--color-warm-white) 94%, transparent);
-    border: var(--border-width) solid var(--color-white);
+    gap: var(--space-2);
+    padding: 0.45rem;
+    background: color-mix(in srgb, var(--color-warm-white) 96%, transparent);
+    border: var(--border-width) solid rgb(255 255 255 / 82%);
     border-radius: var(--radius-pill);
-    box-shadow: var(--shadow-surface);
+    box-shadow: 0 0.75rem 2.5rem rgb(67 46 35 / 11%);
+    backdrop-filter: blur(10px);
   }
 
   .brand {
     display: inline-flex;
+    min-width: 0;
+    min-height: 2.75rem;
     align-items: center;
-    gap: var(--space-2);
+    gap: 0.55rem;
+    margin-right: auto;
+    color: var(--color-graphite);
     font-family: var(--font-display);
-    font-size: var(--text-lg);
+    font-size: 1.05rem;
+    line-height: 1;
     text-decoration: none;
   }
 
   .brand-mark {
     display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex: 0 0 auto;
     place-items: center;
     color: var(--color-copper-dark);
-    border: var(--border-width) solid var(--color-warm-border);
+    border: var(--border-width) solid var(--color-copper);
     border-radius: 50%;
+    font-size: 1.08rem;
+    letter-spacing: -0.08em;
+  }
+
+  .brand-name {
+    white-space: nowrap;
   }
 
   .desktop-nav,
@@ -99,8 +155,23 @@ const whatsappUrl = buildWhatsAppUrl();
     display: none;
   }
 
+  .mobile-whatsapp {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.4rem;
+    padding-inline: 0.75rem;
+    color: var(--color-on-copper);
+    background: var(--color-copper-dark);
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
   .mobile-nav {
     position: relative;
+    flex: 0 0 auto;
   }
 
   .mobile-nav summary {
@@ -108,8 +179,8 @@ const whatsappUrl = buildWhatsAppUrl();
     width: 2.75rem;
     height: 2.75rem;
     place-content: center;
-    gap: 0.25rem;
     list-style: none;
+    color: var(--color-graphite);
     border: var(--border-width) solid var(--color-warm-border);
     border-radius: 50%;
   }
@@ -118,18 +189,36 @@ const whatsappUrl = buildWhatsAppUrl();
     display: none;
   }
 
-  .mobile-nav summary span[aria-hidden="true"] {
-    width: 1.15rem;
+  .menu-lines {
+    display: grid;
+    gap: 0.34rem;
+  }
+
+  .menu-lines > span {
+    width: 1.1rem;
     height: 1px;
     background: currentColor;
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      translate var(--duration-fast) var(--ease-standard);
+  }
+
+  .mobile-nav[open] .menu-lines > span:first-child {
+    translate: 0 0.22rem;
+    transform: rotate(45deg);
+  }
+
+  .mobile-nav[open] .menu-lines > span:last-child {
+    translate: 0 -0.22rem;
+    transform: rotate(-45deg);
   }
 
   .mobile-nav nav {
     position: absolute;
     top: calc(100% + var(--space-3));
     right: 0;
-    width: min(18rem, calc(100vw - 2rem));
-    padding: var(--space-3);
+    width: min(18.5rem, calc(100vw - 2rem));
+    padding: var(--space-2);
     background: var(--color-warm-white);
     border: var(--border-width) solid var(--color-warm-border);
     border-radius: var(--radius-md);
@@ -142,9 +231,12 @@ const whatsappUrl = buildWhatsAppUrl();
   }
 
   .mobile-nav a {
-    display: block;
-    padding: var(--space-3);
-    border-radius: var(--radius-sm);
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.7rem;
     text-decoration: none;
   }
 
@@ -152,7 +244,37 @@ const whatsappUrl = buildWhatsAppUrl();
     background: var(--color-ivory);
   }
 
-  @media (min-width: 48rem) {
+  .mobile-nav .menu-contact {
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+  }
+
+  @media (max-width: 22rem) {
+    .brand-name {
+      display: none;
+    }
+  }
+
+  @media (min-width: 52rem) {
+    .site-header {
+      padding-block: var(--space-4);
+    }
+
+    .header-shell {
+      min-height: 4.5rem;
+      gap: var(--space-5);
+      padding: 0.55rem 0.6rem 0.55rem 1rem;
+    }
+
+    .brand {
+      font-size: var(--text-lg);
+    }
+
+    .brand-mark {
+      width: 3rem;
+      height: 3rem;
+    }
+
     .desktop-nav,
     .desktop-cta {
       display: block;
@@ -165,16 +287,43 @@ const whatsappUrl = buildWhatsAppUrl();
     }
 
     .desktop-nav a {
+      display: inline-flex;
+      min-height: 2.75rem;
+      align-items: center;
+      position: relative;
+      padding-block: var(--space-2);
       font-size: var(--text-sm);
       text-decoration: none;
     }
 
-    .desktop-nav a:hover {
-      color: var(--color-copper-dark);
+    .desktop-nav a::after {
+      position: absolute;
+      right: 0;
+      bottom: 0.2rem;
+      left: 0;
+      height: 1px;
+      content: "";
+      background: var(--color-copper-dark);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--duration-standard) var(--ease-standard);
     }
 
-    .mobile-nav {
+    .desktop-nav a:hover::after,
+    .desktop-nav a:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .mobile-nav,
+    .mobile-whatsapp {
       display: none;
+    }
+  }
+
+  @supports not (backdrop-filter: blur(10px)) {
+    .header-shell {
+      background: var(--color-warm-white);
     }
   }
 </style>

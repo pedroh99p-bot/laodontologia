@@ -1,10 +1,18 @@
 ---
+import type { AnalyticsEventName } from "../../config/analytics";
+import type { CtaLocation } from "../../lib/analytics";
+import Icon from "./Icon.astro";
+
 interface Props {
   href?: string;
   variant?: "primary" | "secondary" | "text";
   type?: "button" | "submit" | "reset";
   class?: string;
   ariaLabel?: string;
+  icon?: "arrow-up-right" | "chat" | "instagram" | "location" | "phone";
+  trackingEvent?: AnalyticsEventName;
+  trackingLocation?: CtaLocation;
+  trackingProfessional?: string;
 }
 
 const {
@@ -13,6 +21,10 @@ const {
   type = "button",
   class: className,
   ariaLabel,
+  icon,
+  trackingEvent,
+  trackingLocation,
+  trackingProfessional,
 } = Astro.props;
 ---
 
@@ -22,8 +34,12 @@ const {
       class:list={["button", `button--${variant}`, className]}
       href={href}
       aria-label={ariaLabel}
+      data-track-event={trackingEvent}
+      data-cta-location={trackingLocation}
+      data-professional={trackingProfessional}
     >
       <slot />
+      {icon && <Icon name={icon} />}
     </a>
   ) : (
     <button
@@ -32,6 +48,7 @@ const {
       aria-label={ariaLabel}
     >
       <slot />
+      {icon && <Icon name={icon} />}
     </button>
   )
 }
@@ -39,11 +56,11 @@ const {
 <style>
   .button {
     display: inline-flex;
-    min-height: 2.75rem;
+    min-height: 3rem;
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    padding: 0.7rem 1.1rem;
+    padding: 0.78rem 1.15rem;
     border: var(--border-width) solid transparent;
     border-radius: var(--radius-pill);
     font-size: var(--text-sm);
@@ -60,6 +77,10 @@ const {
 
   .button:hover {
     transform: translateY(-1px);
+  }
+
+  .button:active {
+    transform: translateY(0);
   }
 
   .button--primary {

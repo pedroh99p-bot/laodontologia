@@ -1,144 +1,119 @@
 # Handoff — LA Odontologia
 
-Última atualização: **2026-07-26**
+Última atualização: **2026-07-27**
 
 ## Fase atual
 
-**Fase 02A — copy estrutural, SEO e contrato de mídia concluídos.**
+**Fase 02B — primeira implementação visual mobile-first concluída em Preview.**
 
-A entrega ainda não implementa a interface visual final. A próxima sessão deve
-validar o conteúdo clínico e operacional que permanece parcial ou pendente
-antes de construir novas seções.
+A home está publicada com os blocos que têm copy, NAP e mídia aprovados. As
+seções clínicas sem dados suficientes continuam preparadas no código, mas
+desabilitadas e ausentes do HTML. Este não é um deploy de produção.
 
-## Resultado desta etapa
+## Seções renderizadas
 
-- Cinco ativos Cloudinary baixados, abertos e inspecionados: hero, favicon,
-  retrato da Dra. Amanda, retrato do Dr. Lucas e Open Graph.
-- URLs, public IDs, dimensões, alts, prioridades e crops registrados em
-  `src/config/media.ts`.
-- Placeholders formais criados para toda mídia ausente, sempre com
-  `status: "pending"` e `asset: null`.
-- Copy deck das 15 áreas da home com status `ready`, `partial` ou `pending`.
-- Title, meta description, H1, Open Graph, favicon, hierarquia semântica,
-  palavras-chave e critérios de páginas futuras documentados.
-- Copy tipada da home e requisitos tipados de publicação para tratamentos,
-  resultados, depoimentos e FAQ.
-- Open Graph e favicon conectados ao `BaseLayout`; canonical e sitemap continuam
-  condicionados ao domínio real.
-- Arquitetura, fonte de verdade, pendências, decisões e plano de implementação
-  atualizados.
+- Navbar responsiva com navegação para conteúdo existente.
+- Hero com fotografia Cloudinary confirmada, copy aprovada e CTA de WhatsApp.
+- Faixa de confiança com localização, profissionais/CROs e canal de contato.
+- Necessidades em estado parcial, apenas com heading, texto e CTA confirmados.
+- Profissionais com os retratos confirmados de Dr. Lucas Ferreira e Dra. Amanda
+  Perestelo, nomes e CROs.
+- Localização com endereço, telefone, WhatsApp e Instagram; sem mapa ou rota
+  inventada.
+- CTA final e rodapé completo.
 
-## Arquivos para ler primeiro
+## Seções preparadas, mas desabilitadas
 
-1. `AGENTS.md`
-2. `docs/HANDOFF.md`
-3. `docs/04-CONTENT-SOURCE-OF-TRUTH.md`
-4. `docs/11-OPEN-QUESTIONS.md`
-5. `docs/12-DECISIONS.md`
-6. `docs/13-IMPLEMENTATION-PLAN.md`
-7. `docs/15-COPY-DECK.md`
-8. `docs/16-SEO-CONTENT-PLAN.md`
-9. `docs/17-SECTION-COPY-SPECS.md`
-10. `docs/18-MEDIA-PLACEMENT-PLAN.md`
+`resultados`, `tratamentos`, `processo`, `clinica`, `diferenciais`,
+`depoimentos` e `perguntas` permanecem com status `pending` e não são
+renderizadas. O registro central está em `src/config/home-sections.ts`; a
+regra é `enabled = status !== "pending"`.
 
-## Arquivos técnicos importantes
+## Arquivos técnicos principais
 
-- `src/config/site.ts`: única fonte de NAP, Instagram, profissionais, CROs e
-  metadados padrão.
-- `src/config/media.ts`: ativos confirmados e placeholders discriminados por
-  status.
-- `src/content/home.ts`: copy estrutural e status editorial de cada seção.
-- `src/content/professionals.ts`: perfis parciais sem especialidades inferidas.
-- `src/content/treatments.ts`, `results.ts`, `testimonials.ts`, `faq.ts`:
-  coleções vazias e requisitos explícitos de publicação.
-- `src/layouts/BaseLayout.astro`: metadados, Open Graph, favicon e skip link.
+- `src/pages/index.astro`: composição da home e seleção de seções ativas.
+- `src/components/sections/HeroSection.astro`: hero responsivo 4:5.
+- `src/components/sections/ProfessionalsSection.astro`: cards de profissionais.
+- `src/config/media.ts`: contrato de mídia confirmada e pendente.
+- `src/lib/cloudinary.ts`: transformações `f_auto`/`q_auto` e crops.
+- `src/scripts/site.ts`: tracking de CTAs, visualização de profissionais e
+  aprimoramento mínimo do menu nativo.
+- `src/styles/tokens.css` e `src/styles/global.css`: tokens e linguagem visual.
 
-## Copy publicável agora
+## Direção visual implementada
 
-- Navbar com links apenas para conteúdo existente.
-- Hero.
-- Faixa de confiança.
-- Nomes, CROs e retratos na seção “Profissionais”.
-- Localização, telefone e WhatsApp.
-- CTA final.
-- Rodapé.
+O layout usa o sistema editorial já documentado: base graphite/ivory, cobre como
+acento, tipografia de fallback licenciável, grandes áreas de respiro, painel de
+copy sobreposto ao hero, faixa escura de prova, bloco de localização em cobre e
+rollers laterais apenas em telas amplas (a partir de 88rem). Ícones são SVG
+inline, sem dependência externa. A marca segue tipográfica provisória até a
+entrega do logo SVG aprovado.
 
-A seção de necessidades está parcial: heading, texto e CTA são seguros, mas os
-cards clínicos ainda não. Resultados, tratamentos, processo, clínica,
-diferenciais, depoimentos e FAQ permanecem pendentes e não devem entrar no HTML.
+## Mídia e performance
 
-## Mídia confirmada
+- Hero: `picture` com AVIF/WebP, `srcset` Cloudinary em 480/640/768/960 px,
+  `width`/`height` explícitos, `loading="eager"` e `fetchpriority="high"`.
+- Retratos: AVIF/WebP em 360/520/720 px, dimensões explícitas e
+  `loading="lazy"`.
+- Transformações preservam public ID, versão e ponto focal (`c_fill,g_auto`).
+- Não há vídeo, iframe, biblioteca de ícones ou script externo no caminho
+  crítico.
+- Requisições representativas transformadas ficaram abaixo do orçamento:
+  hero mobile 19.987 bytes, hero desktop 53.682 bytes, Lucas 14.021 bytes e
+  Amanda 36.776 bytes.
 
-| Chave            | Uso                     |   Dimensões |
-| ---------------- | ----------------------- | ----------: |
-| `heroImage`      | Hero responsivo         | 1122 × 1402 |
-| `favicon`        | Favicon global          | 1080 × 1080 |
-| `amandaPortrait` | Card da Dra. Amanda     | 1122 × 1402 |
-| `lucasPortrait`  | Card do Dr. Lucas       | 1122 × 1402 |
-| `openGraph`      | Compartilhamento social |  1731 × 909 |
+## QA executado
 
-O mesmo ativo vertical do hero deve ser usado em mobile e desktop, preservando
-os dois rostos. Não existe fotografia horizontal aprovada.
+Matriz visual e de interação executada no Browser local em:
+`320`, `360`, `390`, `430`, `1024`, `1280`, `1365`, `1440` e `1920` px.
 
-## Validação
+- Nenhum overflow horizontal.
+- Hero e CTA visíveis nas larguras móveis.
+- Targets interativos visíveis com pelo menos 44 px.
+- Imagens sem erro e console sem erros/avisos da aplicação.
+- Menu `<details>` testado com abertura, links e `Escape`.
+- Âncora `#profissionais` testada.
+- Seções pendentes ausentes do snapshot/DOM.
+- Contraste calculado para os pares principais, todos acima de WCAG AA.
 
-Executado depois das alterações:
+Validação automatizada final:
 
 ```text
+pnpm format:check
+pnpm check
+pnpm build
 pnpm validate
-  PASS — Prettier sem divergências
-  PASS — Astro check: 38 arquivos, 0 errors, 0 warnings, 0 hints
-  PASS — Astro build: 3 páginas + robots
 ```
 
-Rotas geradas:
+## Preview Vercel
 
-- `/index.html`
-- `/privacidade/index.html`
-- `/obrigado/index.html`
-- `/robots.txt`
+- URL: https://laodontologia-qply6crb1-pedroh99p-5348s-projects.vercel.app
+- Deployment: `dpl_J977yy6JUpqQAaCpwfbAftaJARG7`
+- Estado: `READY`, preview público.
+
+O primeiro teste mobile anônimo recebeu a autenticação padrão da Vercel em vez
+da landing. A proteção SSO foi removida deste projeto público e o mesmo Preview
+foi retestado anonimamente em 390 × 844: status 200, hero carregado, sem
+overflow e sem erros de console. Nenhuma versão foi promovida para produção.
 
 ## Pendências críticas
 
-- domínio e URL canônica;
-- tratamentos oferecidos;
-- especialidades registradas e biografias aprovadas;
-- processo real de atendimento;
-- logo SVG e fontes licenciadas;
-- fotos reais da estrutura e acesso;
-- registro formal de direitos/autorizações dos arquivos recebidos;
+- domínio e URL canônica de produção;
+- logo SVG e fontes aprovadas;
+- tratamentos, especialidades, bios, processo e diferenciais;
+- fotos reais de estrutura e acesso;
 - rota oficial/Place ID;
-- endpoint, campos, política de privacidade e controlador do formulário;
-- IDs, consentimento e definição de conversão para analytics;
-- casos, depoimentos e respectivas autorizações, se essas seções forem usadas.
+- formulário, política aprovada e endpoint;
+- consentimento e IDs de analytics;
+- casos e depoimentos autorizados.
 
 Lista completa: `docs/11-OPEN-QUESTIONS.md`.
-
-## Decisões que devem ser preservadas
-
-- Conteúdo pendente não aparece no HTML.
-- “Profissionais” é o rótulo público até confirmar especialidades.
-- Tratamentos, resultados, depoimentos e FAQ continuam como arrays vazios.
-- Nenhuma mídia recebe URL, mock ou banco de imagens provisório.
-- Screenshots permanecem referência visual, nunca fonte factual.
-- A landing deve continuar utilizável sem JavaScript.
-- Não criar mapa, formulário, carousel ou comparador antes dos dados e
-  autorizações correspondentes.
 
 ## Próximos passos
 
 1. Resolver as perguntas críticas com a clínica.
-2. Aprovar a copy pronta e decidir quais seções pendentes permanecerão.
-3. Preencher apenas os campos clínicos confirmados.
-4. Receber logo SVG e mídia restante.
-5. Implementar a primeira faixa visual mobile-first.
-6. Repetir `pnpm validate`, QA responsivo e atualização deste handoff.
-
-## Próximo prompt recomendado
-
-> Leia `AGENTS.md`, `docs/HANDOFF.md`, `docs/15-COPY-DECK.md`,
-> `docs/16-SEO-CONTENT-PLAN.md`, `docs/17-SECTION-COPY-SPECS.md` e
-> `docs/18-MEDIA-PLACEMENT-PLAN.md`. Valide os novos dados fornecidos contra
-> `docs/11-OPEN-QUESTIONS.md`, atualize somente os campos confirmados e
-> implemente o primeiro bloco visual mobile-first sem renderizar seções
-> pendentes. Execute `pnpm validate` e atualize o handoff.
+2. Receber logo SVG, fontes e mídia estrutural.
+3. Auditar copy parcial e liberar seções pendentes somente com evidência.
+4. Confirmar domínio, Place ID, formulário, consentimento e mensuração.
+5. Repetir QA visual, acessível e de performance com dados finais.
+6. Fazer aprovação clínica/marca e só então avaliar deploy de produção.

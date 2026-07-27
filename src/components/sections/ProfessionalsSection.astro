@@ -1,0 +1,279 @@
+---
+import { media } from "../../config/media";
+import { homeCopy } from "../../content/home";
+import {
+  professionalProfiles,
+  professionals,
+} from "../../content/professionals";
+import { transformCloudinaryUrl } from "../../lib/cloudinary";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+import Roller from "../ui/Roller.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const copy = homeCopy.professionals;
+const portraitWidths = [360, 520, 720] as const;
+const buildPortraitSource = (
+  sourceUrl: string,
+  format: "avif" | "webp",
+  width: number,
+) =>
+  transformCloudinaryUrl(sourceUrl, [
+    `f_${format}`,
+    "q_auto",
+    "c_fill",
+    "g_auto",
+    `w_${width}`,
+    `h_${Math.round(width * 1.25)}`,
+  ]);
+
+const cards = professionalProfiles.map((profile) => {
+  const professional = professionals.find(
+    (candidate) => candidate.slug === profile.slug,
+  );
+  const asset = media[profile.mediaKey].asset;
+
+  if (!professional || !asset) {
+    throw new Error(`Perfil incompleto para ${profile.slug}.`);
+  }
+
+  return {
+    ...professional,
+    mediaKey: profile.mediaKey,
+    asset,
+    avifSrcset: portraitWidths
+      .map(
+        (width) => `${buildPortraitSource(asset.url, "avif", width)} ${width}w`,
+      )
+      .join(", "),
+    webpSrcset: portraitWidths
+      .map(
+        (width) => `${buildPortraitSource(asset.url, "webp", width)} ${width}w`,
+      )
+      .join(", "),
+    fallback: buildPortraitSource(asset.url, "webp", 520),
+  };
+});
+---
+
+<section
+  class="professionals"
+  id="profissionais"
+  aria-labelledby="professionals-title"
+>
+  <Container>
+    <div class="professionals-header">
+      <p class="section-index" aria-hidden="true">03</p>
+      <SectionHeading
+        headingId="professionals-title"
+        eyebrow={copy.eyebrow}
+        title={copy.heading}
+        description={copy.body}
+      />
+    </div>
+
+    <ul class="professional-list" role="list">
+      {
+        cards.map((professional, index) => (
+          <li
+            data-track-view="professional_view"
+            data-professional={professional.slug}
+          >
+            <article aria-labelledby={`professional-${professional.slug}`}>
+              <figure class="portrait">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset={professional.avifSrcset}
+                    sizes="(min-width: 48rem) 42vw, calc(100vw - 3rem)"
+                  />
+                  <img
+                    src={professional.fallback}
+                    srcset={professional.webpSrcset}
+                    sizes="(min-width: 48rem) 42vw, calc(100vw - 3rem)"
+                    width="520"
+                    height="650"
+                    alt={professional.asset.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+                <span class="card-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </figure>
+              <div class="professional-copy">
+                <h3 id={`professional-${professional.slug}`}>
+                  {professional.displayName}
+                </h3>
+                <p>{professional.cro}</p>
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="section-action">
+      <Button
+        href={copy.primaryCta.href}
+        icon="chat"
+        trackingEvent="whatsapp_click"
+        trackingLocation="section"
+      >
+        {copy.primaryCta.label}
+      </Button>
+    </div>
+
+    <div class="professionals-roller">
+      <Roller label="Profissionais" />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .professionals {
+    position: relative;
+    padding-block: var(--section-space);
+    background:
+      linear-gradient(
+        180deg,
+        transparent,
+        rgb(255 255 255 / 42%) 30%,
+        transparent
+      ),
+      var(--color-ivory);
+  }
+
+  .professionals :global(.container) {
+    position: relative;
+  }
+
+  .professionals-header {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .section-index {
+    color: var(--color-copper);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  .professionals-header :global(.section-heading) {
+    max-width: 48rem;
+  }
+
+  .professionals-header :global(h2) {
+    max-width: 13ch;
+    letter-spacing: -0.025em;
+  }
+
+  .professional-list {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  article {
+    overflow: hidden;
+    background: var(--color-warm-white);
+    border: var(--border-width) solid var(--color-white);
+    border-radius: clamp(1.35rem, 4vw, 2rem);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .portrait {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #d8c9bc;
+  }
+
+  .portrait picture,
+  .portrait img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .portrait img {
+    object-fit: cover;
+    object-position: 50% 42%;
+    transition: transform var(--duration-slow) var(--ease-standard);
+  }
+
+  article:hover .portrait img {
+    transform: scale(1.015);
+  }
+
+  .card-index {
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    display: grid;
+    width: 2.7rem;
+    height: 2.7rem;
+    place-items: center;
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
+    border-radius: 50%;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    box-shadow: var(--shadow-surface);
+  }
+
+  .professional-copy {
+    display: grid;
+    gap: var(--space-2);
+    padding: clamp(1.3rem, 4vw, 2rem);
+  }
+
+  .professional-copy h3 {
+    letter-spacing: -0.02em;
+  }
+
+  .professional-copy p {
+    width: fit-content;
+    padding: 0.32rem 0.68rem;
+    color: var(--color-copper-dark);
+    background: rgb(168 84 47 / 9%);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .section-action {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-6);
+  }
+
+  .professionals-roller {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .professionals-header {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+
+    .professional-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(var(--space-5), 3vw, var(--space-7));
+    }
+  }
+
+  @media (min-width: 88rem) {
+    .professionals-roller {
+      position: absolute;
+      top: 50%;
+      left: -4.6rem;
+      display: block;
+      transform: translateY(-50%);
+    }
+  }
+</style>

@@ -22,7 +22,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           a equipe, utilize um dos canais confirmados.
         </p>
         <div class="actions">
-          <Button href={siteConfig.whatsappUrl}>Abrir WhatsApp</Button>
+          <Button
+            href={siteConfig.whatsappUrl}
+            icon="chat"
+            trackingEvent="whatsapp_click"
+            trackingLocation="thank_you"
+          >
+            Abrir WhatsApp
+          </Button>
           <Button href="/" variant="secondary">Voltar ao início</Button>
         </div>
       </section>

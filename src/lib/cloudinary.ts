@@ -3,6 +3,22 @@ export type CloudinaryImageOptions = {
   transformations?: readonly string[];
 };
 
+export const transformCloudinaryUrl = (
+  sourceUrl: string,
+  transformations: readonly string[] = ["f_auto", "q_auto"],
+): string => {
+  const transformationPath = transformations.filter(Boolean).join(",");
+
+  if (!transformationPath) {
+    return sourceUrl;
+  }
+
+  return sourceUrl.replace(
+    "/image/upload/",
+    `/image/upload/${transformationPath}/`,
+  );
+};
+
 export const buildCloudinaryImageUrl = ({
   publicId,
   transformations = ["f_auto", "q_auto"],

@@ -1,0 +1,131 @@
+---
+import { homeTrustItems } from "../../content/home";
+import Container from "../ui/Container.astro";
+---
+
+<section
+  class="trust-strip"
+  id="confianca"
+  aria-label="Informações confirmadas da clínica"
+>
+  <Container>
+    <ul role="list">
+      {
+        homeTrustItems.map((item, index) => (
+          <li>
+            <span class="index" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span class="text">
+              <span class="label">{item.label}</span>
+              <strong>{item.value}</strong>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</section>
+
+<style>
+  .trust-strip {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--space-4);
+    color: var(--color-ivory);
+    background: var(--color-graphite);
+  }
+
+  ul {
+    display: grid;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid rgb(255 255 255 / 14%);
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  .index {
+    display: grid;
+    width: 2.05rem;
+    height: 2.05rem;
+    place-items: center;
+    color: var(--color-graphite);
+    background: var(--color-sage);
+    border-radius: 50%;
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .text {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .label {
+    color: var(--color-sage);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    font-size: var(--text-sm);
+    line-height: 1.35;
+  }
+
+  @media (min-width: 36rem) {
+    ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    li {
+      padding: var(--space-4);
+      border-right: 1px solid rgb(255 255 255 / 14%);
+    }
+
+    li:nth-child(2n) {
+      border-right: 0;
+    }
+
+    li:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .trust-strip {
+      padding-block: var(--space-3);
+    }
+
+    ul {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    li,
+    li:nth-child(2n) {
+      padding: var(--space-4) clamp(var(--space-4), 2vw, var(--space-5));
+      border-right: 1px solid rgb(255 255 255 / 14%);
+      border-bottom: 0;
+    }
+
+    li:first-child {
+      padding-left: 0;
+    }
+
+    li:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+  }
+</style>

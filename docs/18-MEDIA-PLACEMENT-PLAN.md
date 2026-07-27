@@ -1,19 +1,19 @@
 # Plano de posicionamento de mídia
 
-Última atualização: 2026-07-26
+Última atualização: 2026-07-27
 
 O inventário executável está em `src/config/media.ts`. As URLs confirmadas
 foram baixadas, abertas e inspecionadas em 2026-07-26.
 
 ## Ativos confirmados
 
-| Chave de origem     | Chave interna    | Seção         |   Dimensões | Posicionamento                         | Crop mobile                  | Crop desktop                       | Alt                                                          | Status     |
-| ------------------- | ---------------- | ------------- | ----------: | -------------------------------------- | ---------------------------- | ---------------------------------- | ------------------------------------------------------------ | ---------- |
-| `hero_image`        | `heroImage`      | Hero          | 1122 × 1402 | mídia principal ao lado/abaixo da copy | 4:5, preservar rostos e mãos | 3:4 ou 4:5, sem simular horizontal | Dra. Amanda Perestelo e Dr. Lucas Ferreira na LA Odontologia | confirmado |
-| `specialist_amanda` | `amandaPortrait` | Profissionais | 1122 × 1402 | card da Dra. Amanda                    | 4:5, rosto centralizado      | 4:5, preservar jaleco              | Dra. Amanda Perestelo na LA Odontologia                      | confirmado |
-| `specialist_lucas`  | `lucasPortrait`  | Profissionais | 1122 × 1402 | card do Dr. Lucas                      | 4:5, rosto centralizado      | 4:5, preservar jaleco              | Dr. Lucas Ferreira na LA Odontologia                         | confirmado |
-| `og_image`          | `openGraph`      | Metadados     |  1731 × 909 | `og:image` e `twitter:image`           | sem crop                     | sem crop                           | LA Odontologia — cuidado para o seu sorriso no Recreio       | confirmado |
-| `favicon`           | `favicon`        | Metadados     | 1080 × 1080 | favicon global                         | sem crop                     | sem crop                           | vazio                                                        | confirmado |
+| Chave de origem     | Chave interna    | Seção         |   Dimensões | Posicionamento                         | Crop mobile                  | Crop desktop                | Alt                                                          | Status     |
+| ------------------- | ---------------- | ------------- | ----------: | -------------------------------------- | ---------------------------- | --------------------------- | ------------------------------------------------------------ | ---------- |
+| `hero_image`        | `heroImage`      | Hero          | 1122 × 1402 | mídia principal ao lado/abaixo da copy | 4:5, preservar rostos e mãos | 4:5, sem simular horizontal | Dra. Amanda Perestelo e Dr. Lucas Ferreira na LA Odontologia | confirmado |
+| `specialist_amanda` | `amandaPortrait` | Profissionais | 1122 × 1402 | card da Dra. Amanda                    | 4:5, rosto centralizado      | 4:5, preservar jaleco       | Dra. Amanda Perestelo na LA Odontologia                      | confirmado |
+| `specialist_lucas`  | `lucasPortrait`  | Profissionais | 1122 × 1402 | card do Dr. Lucas                      | 4:5, rosto centralizado      | 4:5, preservar jaleco       | Dr. Lucas Ferreira na LA Odontologia                         | confirmado |
+| `og_image`          | `openGraph`      | Metadados     |  1731 × 909 | `og:image` e `twitter:image`           | sem crop                     | sem crop                    | LA Odontologia — cuidado para o seu sorriso no Recreio       | confirmado |
+| `favicon`           | `favicon`        | Metadados     | 1080 × 1080 | favicon global                         | sem crop                     | sem crop                    | vazio                                                        | confirmado |
 
 ## Decisão responsiva do hero
 
@@ -59,3 +59,17 @@ dois profissionais visível.
   clínica.
 - Transformações Cloudinary devem preservar o public ID e os pontos focais
   definidos no contrato tipado.
+
+## Implementado na Fase 02B
+
+- `heroImage` está ativo no hero em `picture`, com AVIF preferencial e WebP de
+  fallback. O mesmo original vertical é usado em todas as larguras.
+- O hero usa `srcset` em 480, 640, 768 e 960 px, com `c_fill,g_auto`, proporção
+  4:5, `q_auto`, `loading="eager"` e `fetchpriority="high"`.
+- `lucasPortrait` e `amandaPortrait` estão ativos em cards de profissionais,
+  com `srcset` em 360, 520 e 720 px, proporção 4:5, `q_auto`, `loading="lazy"`
+  e dimensões intrínsecas explícitas.
+- `src/lib/cloudinary.ts` concentra a montagem das transformações para que
+  futuros slots reutilizem a mesma regra sem duplicar URL ou public ID.
+- Favicon e Open Graph continuam usando os URLs confirmados sem transformação
+  de crop.

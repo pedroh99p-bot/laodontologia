@@ -2,6 +2,28 @@
 
 Todas as mudanças relevantes deste projeto serão registradas aqui.
 
+## [0.3.0] — 2026-07-27
+
+### Adicionado
+
+- Primeira home visual mobile-first com hero, confiança, necessidades,
+  profissionais, localização, CTA final e rodapé.
+- Registro de visibilidade das seções em `src/config/home-sections.ts`.
+- `src/lib/cloudinary.ts` com transformações responsivas AVIF/WebP.
+- Tracking tipado de CTAs e visualização de profissionais, além de menu mobile
+  progressivo.
+- Preview Vercel público para validação da etapa.
+
+### Alterado
+
+- Hero e retratos passaram a usar os assets Cloudinary confirmados com
+  `srcset`, dimensões explícitas e estratégia de carregamento por prioridade.
+- Seções clínicas pendentes continuam preparadas, mas não são renderizadas.
+- A autenticação SSO padrão do Preview foi removida após o teste mobile anônimo
+  receber a página de login da Vercel em vez da landing.
+- Handoff, decisões, plano de implementação, questões abertas e posicionamento
+  de mídia atualizados para a Fase 02B.
+
 ## [0.2.0] — 2026-07-26
 
 ### Adicionado

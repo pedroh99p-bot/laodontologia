@@ -9,39 +9,110 @@ const copy = homeCopy.finalCta;
 <section class="final-cta" id="contato" aria-labelledby="final-cta-title">
   <Container>
     <div class="panel">
-      <div>
+      <span class="line" aria-hidden="true"></span>
+      <div class="copy">
         <p class="eyebrow">{copy.eyebrow}</p>
         <h2 id="final-cta-title">{copy.heading}</h2>
-        <p>{copy.body}</p>
+        <p class="description">{copy.body}</p>
       </div>
-      <Button href={copy.primaryCta.href}>{copy.primaryCta.label}</Button>
+      <Button
+        href={copy.primaryCta.href}
+        icon="chat"
+        trackingEvent="whatsapp_click"
+        trackingLocation="final"
+      >
+        {copy.primaryCta.label}
+      </Button>
     </div>
   </Container>
 </section>
 
 <style>
   .final-cta {
+    position: relative;
     padding-block: var(--section-space);
+    background: var(--color-warm-white);
   }
 
   .panel {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-5);
-    padding: clamp(var(--space-5), 5vw, var(--space-7));
-    background: var(--color-warm-white);
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: var(--space-6);
+    padding: clamp(1.6rem, 6vw, 4.5rem);
+    overflow: hidden;
+    background: var(--color-ivory);
     border: var(--border-width) solid var(--color-warm-border);
-    border-radius: var(--radius-lg);
+    border-radius: clamp(1.5rem, 5vw, 2.75rem);
+  }
+
+  .panel::before,
+  .panel::after {
+    position: absolute;
+    pointer-events: none;
+    content: "";
+    border: 1px solid rgb(168 84 47 / 13%);
+    border-radius: 50%;
+  }
+
+  .panel::before {
+    right: -8rem;
+    bottom: -11rem;
+    width: 25rem;
+    aspect-ratio: 1;
+  }
+
+  .panel::after {
+    right: -2rem;
+    bottom: -5rem;
+    width: 13rem;
+    aspect-ratio: 1;
+  }
+
+  .line {
+    width: 4.5rem;
+    height: 1px;
+    background: var(--color-copper);
+  }
+
+  .copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-3);
   }
 
   .eyebrow {
-    margin-bottom: var(--space-2);
     color: var(--color-copper-dark);
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-weight: 800;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
+  }
+
+  h2 {
+    max-width: 15ch;
+    letter-spacing: -0.025em;
+  }
+
+  .description {
+    max-width: 33rem;
+    color: var(--color-muted-text);
+  }
+
+  .panel :global(.button) {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 46rem) {
+    .panel {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .line {
+      grid-column: 1 / -1;
+    }
   }
 </style>

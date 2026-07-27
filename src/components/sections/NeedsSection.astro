@@ -1,37 +1,159 @@
 ---
 import { homeCopy } from "../../content/home";
+import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
+import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 
 const copy = homeCopy.needs;
 ---
 
-<section
-  class="foundation-section"
-  id="necessidades"
-  aria-labelledby="needs-title"
->
+<section class="needs" id="necessidades" aria-labelledby="needs-title">
   <Container>
-    <div class="section-panel">
-      <SectionHeading
-        headingId="needs-title"
-        eyebrow={copy.eyebrow}
-        title={copy.heading}
-        description={copy.body}
-      />
+    <div class="needs-layout">
+      <div class="copy-column">
+        <p class="section-index" aria-hidden="true">02</p>
+        <SectionHeading
+          headingId="needs-title"
+          eyebrow={copy.eyebrow}
+          title={copy.heading}
+          description={copy.body}
+        />
+        <Button
+          href={copy.primaryCta.href}
+          variant="secondary"
+          icon="chat"
+          trackingEvent="whatsapp_click"
+          trackingLocation="section"
+        >
+          {copy.primaryCta.label}
+        </Button>
+      </div>
+
+      <div class="editorial-mark" aria-hidden="true">
+        <span class="orbit orbit--one"></span>
+        <span class="orbit orbit--two"></span>
+        <span class="orbit orbit--three"></span>
+        <span class="monogram">LA</span>
+      </div>
+
+      <div class="needs-roller">
+        <Roller label="Escuta" />
+      </div>
     </div>
   </Container>
 </section>
 
 <style>
-  .foundation-section {
+  .needs {
+    position: relative;
     padding-block: var(--section-space);
+    overflow: clip;
   }
 
-  .section-panel {
+  .needs-layout {
+    position: relative;
     display: grid;
+    gap: var(--space-6);
+    align-items: center;
+    padding: clamp(1.5rem, 6vw, 4rem);
+    overflow: hidden;
+    background: var(--color-warm-white);
+    border: var(--border-width) solid var(--color-white);
+    border-radius: clamp(1.5rem, 5vw, 2.5rem);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .copy-column {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: start;
     gap: var(--space-5);
-    padding: clamp(var(--space-5), 5vw, var(--space-7));
-    border-block: var(--border-width) solid var(--color-warm-border);
+  }
+
+  .section-index {
+    color: var(--color-copper);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  .copy-column :global(.section-heading) {
+    max-width: 40rem;
+  }
+
+  .copy-column :global(h2) {
+    max-width: 13ch;
+    letter-spacing: -0.025em;
+  }
+
+  .copy-column :global(.description) {
+    max-width: 33rem;
+    font-size: var(--text-lg);
+  }
+
+  .editorial-mark {
+    position: relative;
+    width: min(100%, 20rem);
+    aspect-ratio: 1;
+    justify-self: center;
+  }
+
+  .orbit {
+    position: absolute;
+    border: 1px solid rgb(142 63 34 / 20%);
+    border-radius: 50%;
+  }
+
+  .orbit--one {
+    inset: 5%;
+  }
+
+  .orbit--two {
+    inset: 18%;
+    border-style: dashed;
+  }
+
+  .orbit--three {
+    inset: 34%;
+    background: rgb(168 84 47 / 8%);
+    border-color: rgb(142 63 34 / 34%);
+  }
+
+  .monogram {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-copper-dark);
+    font-family: var(--font-display);
+    font-size: clamp(3.8rem, 16vw, 6rem);
+    letter-spacing: -0.12em;
+  }
+
+  .needs-roller {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .needs-layout {
+      grid-template-columns: minmax(0, 1.2fr) minmax(15rem, 0.8fr);
+      min-height: 34rem;
+    }
+  }
+
+  @media (min-width: 88rem) {
+    .needs-roller {
+      position: absolute;
+      top: 50%;
+      right: 1.35rem;
+      display: block;
+      transform: translateY(-50%);
+    }
+
+    .editorial-mark {
+      margin-right: 4rem;
+    }
   }
 </style>

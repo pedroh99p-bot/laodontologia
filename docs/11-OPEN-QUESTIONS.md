@@ -1,6 +1,6 @@
 # Questões em aberto
 
-Última atualização: 2026-07-26
+Última atualização: 2026-07-27
 
 Nenhum item abaixo deve ser inferido a partir dos screenshots.
 
@@ -54,3 +54,16 @@ Nenhum item abaixo deve ser inferido a partir dos screenshots.
 28. Definição operacional de `generate_lead`.
 29. Campanhas, intenções, palavras-chave e negativas.
 30. Há landing pages de tratamento priorizadas e conteúdo clínico revisado?
+
+## Estado após a Fase 02B
+
+- O Preview visual público está disponível em
+  `https://laodontologia-qply6crb1-pedroh99p-5348s-projects.vercel.app`.
+- Não há deploy de produção nem domínio/canonical definidos.
+- O logo usado na interface continua tipográfico e provisório; o SVG mestre
+  ainda é necessário.
+- O bloco de localização não publica mapa ou rota até que o Place ID/link
+  oficial seja confirmado.
+- A implementação de analytics nesta fase é somente um adaptador local que
+  emite eventos tipados; IDs, consentimento e destinos de produção continuam
+  pendentes.

@@ -5,18 +5,21 @@ import FinalCTASection from "../components/sections/FinalCTASection.astro";
 import HeroSection from "../components/sections/HeroSection.astro";
 import LocationSection from "../components/sections/LocationSection.astro";
 import NeedsSection from "../components/sections/NeedsSection.astro";
-import SpecialistsSection from "../components/sections/SpecialistsSection.astro";
+import ProfessionalsSection from "../components/sections/ProfessionalsSection.astro";
+import TrustStrip from "../components/sections/TrustStrip.astro";
+import { homeSections } from "../config/home-sections";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout>
-  <Header />
+  {homeSections.navbar.enabled && <Header overlay />}
   <main id="conteudo">
-    <HeroSection />
-    <NeedsSection />
-    <SpecialistsSection />
-    <LocationSection />
-    <FinalCTASection />
+    {homeSections.hero.enabled && <HeroSection />}
+    {homeSections.trust.enabled && <TrustStrip />}
+    {homeSections.needs.enabled && <NeedsSection />}
+    {homeSections.professionals.enabled && <ProfessionalsSection />}
+    {homeSections.location.enabled && <LocationSection />}
+    {homeSections.finalCta.enabled && <FinalCTASection />}
   </main>
-  <Footer />
+  {homeSections.footer.enabled && <Footer />}
 </BaseLayout>

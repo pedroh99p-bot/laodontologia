@@ -3,6 +3,8 @@ import { siteConfig } from "../../config/site";
 import { homeCopy } from "../../content/home";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
+import Icon from "../ui/Icon.astro";
+import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 
 const copy = homeCopy.location;
@@ -10,18 +12,52 @@ const copy = homeCopy.location;
 
 <section class="location" id="localizacao" aria-labelledby="location-title">
   <Container>
-    <div class="location-panel">
-      <SectionHeading
-        headingId="location-title"
-        eyebrow={copy.eyebrow}
-        title={copy.heading}
-        description={copy.body}
-      />
-      <div class="actions">
-        <Button href={siteConfig.whatsappUrl}>Falar pelo WhatsApp</Button>
-        <Button href={siteConfig.telephoneHref} variant="secondary">
-          Ligar para {siteConfig.phoneDisplay}
-        </Button>
+    <div class="location-shell">
+      <div class="location-copy">
+        <p class="section-index" aria-hidden="true">04</p>
+        <SectionHeading
+          headingId="location-title"
+          eyebrow={copy.eyebrow}
+          title={copy.heading}
+          description={copy.body}
+        />
+
+        <div class="actions">
+          <Button
+            href={siteConfig.whatsappUrl}
+            icon="chat"
+            trackingEvent="whatsapp_click"
+            trackingLocation="location"
+          >
+            Falar pelo WhatsApp
+          </Button>
+          <Button
+            href={siteConfig.telephoneHref}
+            variant="secondary"
+            icon="phone"
+            trackingEvent="phone_click"
+            trackingLocation="location"
+          >
+            {siteConfig.phoneDisplay}
+          </Button>
+        </div>
+      </div>
+
+      <address class="address-card">
+        <span class="location-icon"><Icon name="location" size={24} /></span>
+        <span class="address-label">Onde estamos</span>
+        <strong>{siteConfig.address.streetLine}</strong>
+        <span>{siteConfig.address.building}</span>
+        <span>{siteConfig.address.neighborhood}</span>
+        <span>{siteConfig.address.city} — {siteConfig.address.state}</span>
+        <a href={siteConfig.instagramUrl}>
+          <Icon name="instagram" size={18} />
+          @{siteConfig.instagramUsername}
+        </a>
+      </address>
+
+      <div class="location-roller">
+        <Roller label="Localização" />
       </div>
     </div>
   </Container>
@@ -29,27 +65,67 @@ const copy = homeCopy.location;
 
 <style>
   .location {
+    position: relative;
     padding-block: var(--section-space);
     color: var(--color-ivory);
     background: var(--color-graphite);
+    overflow: clip;
   }
 
-  .location-panel {
+  .location::before {
+    position: absolute;
+    inset: auto -12rem -14rem auto;
+    width: 30rem;
+    aspect-ratio: 1;
+    content: "";
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 4rem rgb(255 255 255 / 2%),
+      0 0 0 8rem rgb(255 255 255 / 2%);
+  }
+
+  .location-shell {
+    position: relative;
     display: grid;
-    gap: var(--space-6);
-    padding: clamp(var(--space-5), 5vw, var(--space-7));
+    gap: var(--space-5);
+    padding: clamp(1.4rem, 5vw, 4rem);
     background: var(--color-copper-dark);
-    border-radius: var(--radius-lg);
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: clamp(1.5rem, 5vw, 2.75rem);
+    box-shadow: 0 2rem 5rem rgb(0 0 0 / 16%);
+  }
+
+  .location-copy {
+    display: grid;
+    align-content: center;
+    gap: var(--space-5);
+  }
+
+  .section-index {
+    color: #e0b59f;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.18em;
   }
 
   .location :global(.eyebrow),
   .location :global(.description) {
-    color: var(--color-ivory);
+    color: #f4ddd1;
+  }
+
+  .location :global(h2) {
+    max-width: 12ch;
+    color: var(--color-white);
+    letter-spacing: -0.03em;
+  }
+
+  .location :global(.description) {
+    max-width: 36rem;
   }
 
   .actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--space-3);
   }
 
@@ -58,8 +134,137 @@ const copy = homeCopy.location;
     background: var(--color-warm-white);
   }
 
+  .location :global(.button--primary:hover) {
+    color: var(--color-white);
+    background: var(--color-graphite);
+  }
+
   .location :global(.button--secondary) {
     color: var(--color-white);
-    border-color: var(--color-white);
+    border-color: rgb(255 255 255 / 68%);
+  }
+
+  .location :global(.button--secondary:hover) {
+    color: var(--color-graphite);
+    background: var(--color-white);
+  }
+
+  .address-card {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    min-height: 19rem;
+    padding: clamp(1.4rem, 5vw, 2.5rem);
+    overflow: hidden;
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
+    border-radius: clamp(1.2rem, 4vw, 2rem);
+    font-style: normal;
+  }
+
+  .address-card::after {
+    position: absolute;
+    right: -4rem;
+    bottom: -5rem;
+    width: 12rem;
+    aspect-ratio: 1;
+    content: "";
+    border: 1px solid rgb(168 84 47 / 18%);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 2rem rgb(168 84 47 / 5%),
+      0 0 0 4rem rgb(168 84 47 / 4%);
+  }
+
+  .location-icon {
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    margin-bottom: var(--space-4);
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+    border-radius: 50%;
+  }
+
+  .address-label {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .address-card strong {
+    max-width: 18ch;
+    margin-block: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    line-height: var(--leading-heading);
+  }
+
+  .address-card > span:not(.location-icon, .address-label) {
+    color: var(--color-muted-text);
+    line-height: 1.45;
+  }
+
+  .address-card a {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    width: fit-content;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--color-copper-dark);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .location-roller {
+    display: none;
+  }
+
+  @media (min-width: 31rem) {
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 58rem) {
+    .location-shell {
+      grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+      align-items: stretch;
+    }
+
+    .location-copy {
+      padding-right: clamp(var(--space-4), 3vw, var(--space-7));
+    }
+
+    .address-card {
+      min-height: 27rem;
+    }
+  }
+
+  @media (min-width: 88rem) {
+    .location-roller {
+      position: absolute;
+      top: 50%;
+      left: -4.6rem;
+      display: block;
+      transform: translateY(-50%);
+    }
+
+    .location-roller :global(.roller) {
+      color: var(--color-warm-white);
+      background: rgb(255 255 255 / 8%);
+      border-color: rgb(255 255 255 / 16%);
+      box-shadow: none;
+    }
   }
 </style>

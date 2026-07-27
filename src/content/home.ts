@@ -19,6 +19,25 @@ type HomeSectionCopy = {
 
 const whatsappHref = siteConfig.whatsappUrl;
 
+export const homeTrustItems = [
+  {
+    label: "Localização",
+    value: siteConfig.address.neighborhood,
+  },
+  {
+    label: "Profissional",
+    value: `${siteConfig.professionals[0].displayName} · ${siteConfig.professionals[0].cro}`,
+  },
+  {
+    label: "Profissional",
+    value: `${siteConfig.professionals[1].displayName} · ${siteConfig.professionals[1].cro}`,
+  },
+  {
+    label: "Contato",
+    value: "Direto pelo WhatsApp",
+  },
+] as const;
+
 export const homeCopy = {
   hero: {
     status: "ready",

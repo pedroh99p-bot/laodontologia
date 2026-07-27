@@ -1,6 +1,6 @@
 # Registro de decisões
 
-Última atualização: 2026-07-26
+Última atualização: 2026-07-27
 
 ## D-001 — referências permanecem em `docs/references`
 
@@ -125,3 +125,57 @@
 - **Motivo:** os arquivos e textos já estão confirmados e a mudança não exige a
   interface visual final.
 - **Consequência:** canonical e sitemap continuam condicionados ao domínio real.
+
+## D-019 — direção visual editorial mobile-first
+
+- **Decisão:** implementar a home com hero vertical, painel de copy
+  sobreposto, faixa de prova, blocos de respiro, cobre/graphite e rollers
+  editoriais em telas amplas.
+- **Motivo:** traduzir a linguagem das referências sem copiar textos ou
+  artefatos não confirmados.
+- **Consequência:** a composição permanece própria, responsiva e utilizável em
+  320 px antes de receber logo e fontes finais.
+
+## D-020 — transformações Cloudinary no componente
+
+- **Decisão:** gerar `srcset` AVIF/WebP por `transformCloudinaryUrl`, usando
+  `q_auto`, `c_fill` e `g_auto`, preservando URL versionada e public ID.
+- **Motivo:** reduzir bytes sem criar novos arquivos ou alterar a fotografia
+  recebida.
+- **Consequência:** hero carrega eager com `fetchpriority="high"`; retratos
+  abaixo da dobra usam lazy loading e dimensões explícitas.
+
+## D-021 — registro único de visibilidade das seções
+
+- **Decisão:** centralizar `status`, `enabled` e implementação em
+  `src/config/home-sections.ts`.
+- **Motivo:** impedir que uma seção `pending` entre acidentalmente no HTML.
+- **Consequência:** a home renderiza somente navbar, hero, confiança,
+  necessidades, profissionais, localização, CTA e rodapé nesta fase.
+
+## D-022 — localização sem mapa ou rota
+
+- **Decisão:** mostrar NAP, telefone, WhatsApp e Instagram confirmados, sem
+  mapa, link de rota ou Place ID.
+- **Motivo:** o link oficial de rota ainda está em `docs/11-OPEN-QUESTIONS.md`.
+- **Consequência:** o bloco é útil e honesto; integração de mapa fica para uma
+  etapa posterior.
+
+## D-023 — JavaScript mínimo e progressivo
+
+- **Decisão:** usar somente `src/scripts/site.ts` para tracking de cliques,
+  `professional_view`, fechamento do menu com `Escape` e fechamento após link.
+- **Motivo:** preservar HTML funcional sem JavaScript e evitar dependências
+  externas.
+- **Consequência:** não há formulário, carrossel, mapa, CMP ou tags de mídia
+  paga nesta entrega.
+
+## D-024 — Preview público, sem produção
+
+- **Decisão:** publicar somente um Preview Vercel e remover a autenticação SSO
+  do projeto.
+- **Motivo:** a landing não contém dados sensíveis e precisa ser validada em
+  celulares sem sessão Vercel; a proteção padrão fazia o mobile receber uma
+  página de login em vez do site.
+- **Consequência:** o Preview é acessível anonimamente e foi retestado em
+  390 × 844. Nenhuma versão foi promovida para produção.
