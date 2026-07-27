@@ -12,7 +12,7 @@ const copy = homeCopy.location;
 
 <section class="location" id="localizacao" aria-labelledby="location-title">
   <Container>
-    <div class="location-shell">
+    <div class="location-shell" data-reveal>
       <div class="location-copy">
         <p class="section-index" aria-hidden="true">04</p>
         <SectionHeading
@@ -40,6 +40,15 @@ const copy = homeCopy.location;
           >
             {siteConfig.phoneDisplay}
           </Button>
+          <Button
+            href="https://www.google.com/maps/search/?api=1&query=Avenida+das+Am%C3%A9ricas+13685+Sala+278+Rio+de+Janeiro"
+            variant="secondary"
+            icon="location"
+            trackingEvent="route_click"
+            trackingLocation="location"
+          >
+            Traçar rota
+          </Button>
         </div>
       </div>
 
@@ -55,6 +64,18 @@ const copy = homeCopy.location;
           @{siteConfig.instagramUsername}
         </a>
       </address>
+
+      <div class="map-card">
+        <iframe
+          title="Mapa da LA Odontologia no Recreio dos Bandeirantes"
+          src="https://www.google.com/maps?q=Avenida%20das%20Am%C3%A9ricas%2C%2013685%2C%20Sala%20278%2C%20Recreio%20dos%20Bandeirantes%2C%20Rio%20de%20Janeiro&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <p>
+          Mapa provisório por endereço; o Place ID oficial ainda será
+          confirmado.
+        </p>
+      </div>
 
       <div class="location-roller">
         <Roller label="Localização" />
@@ -225,6 +246,29 @@ const copy = homeCopy.location;
     text-decoration: none;
   }
 
+  .map-card {
+    display: grid;
+    gap: var(--space-2);
+    overflow: hidden;
+    color: #f4ddd1;
+    background: rgb(36 35 33 / 35%);
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: clamp(1.2rem, 4vw, 2rem);
+  }
+
+  .map-card iframe {
+    width: 100%;
+    min-height: 18rem;
+    border: 0;
+    filter: saturate(0.75) contrast(0.92);
+  }
+
+  .map-card p {
+    padding: 0 var(--space-4) var(--space-4);
+    font-size: var(--text-xs);
+    opacity: 0.78;
+  }
+
   .location-roller {
     display: none;
   }
@@ -248,6 +292,16 @@ const copy = homeCopy.location;
 
     .address-card {
       min-height: 27rem;
+    }
+
+    .map-card {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1fr) 15rem;
+      align-items: center;
+    }
+
+    .map-card iframe {
+      min-height: 14rem;
     }
   }
 

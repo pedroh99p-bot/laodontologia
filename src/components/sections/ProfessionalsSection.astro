@@ -76,6 +76,7 @@ const cards = professionalProfiles.map((profile) => {
       {
         cards.map((professional, index) => (
           <li
+            data-reveal
             data-track-view="professional_view"
             data-professional={professional.slug}
           >
@@ -107,6 +108,7 @@ const cards = professionalProfiles.map((profile) => {
                   {professional.displayName}
                 </h3>
                 <p>{professional.cro}</p>
+                <small>Bio e especialidade em validação</small>
               </div>
             </article>
           </li>
@@ -244,6 +246,11 @@ const cards = professionalProfiles.map((profile) => {
     font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  .professional-copy small {
+    color: var(--color-muted-text);
+    font-size: var(--text-xs);
   }
 
   .section-action {

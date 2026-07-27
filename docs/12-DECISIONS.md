@@ -179,3 +179,20 @@
   página de login em vez do site.
 - **Consequência:** o Preview é acessível anonimamente e foi retestado em
   390 × 844. Nenhuma versão foi promovida para produção.
+
+# Decisões adicionadas na Fase 02C
+
+## D-025 — Placeholders visuais explícitos
+
+Renderizar a arquitetura das seções pendentes com `Preview estrutural` e
+`Foto real pendente`, sem imagens, casos ou alegações clínicas inventadas.
+
+## D-026 — FAQ e mapa com dados confirmados
+
+Publicar somente perguntas sobre endereço, contato, solicitação de agendamento e
+profissionais; usar mapa/rota temporários baseados no endereço confirmado.
+
+## D-027 — Movimento decorativo progressivo
+
+Usar marquee CSS decorativo e reveal por IntersectionObserver, com fallback
+visível e desativação via `prefers-reduced-motion`.

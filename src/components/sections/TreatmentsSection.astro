@@ -1,0 +1,78 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const categories = [
+  "Categoria de cuidado",
+  "Necessidade em validação",
+  "Conteúdo clínico pendente",
+] as const;
+---
+
+<section class="treatments" id="tratamentos" aria-labelledby="treatments-title">
+  <Container>
+    <div class="section-shell" data-reveal>
+      <SectionHeading
+        headingId="treatments-title"
+        eyebrow="Cuidados"
+        title="Conteúdo organizado para diferentes necessidades."
+        description="As categorias abaixo são apenas uma prévia de arquitetura. A lista final depende da confirmação clínica da equipe."
+      />
+      <ul class="category-grid" role="list">
+        {
+          categories.map((category, index) => (
+            <li>
+              <span class="category-number">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3>{category}</h3>
+              <p>Descrição e indicação serão publicadas após validação.</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .treatments {
+    padding-block: var(--section-space);
+    background: var(--color-ivory);
+  }
+  .section-shell {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .section-shell :global(.section-heading) {
+    max-width: 40rem;
+  }
+  .category-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .category-grid li {
+    display: grid;
+    gap: var(--space-2);
+    min-height: 11rem;
+    padding: var(--space-5);
+    background: var(--color-warm-white);
+    border: 1px solid var(--color-warm-border);
+    border-radius: var(--radius-lg);
+  }
+  .category-number {
+    color: var(--color-copper);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+  .category-grid p {
+    color: var(--color-muted-text);
+    font-size: var(--text-sm);
+  }
+  @media (min-width: 48rem) {
+    .category-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

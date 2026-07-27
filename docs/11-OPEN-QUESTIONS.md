@@ -67,3 +67,13 @@ Nenhum item abaixo deve ser inferido a partir dos screenshots.
 - A implementação de analytics nesta fase é somente um adaptador local que
   emite eventos tipados; IDs, consentimento e destinos de produção continuam
   pendentes.
+
+# Estado após a Fase 02C
+
+- O mapa exibido na home é um embed temporário baseado no endereço confirmado;
+  substituir pelo Place ID/URL oficial quando a clínica fornecer o link.
+- O botão “Traçar rota” usa a busca de endereço do Google Maps e está marcado
+  como provisório no relatório visual.
+- O FAQ publicado nesta etapa contém somente respostas NAP/contato e
+  identificação dos profissionais já confirmadas.
+- As três logos de produção continuam pendentes em `src/assets/brand/`.

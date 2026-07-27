@@ -76,7 +76,7 @@ export const homeCopy = {
     missing: ["Necessidades e tratamentos que a clínica deseja destacar."],
   },
   results: {
-    status: "pending",
+    status: "partial",
     eyebrow: "Resultados",
     heading: "Resultados apresentados com contexto e responsabilidade.",
     body: null,
@@ -106,7 +106,7 @@ export const homeCopy = {
     ],
   },
   treatments: {
-    status: "pending",
+    status: "partial",
     eyebrow: "Tratamentos",
     heading: "Cuidados pensados para diferentes necessidades.",
     body: null,
@@ -119,7 +119,7 @@ export const homeCopy = {
     ],
   },
   process: {
-    status: "pending",
+    status: "partial",
     eyebrow: "Como funciona",
     heading: "Entenda os próximos passos.",
     body: null,
@@ -131,7 +131,7 @@ export const homeCopy = {
     ],
   },
   clinic: {
-    status: "pending",
+    status: "partial",
     eyebrow: "A clínica",
     heading: "Conheça o espaço da LA Odontologia.",
     body: null,
@@ -143,7 +143,7 @@ export const homeCopy = {
     ],
   },
   differentials: {
-    status: "pending",
+    status: "partial",
     eyebrow: "Diferenciais",
     heading: "O que orienta a experiência na LA Odontologia.",
     body: null,
@@ -180,16 +180,16 @@ export const homeCopy = {
     missing: [],
   },
   faq: {
-    status: "pending",
+    status: "ready",
     eyebrow: "Perguntas frequentes",
     heading: "Dúvidas antes de falar com a equipe?",
-    body: null,
-    primaryCta: null,
+    body: "Respostas objetivas para começar a conversa com a equipe.",
+    primaryCta: {
+      label: "Falar pelo WhatsApp",
+      href: whatsappHref,
+    },
     secondaryCta: null,
-    missing: [
-      "Perguntas reais recebidas pela clínica.",
-      "Respostas operacionais e clínicas aprovadas.",
-    ],
+    missing: [],
   },
   finalCta: {
     status: "ready",

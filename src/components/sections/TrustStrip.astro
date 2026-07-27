@@ -1,6 +1,7 @@
 ---
 import { homeTrustItems } from "../../content/home";
 import Container from "../ui/Container.astro";
+import TextRoller from "../ui/TextRoller.astro";
 ---
 
 <section
@@ -9,7 +10,7 @@ import Container from "../ui/Container.astro";
   aria-label="Informações confirmadas da clínica"
 >
   <Container>
-    <ul role="list">
+    <ul role="list" data-reveal>
       {
         homeTrustItems.map((item, index) => (
           <li>
@@ -25,6 +26,10 @@ import Container from "../ui/Container.astro";
       }
     </ul>
   </Container>
+  <TextRoller
+    items={["Cuidado", "Escuta", "Clareza", "Confiança"]}
+    tone="light"
+  />
 </section>
 
 <style>
@@ -32,8 +37,8 @@ import Container from "../ui/Container.astro";
     position: relative;
     z-index: 2;
     padding-block: var(--space-4);
-    color: var(--color-ivory);
-    background: var(--color-graphite);
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
   }
 
   ul {
@@ -46,7 +51,7 @@ import Container from "../ui/Container.astro";
     align-items: center;
     gap: var(--space-3);
     padding-block: var(--space-4);
-    border-bottom: 1px solid rgb(255 255 255 / 14%);
+    border-bottom: 1px solid var(--color-warm-border);
   }
 
   li:last-child {
@@ -58,8 +63,8 @@ import Container from "../ui/Container.astro";
     width: 2.05rem;
     height: 2.05rem;
     place-items: center;
-    color: var(--color-graphite);
-    background: var(--color-sage);
+    color: var(--color-white);
+    background: var(--color-copper-dark);
     border-radius: 50%;
     font-size: 0.66rem;
     font-weight: 800;
@@ -72,7 +77,7 @@ import Container from "../ui/Container.astro";
   }
 
   .label {
-    color: var(--color-sage);
+    color: var(--color-copper-dark);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -91,7 +96,7 @@ import Container from "../ui/Container.astro";
 
     li {
       padding: var(--space-4);
-      border-right: 1px solid rgb(255 255 255 / 14%);
+      border-right: 1px solid var(--color-warm-border);
     }
 
     li:nth-child(2n) {
@@ -115,7 +120,7 @@ import Container from "../ui/Container.astro";
     li,
     li:nth-child(2n) {
       padding: var(--space-4) clamp(var(--space-4), 2vw, var(--space-5));
-      border-right: 1px solid rgb(255 255 255 / 14%);
+      border-right: 1px solid var(--color-warm-border);
       border-bottom: 0;
     }
 

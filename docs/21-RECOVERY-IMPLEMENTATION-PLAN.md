@@ -88,3 +88,9 @@ e resultados → demais seções → copy mobile → QA → aprovação`.
 
 Não remover os shells ou os estados `pending` antes de as dependências de cada
 seção estarem documentadas e aprovadas.
+
+# Estado da recuperação
+
+A sequência executável foi concluída na branch `feat/mobile-visual-completion`.
+Os itens que dependem de logos, casos, fotos reais, Place ID e copy clínica
+continuam pendentes e estão explicitamente sinalizados no relatório 22.

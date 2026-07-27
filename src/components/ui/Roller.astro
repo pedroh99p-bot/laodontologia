@@ -7,14 +7,17 @@ const { label } = Astro.props;
 ---
 
 <div class="roller" aria-hidden="true">
+  <span class="roller-line"></span>
   <span>{label}</span>
+  <span class="roller-arrow">↗</span>
 </div>
 
 <style>
   .roller {
     display: none;
-    width: 3.5rem;
+    width: 3.7rem;
     min-height: 14rem;
+    gap: 0.65rem;
     align-items: center;
     justify-content: center;
     color: var(--color-copper-dark);
@@ -32,7 +35,25 @@ const { label } = Astro.props;
     transform: rotate(180deg);
   }
 
-  @media (min-width: 75rem) {
+  .roller-line {
+    width: 1px;
+    height: 2.25rem;
+    background: currentColor;
+    opacity: 0.36;
+  }
+
+  .roller-arrow {
+    display: grid;
+    width: 1.85rem;
+    height: 1.85rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+
+  @media (min-width: 70rem) {
     .roller {
       display: flex;
     }

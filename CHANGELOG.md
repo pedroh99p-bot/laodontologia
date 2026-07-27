@@ -61,3 +61,16 @@ Todas as mudanças relevantes deste projeto serão registradas aqui.
 - Sitemap condicional ao domínio real.
 - Conteúdo clínico vazio até confirmação.
 - Nenhum screenshot ou asset simulado na página.
+
+# [0.4.0] — 2026-07-27
+
+## Fase 02C
+
+- Conclusão visual mobile-first com resultados, tratamentos, processo, clínica,
+  diferenciais e FAQ na home.
+- Rollers verticais com linha/seta, marquee decorativo, reveals progressivos e
+  suporte a reduced motion.
+- Comparador antes/depois neutro, trilho horizontal com scroll-snap, mapa
+  temporário por endereço e capturas de QA em `docs/audits/02c-final/`.
+- Conteúdo clínico não confirmado permanece sinalizado; logos aprovadas ainda
+  não foram recebidas.

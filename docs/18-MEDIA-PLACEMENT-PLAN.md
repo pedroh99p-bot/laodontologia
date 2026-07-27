@@ -73,3 +73,11 @@ dois profissionais visível.
   futuros slots reutilizem a mesma regra sem duplicar URL ou public ID.
 - Favicon e Open Graph continuam usando os URLs confirmados sem transformação
   de crop.
+
+# Atualização Fase 02C
+
+- Hero e retratos continuam usando apenas Cloudinary confirmado.
+- Slots de clínica, resultados, tratamentos e diferenciais usam placeholders
+  estruturais sem arquivo de mídia; screenshots de referência não são usados.
+- O mapa é um iframe temporário por endereço, marcado para substituição quando
+  houver Place ID/URL oficial.

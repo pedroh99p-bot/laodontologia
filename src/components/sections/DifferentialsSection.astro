@@ -1,0 +1,82 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const items = [
+  "Atendimento próximo",
+  "Explicações claras",
+  "Planejamento individual",
+  "Cuidado em cada etapa",
+] as const;
+---
+
+<section
+  class="differentials"
+  id="diferenciais"
+  aria-labelledby="differentials-title"
+>
+  <Container>
+    <div class="differentials-shell" data-reveal>
+      <SectionHeading
+        headingId="differentials-title"
+        eyebrow="Diferenciais"
+        title="O que orienta a experiência na LA Odontologia."
+        description="Estes eixos são apresentados como estrutura de conteúdo e aguardam confirmação institucional antes da publicação definitiva."
+      />
+      <ul class="differentials-grid" role="list">
+        {
+          items.map((item, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{item}</h3>
+              <small>Validação institucional pendente</small>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .differentials {
+    padding-block: var(--section-space);
+    background: var(--color-ivory);
+  }
+  .differentials-shell {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .differentials-shell :global(.section-heading) {
+    max-width: 42rem;
+  }
+  .differentials-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .differentials-grid li {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-warm-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-surface);
+  }
+  .differentials-grid span,
+  .differentials-grid small {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .differentials-grid small {
+    color: var(--color-muted-text);
+    letter-spacing: 0.05em;
+  }
+  @media (min-width: 48rem) {
+    .differentials-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

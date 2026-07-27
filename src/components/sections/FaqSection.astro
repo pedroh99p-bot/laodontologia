@@ -1,0 +1,107 @@
+---
+import { siteConfig } from "../../config/site";
+import { homeCopy } from "../../content/home";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const questions = [
+  {
+    question: "Onde fica a LA Odontologia?",
+    answer: `${siteConfig.address.formatted}, ${siteConfig.address.city} - ${siteConfig.address.state}.`,
+  },
+  {
+    question: "Como posso entrar em contato?",
+    answer: `Pelo WhatsApp ou telefone ${siteConfig.phoneDisplay}.`,
+  },
+  {
+    question: "Como solicito um agendamento?",
+    answer: "Envie uma mensagem pelo WhatsApp para conversar com a equipe.",
+  },
+  {
+    question: "Quem são os profissionais?",
+    answer: `${siteConfig.professionals[0].displayName} (${siteConfig.professionals[0].cro}) e ${siteConfig.professionals[1].displayName} (${siteConfig.professionals[1].cro}).`,
+  },
+] as const;
+---
+
+<section class="faq" id="perguntas" aria-labelledby="faq-title">
+  <Container>
+    <div class="faq-shell" data-reveal>
+      <SectionHeading
+        headingId="faq-title"
+        eyebrow={homeCopy.faq.eyebrow}
+        title={homeCopy.faq.heading}
+        description={homeCopy.faq.body ?? undefined}
+      />
+      <div class="faq-list">
+        {
+          questions.map((item) => (
+            <details data-faq>
+              <summary>
+                <>
+                  <span>{item.question}</span>
+                  <span aria-hidden="true">+</span>
+                </>
+              </summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+      <Button
+        href={homeCopy.faq.primaryCta?.href ?? siteConfig.whatsappUrl}
+        icon="chat"
+        trackingEvent="whatsapp_click"
+        trackingLocation="section"
+      >
+        {homeCopy.faq.primaryCta?.label ?? "Falar pelo WhatsApp"}
+      </Button>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--section-space);
+    background: var(--color-warm-white);
+  }
+  .faq-shell {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 52rem;
+  }
+  .faq-list {
+    display: grid;
+    border-top: 1px solid var(--color-warm-border);
+  }
+  .faq-list details {
+    border-bottom: 1px solid var(--color-warm-border);
+  }
+  .faq-list summary {
+    display: flex;
+    min-height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary span:last-child {
+    color: var(--color-copper-dark);
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .faq-list details[open] summary span:last-child {
+    transform: rotate(45deg);
+  }
+  .faq-list p {
+    max-width: 44rem;
+    padding: 0 var(--space-6) var(--space-5) 0;
+    color: var(--color-muted-text);
+  }
+</style>

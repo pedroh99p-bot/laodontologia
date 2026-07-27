@@ -88,3 +88,11 @@ Critério: falha de terceiros não bloqueia contato principal.
 - Orçamento de performance acompanhado.
 - Analytics sem PII/duplicidade.
 - Build reproduzível e handoff atualizado.
+
+# Fase 02C — conclusão visual mobile-first
+
+- Home renderiza as 12 seções previstas, com registry central.
+- Resultados têm trilho horizontal com `scroll-snap` e comparador de range.
+- Processo, rollers, marquee, reveals, FAQ, mapa temporário e CTAs foram
+  validados em viewport mobile e desktop.
+- Pendências de marca e mídia permanecem bloqueadas por evidência.

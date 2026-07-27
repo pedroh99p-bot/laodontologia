@@ -1,0 +1,80 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const slots = ["Recepção", "Consultório", "Detalhe da clínica"] as const;
+---
+
+<section class="clinic" id="clinica" aria-labelledby="clinic-title">
+  <Container>
+    <div class="clinic-shell" data-reveal>
+      <SectionHeading
+        headingId="clinic-title"
+        eyebrow="A clínica"
+        title="Um espaço para receber a sua próxima conversa."
+        description="As imagens reais e a descrição factual do ambiente ainda serão adicionadas pela equipe."
+      />
+      <div class="clinic-grid">
+        {
+          slots.map((slot) => (
+            <div class="clinic-slot" aria-label={`${slot}: foto real pendente`}>
+              <span>Foto real pendente</span>
+              <strong>{slot}</strong>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .clinic {
+    padding-block: var(--section-space);
+    background: var(--color-warm-white);
+  }
+  .clinic-shell {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .clinic-shell :global(.section-heading) {
+    max-width: 40rem;
+  }
+  .clinic-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .clinic-slot {
+    display: grid;
+    min-height: 13rem;
+    align-content: end;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    color: var(--color-graphite);
+    background:
+      linear-gradient(
+        135deg,
+        transparent 45%,
+        rgb(168 84 47 / 8%) 46% 54%,
+        transparent 55%
+      ),
+      var(--color-ivory);
+    border: 1px dashed var(--color-warm-border);
+    border-radius: var(--radius-lg);
+  }
+  .clinic-slot span {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 48rem) {
+    .clinic-grid {
+      grid-template-columns: 1.2fr 1fr 1fr;
+    }
+    .clinic-slot:first-child {
+      min-height: 22rem;
+    }
+  }
+</style>

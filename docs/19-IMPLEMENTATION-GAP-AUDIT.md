@@ -174,3 +174,10 @@ depoimentos e FAQ permanece vazio por segurança.
 - Casos antes/depois padronizados, com consentimento e revisão clínica.
 - Fotos/identificação de depoimentos autorizados.
 - Fotos por tratamento somente após lista clínica confirmada.
+
+# Follow-up da Fase 02C
+
+Os gaps de logos e conteúdo clínico permanecem abertos. Rollers, movimento,
+seções estruturais, FAQ confirmado e mapa temporário foram implementados na
+branch `feat/mobile-visual-completion`; a matriz abaixo registra o estado-base
+da auditoria 02B.

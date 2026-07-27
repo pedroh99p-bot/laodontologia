@@ -90,3 +90,21 @@ e resultados → demais seções → copy mobile → QA → aprovação`.
 Não liberar seções `pending` ou considerar a identidade concluída antes de
 receber e registrar os assets, conteúdos, autorizações e decisões clínicas
 correspondentes.
+
+# Estado após a Fase 02C
+
+A branch `feat/mobile-visual-completion` contém a conclusão visual mobile-first
+executável. As seções de resultados, tratamentos, processo, clínica,
+diferenciais e FAQ agora entram na home; resultados/tratamentos/processo/clínica
+e diferenciais usam `previewPlaceholder` explícito até receber conteúdo
+autorizado. O FAQ usa somente endereço, telefone, WhatsApp, nomes e CROs
+confirmados. A localização inclui mapa temporário por endereço e link de rota;
+o Place ID oficial continua pendente.
+
+Rollers verticais receberam linha/seta e aparecem a partir de 70rem. Faixas
+automáticas e reveals usam CSS/IntersectionObserver e respeitam
+`prefers-reduced-motion`. As logos aprovadas continuam ausentes, portanto o
+fallback textual permanece intencional e documentado.
+
+QA 02C gerou capturas em `docs/audits/02c-final/` para 320, 360, 390, 430,
+1024, 1365 e 1440 px, sem overflow horizontal.

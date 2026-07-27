@@ -97,3 +97,9 @@ O mobile poderá ser considerado alinhado quando mantiver a composição por
 prancha (cápsula, margem, sobreposição, cards/gestos e rollers contextuais),
 sem publicar os artefatos factuais das referências e sem degradar leitura,
 toque, contraste ou performance.
+
+# Execução Fase 02C
+
+O plano foi aplicado com QA em 320/360/390/430 px, hero 4:5, cards em coluna
+única no mobile, trilho horizontal de resultados, timeline, menu, FAQ, reveals e
+reduced motion. As logos e mídias clínicas continuam aguardando entrega.

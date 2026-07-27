@@ -83,6 +83,26 @@ document
 
 const viewTargets = document.querySelectorAll<HTMLElement>("[data-track-view]");
 
+const revealTargets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+if ("IntersectionObserver" in window && revealTargets.length > 0) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 },
+  );
+
+  revealTargets.forEach((element) => revealObserver.observe(element));
+} else {
+  revealTargets.forEach((element) => element.classList.add("is-visible"));
+}
+
 if ("IntersectionObserver" in window && viewTargets.length > 0) {
   const observer = new IntersectionObserver(
     (entries) => {
