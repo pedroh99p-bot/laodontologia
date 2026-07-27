@@ -1,0 +1,41 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+---
+
+<section
+  class="foundation-section"
+  id="processo"
+  aria-labelledby="process-title"
+>
+  <Container>
+    <div class="section-panel">
+      <SectionHeading
+        headingId="process-title"
+        eyebrow="Fluxo tipável"
+        title="Processo de atendimento"
+        description="A seção está preparada para uma linha do tempo progressiva. As etapas reais ainda precisam ser confirmadas pela clínica."
+      />
+      <p class="pending">
+        Nenhuma etapa operacional foi inferida das referências.
+      </p>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .foundation-section {
+    padding-block: var(--section-space);
+    background: var(--color-warm-white);
+  }
+
+  .section-panel {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .pending {
+    color: var(--color-muted-text);
+    font-size: var(--text-sm);
+  }
+</style>

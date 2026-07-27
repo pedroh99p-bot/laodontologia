@@ -1,0 +1,83 @@
+---
+import { media } from "../config/media";
+import { siteConfig } from "../config/site";
+import { resolveSeo } from "../lib/seo";
+import "../styles/reset.css";
+import "../styles/tokens.css";
+import "../styles/typography.css";
+import "../styles/global.css";
+import "../styles/motion.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
+  path?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = siteConfig.defaultSeo.title,
+  description = siteConfig.defaultSeo.description,
+  openGraphTitle,
+  openGraphDescription,
+  path = Astro.url.pathname,
+  noindex = false,
+} = Astro.props;
+
+const openGraphImage = media.openGraph.asset?.url;
+const favicon = media.favicon.asset?.url;
+const usesDefaultSeo =
+  title === siteConfig.defaultSeo.title &&
+  description === siteConfig.defaultSeo.description;
+const resolvedOpenGraphTitle =
+  openGraphTitle ??
+  (usesDefaultSeo ? siteConfig.defaultSeo.openGraphTitle : title);
+const resolvedOpenGraphDescription =
+  openGraphDescription ??
+  (usesDefaultSeo ? siteConfig.defaultSeo.openGraphDescription : description);
+const seo = resolveSeo({
+  title,
+  description,
+  path,
+  noindex,
+  ...(siteConfig.defaultSeo.siteUrl
+    ? { siteUrl: siteConfig.defaultSeo.siteUrl }
+    : {}),
+  ...(openGraphImage ? { imageUrl: openGraphImage } : {}),
+});
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    {favicon && <link rel="icon" type="image/webp" href={favicon} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={siteConfig.brandName} />
+    <meta property="og:title" content={resolvedOpenGraphTitle} />
+    <meta property="og:description" content={resolvedOpenGraphDescription} />
+    <meta
+      name="twitter:card"
+      content={seo.imageUrl ? "summary_large_image" : "summary"}
+    />
+    <meta name="twitter:title" content={resolvedOpenGraphTitle} />
+    <meta name="twitter:description" content={resolvedOpenGraphDescription} />
+    {seo.canonicalUrl && <link rel="canonical" href={seo.canonicalUrl} />}
+    {seo.canonicalUrl && <meta property="og:url" content={seo.canonicalUrl} />}
+    {seo.imageUrl && <meta property="og:image" content={seo.imageUrl} />}
+    {seo.imageUrl && <meta name="twitter:image" content={seo.imageUrl} />}
+    {seo.noindex && <meta name="robots" content="noindex, nofollow" />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <slot />
+  </body>
+</html>

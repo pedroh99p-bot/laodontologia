@@ -1,0 +1,180 @@
+---
+import { siteConfig } from "../../config/site";
+import { buildWhatsAppUrl } from "../../lib/whatsapp";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+
+const whatsappUrl = buildWhatsAppUrl();
+---
+
+<header class="site-header">
+  <Container>
+    <div class="header-shell">
+      <a class="brand" href="/" aria-label={`${siteConfig.brandName}, início`}>
+        <span class="brand-mark" aria-hidden="true">LA</span>
+        <span>{siteConfig.brandName}</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Principal">
+        <ul role="list">
+          {
+            siteConfig.navigation.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="desktop-cta">
+        <Button href={whatsappUrl}>Falar pelo WhatsApp</Button>
+      </div>
+
+      <details class="mobile-nav">
+        <summary>
+          <span class="visually-hidden">Abrir menu</span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </summary>
+        <nav aria-label="Principal em dispositivos móveis">
+          <ul role="list">
+            {
+              siteConfig.navigation.map((item) => (
+                <li>
+                  <a href={item.href}>{item.label}</a>
+                </li>
+              ))
+            }
+            <li><a href={whatsappUrl}>Falar pelo WhatsApp</a></li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </Container>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: var(--z-header);
+    padding-block: var(--space-4);
+  }
+
+  .header-shell {
+    display: flex;
+    min-height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: color-mix(in srgb, var(--color-warm-white) 94%, transparent);
+    border: var(--border-width) solid var(--color-white);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    color: var(--color-copper-dark);
+    border: var(--border-width) solid var(--color-warm-border);
+    border-radius: 50%;
+  }
+
+  .desktop-nav,
+  .desktop-cta {
+    display: none;
+  }
+
+  .mobile-nav {
+    position: relative;
+  }
+
+  .mobile-nav summary {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-content: center;
+    gap: 0.25rem;
+    list-style: none;
+    border: var(--border-width) solid var(--color-warm-border);
+    border-radius: 50%;
+  }
+
+  .mobile-nav summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav summary span[aria-hidden="true"] {
+    width: 1.15rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .mobile-nav nav {
+    position: absolute;
+    top: calc(100% + var(--space-3));
+    right: 0;
+    width: min(18rem, calc(100vw - 2rem));
+    padding: var(--space-3);
+    background: var(--color-warm-white);
+    border: var(--border-width) solid var(--color-warm-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .mobile-nav ul {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .mobile-nav a {
+    display: block;
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .mobile-nav a:hover {
+    background: var(--color-ivory);
+  }
+
+  @media (min-width: 48rem) {
+    .desktop-nav,
+    .desktop-cta {
+      display: block;
+    }
+
+    .desktop-nav ul {
+      display: flex;
+      align-items: center;
+      gap: clamp(var(--space-4), 2vw, var(--space-6));
+    }
+
+    .desktop-nav a {
+      font-size: var(--text-sm);
+      text-decoration: none;
+    }
+
+    .desktop-nav a:hover {
+      color: var(--color-copper-dark);
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>

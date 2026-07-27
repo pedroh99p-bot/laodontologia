@@ -1,0 +1,40 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="roller" aria-hidden="true">
+  <span>{label}</span>
+</div>
+
+<style>
+  .roller {
+    display: none;
+    width: 3.5rem;
+    min-height: 14rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-copper-dark);
+    background: color-mix(in srgb, var(--color-warm-white) 88%, transparent);
+    border: var(--border-width) solid var(--color-white);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .roller span {
+    font-size: var(--text-xs);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 75rem) {
+    .roller {
+      display: flex;
+    }
+  }
+</style>

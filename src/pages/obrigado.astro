@@ -1,0 +1,56 @@
+---
+import Header from "../components/layout/Header.astro";
+import Button from "../components/ui/Button.astro";
+import Container from "../components/ui/Container.astro";
+import { siteConfig } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Obrigado | LA Odontologia"
+  description="Confirmação de contato da LA Odontologia."
+  noindex
+>
+  <Header />
+  <main id="conteudo">
+    <Container>
+      <section class="thank-you" aria-labelledby="thank-you-title">
+        <p class="eyebrow">Página preparada</p>
+        <h1 id="thank-you-title">Obrigado pelo contato.</h1>
+        <p>
+          A integração de formulário ainda não está ativa. Se precisar falar com
+          a equipe, utilize um dos canais confirmados.
+        </p>
+        <div class="actions">
+          <Button href={siteConfig.whatsappUrl}>Abrir WhatsApp</Button>
+          <Button href="/" variant="secondary">Voltar ao início</Button>
+        </div>
+      </section>
+    </Container>
+  </main>
+</BaseLayout>
+
+<style>
+  .thank-you {
+    display: grid;
+    gap: var(--space-5);
+    min-height: calc(100vh - 7rem);
+    align-content: center;
+    max-width: 48rem;
+    padding-block: var(--section-space);
+  }
+
+  .eyebrow {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

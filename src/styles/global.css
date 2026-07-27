@@ -1,0 +1,54 @@
+body {
+  background: var(--color-ivory);
+}
+
+::selection {
+  color: var(--color-white);
+  background: var(--color-copper-dark);
+}
+
+a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.12em;
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: var(--z-modal);
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-white);
+  background: var(--color-graphite);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+main {
+  display: block;
+}

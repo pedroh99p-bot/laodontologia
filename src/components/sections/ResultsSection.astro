@@ -1,0 +1,42 @@
+---
+import { results } from "../../content/results";
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+---
+
+<section
+  class="foundation-section"
+  id="resultados"
+  aria-labelledby="results-title"
+>
+  <Container>
+    <div class="section-panel">
+      <SectionHeading
+        headingId="results-title"
+        eyebrow="Contrato de consentimento"
+        title="Resultados"
+        description="A arquitetura prevê carrossel e comparador acessíveis, mas nenhum caso é publicado sem origem, revisão clínica e consentimento."
+      />
+      <p class="pending">
+        Casos liberados nesta fase: {results.length}.
+      </p>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .foundation-section {
+    padding-block: var(--section-space);
+    background: var(--color-warm-white);
+  }
+
+  .section-panel {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .pending {
+    color: var(--color-muted-text);
+    font-size: var(--text-sm);
+  }
+</style>

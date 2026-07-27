@@ -1,0 +1,30 @@
+{
+  "name": "la-odontologia",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": "24.x",
+    "pnpm": ">=11.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate": "pnpm format:check && pnpm check && pnpm build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "7.1.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "prettier": "3.9.6",
+    "prettier-plugin-astro": "0.14.1",
+    "typescript": "6.0.3"
+  }
+}

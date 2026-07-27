@@ -1,0 +1,65 @@
+---
+import { siteConfig } from "../../config/site";
+import { homeCopy } from "../../content/home";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const copy = homeCopy.location;
+---
+
+<section class="location" id="localizacao" aria-labelledby="location-title">
+  <Container>
+    <div class="location-panel">
+      <SectionHeading
+        headingId="location-title"
+        eyebrow={copy.eyebrow}
+        title={copy.heading}
+        description={copy.body}
+      />
+      <div class="actions">
+        <Button href={siteConfig.whatsappUrl}>Falar pelo WhatsApp</Button>
+        <Button href={siteConfig.telephoneHref} variant="secondary">
+          Ligar para {siteConfig.phoneDisplay}
+        </Button>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .location {
+    padding-block: var(--section-space);
+    color: var(--color-ivory);
+    background: var(--color-graphite);
+  }
+
+  .location-panel {
+    display: grid;
+    gap: var(--space-6);
+    padding: clamp(var(--space-5), 5vw, var(--space-7));
+    background: var(--color-copper-dark);
+    border-radius: var(--radius-lg);
+  }
+
+  .location :global(.eyebrow),
+  .location :global(.description) {
+    color: var(--color-ivory);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .location :global(.button--primary) {
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
+  }
+
+  .location :global(.button--secondary) {
+    color: var(--color-white);
+    border-color: var(--color-white);
+  }
+</style>

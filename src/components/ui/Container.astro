@@ -1,0 +1,22 @@
+---
+interface Props {
+  as?: "div" | "section";
+  class?: string;
+}
+
+const { as: Tag = "div", class: className } = Astro.props as Props;
+---
+
+<Tag class:list={["container", className]}>
+  <slot />
+</Tag>
+
+<style>
+  .container {
+    width: min(
+      calc(100% - (var(--container-gutter) * 2)),
+      var(--container-max)
+    );
+    margin-inline: auto;
+  }
+</style>

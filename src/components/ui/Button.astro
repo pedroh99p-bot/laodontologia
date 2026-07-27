@@ -1,0 +1,90 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "text";
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  type = "button",
+  class: className,
+  ariaLabel,
+} = Astro.props;
+---
+
+{
+  href ? (
+    <a
+      class:list={["button", `button--${variant}`, className]}
+      href={href}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button
+      class:list={["button", `button--${variant}`, className]}
+      type={type}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1.1rem;
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+  }
+
+  .button--primary {
+    color: var(--color-on-copper);
+    background: var(--color-copper-dark);
+  }
+
+  .button--primary:hover {
+    background: var(--color-graphite);
+  }
+
+  .button--secondary {
+    color: var(--color-copper-dark);
+    background: transparent;
+    border-color: var(--color-copper-dark);
+  }
+
+  .button--secondary:hover {
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+  }
+
+  .button--text {
+    min-height: 2.75rem;
+    padding-inline: var(--space-2);
+    color: var(--color-copper-dark);
+  }
+</style>

@@ -1,0 +1,321 @@
+export type MediaLoadingPriority = "critical" | "high" | "normal" | "low";
+export type MediaStatus = "confirmed" | "pending";
+
+export type MediaAsset = {
+  sourceKey: string;
+  publicId: string;
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+  format: "webp";
+  inspectedAt: string;
+};
+
+export type MediaSlot = {
+  status: MediaStatus;
+  purpose: string;
+  section: string;
+  recommendedRatio: string;
+  cropMobile: string;
+  cropDesktop: string;
+  alt: string;
+  priority: MediaLoadingPriority;
+  lazy: boolean;
+  recommendedFormat: "avif/webp" | "svg" | "webp";
+  allowsMultiple: boolean;
+  asset: MediaAsset | null;
+  notes: string | null;
+};
+
+const confirmedSlot = (
+  data: Omit<MediaSlot, "status" | "asset"> & { asset: MediaAsset },
+): MediaSlot => ({
+  ...data,
+  status: "confirmed",
+});
+
+const pendingSlot = (data: Omit<MediaSlot, "status" | "asset">): MediaSlot => ({
+  ...data,
+  status: "pending",
+  asset: null,
+});
+
+export const media = {
+  favicon: confirmedSlot({
+    purpose: "Ícone do site para abas, favoritos e atalhos.",
+    section: "Metadados globais",
+    recommendedRatio: "1:1",
+    cropMobile: "Sem recorte; preservar o selo completo.",
+    cropDesktop: "Sem recorte; preservar o selo completo.",
+    alt: "",
+    priority: "critical",
+    lazy: false,
+    recommendedFormat: "webp",
+    allowsMultiple: false,
+    notes: "Ativo confirmado; alt vazio porque o favicon é decorativo.",
+    asset: {
+      sourceKey: "favicon",
+      publicId: "ffca3eb5-c4b7-4a2e-bb59-0b349896f079_1_bdjkoj",
+      url: "https://res.cloudinary.com/dhbrxzt5a/image/upload/v1785115671/ffca3eb5-c4b7-4a2e-bb59-0b349896f079_1_bdjkoj.webp",
+      width: 1080,
+      height: 1080,
+      alt: "",
+      format: "webp",
+      inspectedAt: "2026-07-26",
+    },
+  }),
+  heroImage: confirmedSlot({
+    purpose: "Imagem principal da home, apresentando os dois profissionais.",
+    section: "Hero",
+    recommendedRatio: "4:5 de origem; composição responsiva",
+    cropMobile: "4:5, preservando rostos, mãos e jalecos.",
+    cropDesktop: "3:4 ou 4:5, sem cortar os rostos.",
+    alt: "Dra. Amanda Perestelo e Dr. Lucas Ferreira na LA Odontologia",
+    priority: "critical",
+    lazy: false,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes:
+      "Usar o mesmo ativo confirmado nos dois breakpoints; não simular uma fotografia horizontal inexistente.",
+    asset: {
+      sourceKey: "hero_image",
+      publicId: "6c22b136-4a2b-4e28-8bd5-7ed754a63323_iks3bs",
+      url: "https://res.cloudinary.com/dhbrxzt5a/image/upload/v1785115593/6c22b136-4a2b-4e28-8bd5-7ed754a63323_iks3bs.webp",
+      width: 1122,
+      height: 1402,
+      alt: "Dra. Amanda Perestelo e Dr. Lucas Ferreira na LA Odontologia",
+      format: "webp",
+      inspectedAt: "2026-07-26",
+    },
+  }),
+  amandaPortrait: confirmedSlot({
+    purpose: "Retrato individual da Dra. Amanda Perestelo.",
+    section: "Profissionais",
+    recommendedRatio: "4:5",
+    cropMobile: "4:5, rosto centralizado e respiro acima da cabeça.",
+    cropDesktop: "4:5, preservar enquadramento do jaleco.",
+    alt: "Dra. Amanda Perestelo na LA Odontologia",
+    priority: "normal",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes: "Especialidade e biografia ainda dependem de confirmação.",
+    asset: {
+      sourceKey: "specialist_amanda",
+      publicId: "b833386f-08c9-4a15-b79e-b2a846f44be3_j0e5tb",
+      url: "https://res.cloudinary.com/dhbrxzt5a/image/upload/v1785115593/b833386f-08c9-4a15-b79e-b2a846f44be3_j0e5tb.webp",
+      width: 1122,
+      height: 1402,
+      alt: "Dra. Amanda Perestelo na LA Odontologia",
+      format: "webp",
+      inspectedAt: "2026-07-26",
+    },
+  }),
+  lucasPortrait: confirmedSlot({
+    purpose: "Retrato individual do Dr. Lucas Ferreira.",
+    section: "Profissionais",
+    recommendedRatio: "4:5",
+    cropMobile: "4:5, rosto centralizado e respiro acima da cabeça.",
+    cropDesktop: "4:5, preservar enquadramento do jaleco.",
+    alt: "Dr. Lucas Ferreira na LA Odontologia",
+    priority: "normal",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes: "Especialidade e biografia ainda dependem de confirmação.",
+    asset: {
+      sourceKey: "specialist_lucas",
+      publicId: "35a9f889-ee5f-48a3-b4bf-e8cae288d48d_aucy77",
+      url: "https://res.cloudinary.com/dhbrxzt5a/image/upload/v1785115593/35a9f889-ee5f-48a3-b4bf-e8cae288d48d_aucy77.webp",
+      width: 1122,
+      height: 1402,
+      alt: "Dr. Lucas Ferreira na LA Odontologia",
+      format: "webp",
+      inspectedAt: "2026-07-26",
+    },
+  }),
+  openGraph: confirmedSlot({
+    purpose:
+      "Imagem de compartilhamento da home em redes sociais e mensageiros.",
+    section: "Metadados globais",
+    recommendedRatio: "1.91:1",
+    cropMobile: "Sem recorte; usar o arquivo completo.",
+    cropDesktop: "Sem recorte; usar o arquivo completo.",
+    alt: "LA Odontologia — cuidado para o seu sorriso no Recreio",
+    priority: "high",
+    lazy: false,
+    recommendedFormat: "webp",
+    allowsMultiple: false,
+    notes:
+      "Arte institucional com marca, mensagem, localização e os dois profissionais.",
+    asset: {
+      sourceKey: "og_image",
+      publicId: "0d0393a3-4412-4165-a8db-ca816793cc60_tp3eca",
+      url: "https://res.cloudinary.com/dhbrxzt5a/image/upload/v1785115592/0d0393a3-4412-4165-a8db-ca816793cc60_tp3eca.webp",
+      width: 1731,
+      height: 909,
+      alt: "LA Odontologia — cuidado para o seu sorriso no Recreio",
+      format: "webp",
+      inspectedAt: "2026-07-26",
+    },
+  }),
+  logoPrimary: pendingSlot({
+    purpose: "Marca principal para cabeçalho e rodapé.",
+    section: "Navbar e rodapé",
+    recommendedRatio: "Livre, conforme arquivo vetorial oficial",
+    cropMobile: "Sem recorte.",
+    cropDesktop: "Sem recorte.",
+    alt: "LA Odontologia",
+    priority: "critical",
+    lazy: false,
+    recommendedFormat: "svg",
+    allowsMultiple: false,
+    notes: "Aguardando arquivo vetorial oficial.",
+  }),
+  logoHorizontal: pendingSlot({
+    purpose: "Variação horizontal da marca para espaços estreitos.",
+    section: "Navbar",
+    recommendedRatio: "Livre, conforme arquivo vetorial oficial",
+    cropMobile: "Sem recorte.",
+    cropDesktop: "Sem recorte.",
+    alt: "LA Odontologia",
+    priority: "critical",
+    lazy: false,
+    recommendedFormat: "svg",
+    allowsMultiple: false,
+    notes: "Aguardando variação oficial, se existir.",
+  }),
+  logoSeal: pendingSlot({
+    purpose: "Selo da marca para aplicações auxiliares.",
+    section: "Rodapé e elementos institucionais",
+    recommendedRatio: "1:1",
+    cropMobile: "Sem recorte.",
+    cropDesktop: "Sem recorte.",
+    alt: "Símbolo da LA Odontologia",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "svg",
+    allowsMultiple: false,
+    notes: "O favicon não substitui a entrega do vetor oficial.",
+  }),
+  clinicReception: pendingSlot({
+    purpose: "Apresentar a recepção da clínica com fidelidade.",
+    section: "Clínica",
+    recommendedRatio: "3:2",
+    cropMobile: "4:3, preservar circulação e identidade do ambiente.",
+    cropDesktop: "3:2, preservar linhas arquitetônicas.",
+    alt: "Recepção da LA Odontologia no Recreio dos Bandeirantes",
+    priority: "normal",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes: "Aguardando fotografia real aprovada.",
+  }),
+  clinicOperatory: pendingSlot({
+    purpose: "Apresentar um consultório da clínica.",
+    section: "Clínica",
+    recommendedRatio: "3:2",
+    cropMobile: "4:3, preservar cadeira e área clínica.",
+    cropDesktop: "3:2, mostrar o ambiente de forma ampla.",
+    alt: "Consultório da LA Odontologia no Recreio dos Bandeirantes",
+    priority: "normal",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: true,
+    notes: "Aguardando fotografia real aprovada; não usar banco de imagens.",
+  }),
+  clinicDetail: pendingSlot({
+    purpose: "Reforçar acabamento e identidade visual do espaço.",
+    section: "Clínica",
+    recommendedRatio: "1:1 ou 4:5",
+    cropMobile: "4:5, foco no detalhe principal.",
+    cropDesktop: "1:1, composição fechada.",
+    alt: "Detalhe do ambiente da LA Odontologia",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: true,
+    notes: "Aguardando fotografia real aprovada.",
+  }),
+  buildingExterior: pendingSlot({
+    purpose: "Ajudar a reconhecer o acesso ao A4 Offices.",
+    section: "Localização",
+    recommendedRatio: "3:2",
+    cropMobile: "4:3, preservar placa ou acesso identificável.",
+    cropDesktop: "3:2, mostrar fachada e referência de entrada.",
+    alt: "Entrada do A4 Offices na Avenida das Américas",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes: "Aguardando fotografia real e confirmação do enquadramento.",
+  }),
+  locationMapPreview: pendingSlot({
+    purpose:
+      "Prévia visual da localização sem incorporar mapa antes da validação.",
+    section: "Localização",
+    recommendedRatio: "16:9",
+    cropMobile: "4:3, com marcador e vias principais legíveis.",
+    cropDesktop: "16:9, com contexto do bairro.",
+    alt: "Mapa da localização da LA Odontologia no Recreio dos Bandeirantes",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: false,
+    notes: "Depende de Place ID ou URL oficial validada.",
+  }),
+  treatmentImages: pendingSlot({
+    purpose: "Apoiar visualmente tratamentos confirmados.",
+    section: "Tratamentos",
+    recommendedRatio: "4:3",
+    cropMobile: "4:3, assunto centralizado.",
+    cropDesktop: "4:3, consistência entre cards.",
+    alt: "Definir por tratamento após confirmação do conteúdo",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: true,
+    notes: "Não solicitar nem publicar imagens antes da lista de tratamentos.",
+  }),
+  beforeAfterCases: pendingSlot({
+    purpose: "Documentar resultados clínicos autorizados.",
+    section: "Resultados",
+    recommendedRatio: "1:1 por quadro ou par padronizado",
+    cropMobile: "1:1, mesmo enquadramento entre antes e depois.",
+    cropDesktop: "1:1, mesmo enquadramento entre antes e depois.",
+    alt: "Definir individualmente com tratamento e contexto confirmados",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: true,
+    notes:
+      "Exige consentimento documentado, validação clínica e conformidade ética antes da publicação.",
+  }),
+  testimonialPortraits: pendingSlot({
+    purpose: "Identificar depoimentos quando houver autorização específica.",
+    section: "Depoimentos",
+    recommendedRatio: "1:1",
+    cropMobile: "1:1, rosto centralizado.",
+    cropDesktop: "1:1, rosto centralizado.",
+    alt: "Definir conforme nome e consentimento do paciente",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "avif/webp",
+    allowsMultiple: true,
+    notes: "Opcional e condicionado a depoimentos reais com autorização.",
+  }),
+  decorativeIcons: pendingSlot({
+    purpose: "Apoiar benefícios ou etapas sem introduzir novos significados.",
+    section: "Necessidades, processo e diferenciais",
+    recommendedRatio: "1:1",
+    cropMobile: "Sem recorte.",
+    cropDesktop: "Sem recorte.",
+    alt: "",
+    priority: "low",
+    lazy: true,
+    recommendedFormat: "svg",
+    allowsMultiple: true,
+    notes: "Preferir ícones vetoriais decorativos com alt vazio.",
+  }),
+} as const satisfies Record<string, MediaSlot>;

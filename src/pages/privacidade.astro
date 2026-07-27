@@ -1,0 +1,52 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import Header from "../components/layout/Header.astro";
+import Container from "../components/ui/Container.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Privacidade | LA Odontologia"
+  description="Página provisória de privacidade da LA Odontologia."
+>
+  <Header />
+  <main id="conteudo">
+    <Container>
+      <article class="legal-page">
+        <p class="eyebrow">Documento provisório</p>
+        <h1>Privacidade</h1>
+        <p>
+          Esta página será complementada e validada antes da ativação de
+          formulário, analytics ou outros serviços que tratem dados pessoais.
+        </p>
+        <p>
+          Nesta fase técnica, o site não carrega Google Tag Manager, Google
+          Analytics, Google Ads, mapa incorporado nem endpoint de captação.
+        </p>
+        <p>
+          Para falar com a clínica, use os canais exibidos no site. Não envie
+          informações clínicas sensíveis por canais públicos sem orientação da
+          equipe responsável.
+        </p>
+      </article>
+    </Container>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 48rem;
+    padding-block: var(--section-space);
+  }
+
+  .eyebrow {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+</style>

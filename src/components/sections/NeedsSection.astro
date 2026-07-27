@@ -1,0 +1,37 @@
+---
+import { homeCopy } from "../../content/home";
+import Container from "../ui/Container.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const copy = homeCopy.needs;
+---
+
+<section
+  class="foundation-section"
+  id="necessidades"
+  aria-labelledby="needs-title"
+>
+  <Container>
+    <div class="section-panel">
+      <SectionHeading
+        headingId="needs-title"
+        eyebrow={copy.eyebrow}
+        title={copy.heading}
+        description={copy.body}
+      />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .foundation-section {
+    padding-block: var(--section-space);
+  }
+
+  .section-panel {
+    display: grid;
+    gap: var(--space-5);
+    padding: clamp(var(--space-5), 5vw, var(--space-7));
+    border-block: var(--border-width) solid var(--color-warm-border);
+  }
+</style>
