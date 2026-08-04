@@ -37,7 +37,7 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
 
 <section class="hero" id="inicio" aria-labelledby="hero-title">
   <Container>
-    <div class="hero-stage" data-reveal>
+    <div class="hero-stage">
       <div class="hero-roller hero-roller--left">
         <Roller label="Cuidado" />
       </div>
@@ -148,6 +148,7 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
     border: var(--border-width) solid rgb(255 255 255 / 86%);
     border-radius: clamp(1.6rem, 5vw, 2.6rem);
     box-shadow: 0 1.75rem 4.5rem rgb(88 52 33 / 14%);
+    animation: hero-media-entrance 0.9s 0.72s var(--ease-emphasized) both;
   }
 
   .hero-media::after {
@@ -182,6 +183,31 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
     border-radius: clamp(1.35rem, 4vw, 2rem);
     box-shadow: var(--shadow-elevated);
     backdrop-filter: blur(8px);
+    animation: hero-panel-entrance 0.82s 0.9s var(--ease-emphasized) both;
+  }
+
+  .hero-panel > * {
+    animation: hero-copy-entrance 0.62s var(--ease-emphasized) both;
+  }
+
+  .hero-panel > :nth-child(1) {
+    animation-delay: 1.08s;
+  }
+
+  .hero-panel > :nth-child(2) {
+    animation-delay: 1.16s;
+  }
+
+  .hero-panel > :nth-child(3) {
+    animation-delay: 1.24s;
+  }
+
+  .hero-panel > :nth-child(4) {
+    animation-delay: 1.32s;
+  }
+
+  .hero-panel > :nth-child(5) {
+    animation-delay: 1.4s;
   }
 
   .eyebrow {
@@ -270,6 +296,15 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
   }
 
   .hero-roller {
+    position: absolute;
+    z-index: 3;
+    top: 9rem;
+    right: -0.15rem;
+    display: block;
+    pointer-events: none;
+  }
+
+  .hero-roller--left {
     display: none;
   }
 
@@ -336,8 +371,6 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
     }
 
     .hero-roller {
-      position: absolute;
-      z-index: 3;
       top: 50%;
       display: block;
       transform: translateY(-50%);
@@ -355,6 +388,53 @@ const [headingLead, headingAccent] = copy.heading.split(", ");
   @supports not (backdrop-filter: blur(8px)) {
     .hero-panel {
       background: var(--color-warm-white);
+    }
+  }
+
+  @keyframes hero-media-entrance {
+    from {
+      opacity: 0;
+      transform: scale(1.025);
+      filter: blur(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+
+  @keyframes hero-panel-entrance {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  @keyframes hero-copy-entrance {
+    from {
+      opacity: 0;
+      transform: translateY(0.7rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-media,
+    .hero-panel,
+    .hero-panel > * {
+      animation-delay: 0ms;
+      filter: none;
     }
   }
 </style>

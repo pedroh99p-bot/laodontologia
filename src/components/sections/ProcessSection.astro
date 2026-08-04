@@ -3,6 +3,7 @@ import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
 import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
+import TextRoller from "../ui/TextRoller.astro";
 
 const steps = [
   "Conversa inicial",
@@ -16,7 +17,7 @@ const steps = [
   <Container>
     <div class="process-shell" data-reveal>
       <div class="process-heading">
-        <p class="section-index" aria-hidden="true">05</p>
+        <p class="section-index" aria-hidden="true">07 / 13</p>
         <SectionHeading
           headingId="process-title"
           eyebrow="Como funciona"
@@ -50,6 +51,10 @@ const steps = [
         Conversar com a equipe
       </Button>
     </div>
+    <TextRoller
+      items={["Conversa", "Avaliação", "Planejamento", "Acompanhamento"]}
+      tone="light"
+    />
     <div class="process-roller"><Roller label="Planejamento" /></div>
   </Container>
 </section>
@@ -66,6 +71,7 @@ const steps = [
     display: grid;
     gap: var(--space-6);
     max-width: 60rem;
+    padding-right: 2.5rem;
   }
   .process-heading {
     display: grid;
@@ -122,14 +128,27 @@ const steps = [
     background: var(--color-ivory);
   }
   .process-roller {
-    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 5rem;
+    right: 0.2rem;
+    display: block;
+    pointer-events: none;
+  }
+
+  @media (max-width: 22rem) {
+    .process-shell {
+      padding-right: 0;
+    }
+
+    .process-roller {
+      display: none;
+    }
   }
   @media (min-width: 70rem) {
     .process-roller {
-      position: absolute;
       top: 50%;
       right: -4.6rem;
-      display: block;
       transform: translateY(-50%);
     }
   }

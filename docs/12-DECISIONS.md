@@ -196,3 +196,33 @@ profissionais; usar mapa/rota temporários baseados no endereço confirmado.
 
 Usar marquee CSS decorativo e reveal por IntersectionObserver, com fallback
 visível e desativação via `prefers-reduced-motion`.
+
+# Decisões adicionadas na evolução de conversão e resultados
+
+## D-028 — Central de conversão como seção 02
+
+Inserir após o hero uma central com um card principal de pré-atendimento e dois
+atalhos para resultados e localização. A seção não remove nem substitui as
+seções de destino; funciona como índice de alta intenção para visitantes de
+busca.
+
+## D-029 — Resultados em moldura 640 × 780 sem crop clínico
+
+Registrar os sete comparativos fornecidos na coleção Cloudinary e entregá-los
+com `c_pad`, fundo neutro e dimensões 640 × 780. A decisão preserva o conteúdo
+integral de origens quadradas e verticais, evitando cortes que alterem a leitura
+do comparativo.
+
+## D-030 — Pré-atendimento sem coleta clínica no site
+
+Implementar um quiz local de duas escolhas amplas e uma confirmação, sem nome,
+telefone, sintomas, medicamentos ou histórico clínico. As escolhas ficam apenas
+em memória e geram uma mensagem codificada para o WhatsApp; analytics registra
+somente início, avanço e conclusão, nunca as respostas.
+
+## D-031 — Movimento com controle e fallback
+
+Manter rollers verticais e faixas automáticas em seções editoriais, desligar
+movimento contínuo com `prefers-reduced-motion` e oferecer pausa no carrossel de
+resultados. O preloader é curto, centraliza a marca e desaparece sem bloquear a
+página caso o JavaScript falhe.

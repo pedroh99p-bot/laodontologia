@@ -1,104 +1,272 @@
 ---
+import { media } from "../../config/media";
+import { results } from "../../content/results";
+import { transformCloudinaryUrl } from "../../lib/cloudinary";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
 import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
 import TextRoller from "../ui/TextRoller.astro";
 
-const cards = [
-  "Caso autorizado pendente",
-  "Contexto clínico pendente",
-  "Imagem aprovada pendente",
-] as const;
+const gallery = results.map((result) => {
+  const asset = media[result.mediaKey].asset;
+
+  if (!asset) {
+    throw new Error(`Asset ausente para ${result.slug}.`);
+  }
+
+  const buildSource = (format: "avif" | "webp") =>
+    transformCloudinaryUrl(asset.url, [
+      `f_${format}`,
+      "q_auto:good",
+      "c_pad",
+      "b_rgb:f7f2ec",
+      "w_640",
+      "h_780",
+    ]);
+
+  return {
+    ...result,
+    asset,
+    avif: buildSource("avif"),
+    webp: buildSource("webp"),
+  };
+});
 ---
 
 <section class="results" id="resultados" aria-labelledby="results-title">
   <Container>
     <div class="results-shell" data-reveal>
       <div class="results-heading">
-        <p class="section-index" aria-hidden="true">03</p>
+        <p class="section-index" aria-hidden="true">04 / 13</p>
         <SectionHeading
           headingId="results-title"
           eyebrow="Resultados"
-          title="Resultados apresentados com contexto e responsabilidade."
-          description="A estrutura está pronta para receber casos reais somente após consentimento, revisão clínica e aprovação da equipe."
+          title="Resultados que respeitam cada sorriso."
+          description="Explore comparativos fornecidos pela equipe da LA Odontologia. Cada resultado é individual e depende de avaliação profissional."
         />
       </div>
-      <div
-        class="results-scroller"
-        aria-label="Prévia estrutural de resultados"
-      >
-        {
-          cards.map((card, index) => (
-            <article
-              class:list={[
-                "result-card",
-                { "result-card--featured": index === 0 },
-              ]}
-            >
-              <span class="preview-tag">Preview estrutural</span>
-              <div class="result-visual" aria-hidden="true">
-                <>
-                  <span class="result-visual__arc" />
-                  <span class="result-visual__dot" />
-                </>
-              </div>
-              <h3>{card}</h3>
-              <p>Sem imagem de paciente ou promessa clínica nesta fase.</p>
-            </article>
-          ))
-        }
-      </div>
-      <div class="comparison">
-        <div class="comparison-copy">
-          <span class="preview-tag">Comparador preparado</span>
-          <h3>Antes e depois</h3>
-          <p>
-            O comparador permanece neutro até a chegada de um caso autorizado.
+
+      <div class="carousel" data-results-carousel>
+        <div
+          class="results-track"
+          data-results-track
+          aria-label="Carrossel de resultados odontológicos"
+        >
+          {
+            gallery.map((result, index) => (
+              <article
+                class="result-card"
+                data-result-slide
+                data-track-view="result_interaction"
+                aria-label={`${result.label}, item ${index + 1} de ${gallery.length}`}
+              >
+                <div class="result-card__topline">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span>Comparativo</span>
+                </div>
+                <figure class="result-frame" data-protected-result>
+                  <picture>
+                    <source type="image/avif" srcset={result.avif} />
+                    <img
+                      src={result.webp}
+                      width="640"
+                      height="780"
+                      alt={result.asset.alt}
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                    />
+                  </picture>
+                </figure>
+                <div class="result-card__copy">
+                  <h3>{result.label}</h3>
+                  <p>{result.context}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <div class="carousel-controls">
+          <button
+            class="carousel-button"
+            type="button"
+            data-results-prev
+            aria-label="Resultado anterior"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <div class="carousel-dots" aria-hidden="true">
+            {
+              gallery.map((_, index) => (
+                <span
+                  class:list={["carousel-dot", { "is-active": index === 0 }]}
+                />
+              ))
+            }
+          </div>
+          <p class="carousel-status" data-results-status aria-live="polite">
+            Caso 1 de {gallery.length}
           </p>
-        </div>
-        <div class="comparison-frame">
-          <div class="comparison-side comparison-side--before">
-            Imagem anterior pendente
-          </div>
-          <div class="comparison-side comparison-side--after">
-            Imagem posterior pendente
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="50"
-            aria-label="Revelar a comparação antes e depois"
-          />
-          <span class="comparison-handle" aria-hidden="true"></span>
+          <button
+            class="carousel-pause"
+            type="button"
+            data-results-pause
+            aria-label="Pausar avanço automático"
+          >
+            Pausar
+          </button>
+          <button
+            class="carousel-button"
+            type="button"
+            data-results-next
+            aria-label="Próximo resultado"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
       </div>
-      <Button
-        href="/#contato"
-        variant="secondary"
-        trackingEvent="result_interaction"
-        trackingLocation="section">Falar com a equipe</Button
-      >
+
+      <div class="results-action">
+        <div>
+          <span>Quer dar o primeiro passo?</span>
+          <p>Responda a algumas escolhas rápidas e continue pelo WhatsApp.</p>
+        </div>
+        <Button
+          href="https://wa.me/5521971882312"
+          class="results-quiz-button"
+          icon="chat"
+          trackingEvent="pre_attendance_start"
+          trackingLocation="section"
+          preAttendance
+        >
+          Iniciar pré-atendimento
+        </Button>
+      </div>
     </div>
-    <TextRoller items={["Cuidado", "Naturalidade", "Confiança", "Contexto"]} />
+
+    <TextRoller
+      items={["Resultados", "Naturalidade", "Planejamento", "Cuidado"]}
+    />
     <div class="results-roller"><Roller label="Naturalidade" /></div>
   </Container>
 </section>
 
 <script>
   document
-    .querySelectorAll<HTMLElement>(".comparison-frame")
-    .forEach((frame) => {
-      const input = frame.querySelector<HTMLInputElement>("input");
-      const handle = frame.querySelector<HTMLElement>(".comparison-handle");
-      if (!input || !handle) return;
-      const update = () => {
-        frame.style.setProperty("--split", `${input.value}%`);
-        handle.style.left = `${input.value}%`;
+    .querySelectorAll<HTMLElement>("[data-results-carousel]")
+    .forEach((carousel) => {
+      const track = carousel.querySelector<HTMLElement>("[data-results-track]");
+      const slides = Array.from(
+        carousel.querySelectorAll<HTMLElement>("[data-result-slide]"),
+      );
+      const previous = carousel.querySelector<HTMLButtonElement>(
+        "[data-results-prev]",
+      );
+      const next = carousel.querySelector<HTMLButtonElement>(
+        "[data-results-next]",
+      );
+      const pause = carousel.querySelector<HTMLButtonElement>(
+        "[data-results-pause]",
+      );
+      const status = carousel.querySelector<HTMLElement>(
+        "[data-results-status]",
+      );
+      const dots = Array.from(carousel.querySelectorAll(".carousel-dot"));
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (!track || slides.length === 0 || !previous || !next || !pause) return;
+
+      let currentIndex = 0;
+      let timer: number | undefined;
+      let userPaused = reducedMotion;
+      let scrollFrame: number | undefined;
+
+      const update = (index: number) => {
+        currentIndex = (index + slides.length) % slides.length;
+        dots.forEach((dot, dotIndex) =>
+          dot.classList.toggle("is-active", dotIndex === currentIndex),
+        );
+        if (status)
+          status.textContent = `Caso ${currentIndex + 1} de ${slides.length}`;
       };
-      input.addEventListener("input", update);
-      update();
+
+      const goTo = (index: number, smooth = true) => {
+        const targetIndex = (index + slides.length) % slides.length;
+        slides[targetIndex]?.scrollIntoView({
+          behavior: smooth && !reducedMotion ? "smooth" : "auto",
+          block: "nearest",
+          inline: "start",
+        });
+        update(targetIndex);
+      };
+
+      const stopTimer = () => {
+        if (timer !== undefined) window.clearInterval(timer);
+        timer = undefined;
+      };
+
+      const startTimer = () => {
+        stopTimer();
+        if (userPaused || document.hidden) return;
+        timer = window.setInterval(() => goTo(currentIndex + 1), 6000);
+      };
+
+      const setPauseLabel = () => {
+        pause.textContent = userPaused ? "Retomar" : "Pausar";
+        pause.setAttribute(
+          "aria-label",
+          userPaused ? "Retomar avanço automático" : "Pausar avanço automático",
+        );
+      };
+
+      previous.addEventListener("click", () => {
+        goTo(currentIndex - 1);
+        startTimer();
+      });
+      next.addEventListener("click", () => {
+        goTo(currentIndex + 1);
+        startTimer();
+      });
+      pause.addEventListener("click", () => {
+        userPaused = !userPaused;
+        setPauseLabel();
+        startTimer();
+      });
+      track.addEventListener("scroll", () => {
+        if (scrollFrame !== undefined) window.cancelAnimationFrame(scrollFrame);
+        scrollFrame = window.requestAnimationFrame(() => {
+          const trackLeft = track.getBoundingClientRect().left;
+          const closest = slides.reduce(
+            (best, slide, index) => {
+              const distance = Math.abs(
+                slide.getBoundingClientRect().left - trackLeft,
+              );
+              return distance < best.distance ? { index, distance } : best;
+            },
+            { index: 0, distance: Number.POSITIVE_INFINITY },
+          );
+          update(closest.index);
+        });
+      });
+      carousel.addEventListener("pointerenter", stopTimer);
+      carousel.addEventListener("pointerleave", startTimer);
+      carousel.addEventListener("focusin", stopTimer);
+      carousel.addEventListener("focusout", startTimer);
+      document.addEventListener("visibilitychange", startTimer);
+
+      setPauseLabel();
+      startTimer();
+    });
+
+  document
+    .querySelectorAll<HTMLElement>("[data-protected-result]")
+    .forEach((media) => {
+      media.addEventListener("contextmenu", (event) => event.preventDefault());
+      media.addEventListener("dragstart", (event) => event.preventDefault());
     });
 </script>
 
@@ -109,162 +277,273 @@ const cards = [
     background: var(--color-warm-white);
     overflow: clip;
   }
+
+  .results :global(.container) {
+    position: relative;
+  }
+
   .results-shell {
     display: grid;
-    gap: clamp(var(--space-5), 4vw, var(--space-7));
+    gap: clamp(var(--space-5), 5vw, var(--space-7));
   }
+
   .results-heading {
     display: grid;
     gap: var(--space-3);
-    max-width: 50rem;
+    max-width: 52rem;
+    padding-right: 2.5rem;
   }
+
   .section-index {
     color: var(--color-copper);
     font-size: var(--text-xs);
     font-weight: 800;
     letter-spacing: 0.18em;
   }
-  .results-scroller {
+
+  .results-heading :global(h2) {
+    max-width: 14ch;
+  }
+
+  .carousel {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .results-track {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(15rem, 84%);
-    gap: var(--space-4);
+    grid-auto-columns: minmax(17rem, 88%);
+    gap: 0.65rem;
     overflow-x: auto;
-    padding-bottom: var(--space-2);
+    padding: 0.35rem
+      max(var(--container-gutter), calc((100vw - var(--container-max)) / 2))
+      1.4rem 0.2rem;
+    scroll-padding-left: 0.2rem;
     scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
   }
-  .result-card {
-    display: grid;
-    gap: var(--space-3);
-    padding: clamp(1.25rem, 4vw, 2rem);
-    scroll-snap-align: start;
-    background: var(--color-ivory);
-    border: 1px solid var(--color-warm-border);
-    border-radius: var(--radius-lg);
-  }
-  .result-card--featured {
-    color: var(--color-white);
-    background: var(--color-copper-dark);
-    border-color: transparent;
-  }
-  .preview-tag {
-    width: fit-content;
-    padding: 0.3rem 0.55rem;
-    border: 1px solid currentColor;
-    border-radius: var(--radius-pill);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.78;
-  }
-  .result-visual {
-    position: relative;
-    display: grid;
-    min-height: 10rem;
-    place-items: center;
-    overflow: hidden;
-    background: color-mix(in srgb, currentColor 9%, transparent);
-    border-radius: var(--radius-md);
-  }
-  .result-visual__arc {
-    width: 9rem;
-    height: 9rem;
-    border: 1px solid currentColor;
-    border-radius: 50%;
-    opacity: 0.42;
-  }
-  .result-visual__dot {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    background: currentColor;
-    border-radius: 50%;
-  }
-  .result-card p,
-  .comparison p {
-    color: inherit;
-    opacity: 0.74;
-  }
-  .comparison {
-    display: grid;
-    gap: var(--space-5);
-    padding: clamp(1.25rem, 4vw, 2rem);
-    background: var(--color-graphite);
-    border-radius: var(--radius-lg);
-    color: var(--color-ivory);
-  }
-  .comparison-copy {
-    display: grid;
-    gap: var(--space-3);
-    align-content: center;
-  }
-  .comparison-frame {
-    position: relative;
-    display: grid;
-    min-height: 14rem;
-    overflow: hidden;
-    background: #b9afa8;
-    border-radius: var(--radius-md);
-  }
-  .comparison-side {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: var(--space-4);
-    text-align: center;
-    font-size: var(--text-sm);
-  }
-  .comparison-side--before {
-    background: #c8beb6;
-    color: var(--color-graphite);
-  }
-  .comparison-side--after {
-    width: var(--split, 50%);
-    overflow: hidden;
-    background: #8e7769;
-    color: var(--color-white);
-  }
-  .comparison-frame input {
-    position: absolute;
-    z-index: 2;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    cursor: ew-resize;
-    opacity: 0;
-  }
-  .comparison-handle {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--color-white);
-    transform: translateX(-1px);
-    pointer-events: none;
-  }
-  .results-roller {
+
+  .results-track::-webkit-scrollbar {
     display: none;
   }
-  @media (min-width: 48rem) {
-    .results-scroller {
-      grid-auto-columns: minmax(18rem, 32%);
-    }
-    .comparison {
-      grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
-      align-items: center;
+
+  .result-card {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+    padding: clamp(1rem, 4vw, 1.6rem);
+    color: var(--color-white);
+    background:
+      radial-gradient(
+        circle at 90% 8%,
+        rgb(255 255 255 / 12%),
+        transparent 12rem
+      ),
+      var(--color-copper-dark);
+    border: 1px solid rgb(255 255 255 / 36%);
+    border-radius: clamp(1.4rem, 5vw, 2.25rem);
+    box-shadow: 0 1.25rem 2.75rem rgb(80 37 20 / 16%);
+    scroll-snap-align: start;
+  }
+
+  .result-card__topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .result-card__topline span:last-child {
+    opacity: 0.72;
+  }
+
+  .result-frame {
+    aspect-ratio: 640 / 780;
+    overflow: hidden;
+    background: var(--color-ivory);
+    border: 1px solid rgb(255 255 255 / 55%);
+    border-radius: clamp(1rem, 4vw, 1.6rem);
+    box-shadow: inset 0 0 0 1px rgb(36 35 33 / 5%);
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  .result-frame picture,
+  .result-frame img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .result-frame img {
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  .result-card__copy {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .result-card__copy h3 {
+    color: var(--color-white);
+    font-size: var(--text-xl);
+  }
+
+  .result-card__copy p {
+    color: rgb(255 255 255 / 76%);
+    font-size: var(--text-sm);
+  }
+
+  .carousel-controls {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .carousel-button,
+  .carousel-pause {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-copper-dark);
+    background: var(--color-ivory);
+    border: 1px solid var(--color-warm-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .carousel-button {
+    font-size: 1.2rem;
+  }
+
+  .carousel-pause {
+    grid-row: 2;
+    grid-column: 2;
+    justify-self: center;
+    min-height: 2.4rem;
+    padding-inline: 0.9rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .carousel-dots {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .carousel-dot {
+    width: 0.38rem;
+    height: 0.38rem;
+    background: var(--color-warm-border);
+    border-radius: 50%;
+    transition:
+      transform var(--duration-fast),
+      background var(--duration-fast);
+  }
+
+  .carousel-dot.is-active {
+    background: var(--color-copper-dark);
+    transform: scale(1.45);
+  }
+
+  .carousel-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .results-action {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+    padding: clamp(1.25rem, 5vw, 2rem);
+    color: var(--color-ivory);
+    background: var(--color-graphite);
+    border-radius: var(--radius-lg);
+  }
+
+  .results-action > div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .results-action span {
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+  }
+
+  .results-action p {
+    color: #cfc1b7;
+    font-size: var(--text-sm);
+  }
+
+  .results-action :global(.button) {
+    width: 100%;
+    color: var(--color-graphite);
+    background: var(--color-ivory);
+  }
+
+  .results-roller {
+    position: absolute;
+    z-index: 2;
+    top: 6rem;
+    right: 0.2rem;
+    display: block;
+    pointer-events: none;
+  }
+
+  @media (max-width: 22rem) {
+    .results-roller {
+      display: none;
     }
   }
+
+  @media (min-width: 48rem) {
+    .results-track {
+      grid-auto-columns: minmax(20rem, 42%);
+      gap: var(--space-4);
+    }
+
+    .carousel-controls {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+    }
+
+    .carousel-pause {
+      grid-row: 1;
+      grid-column: 3;
+    }
+
+    .results-action {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .results-action :global(.button) {
+      width: auto;
+    }
+  }
+
   @media (min-width: 70rem) {
+    .results-track {
+      grid-auto-columns: minmax(21rem, 31%);
+    }
+
     .results-roller {
-      position: absolute;
       top: 50%;
       right: -4.6rem;
-      display: block;
       transform: translateY(-50%);
     }
   }

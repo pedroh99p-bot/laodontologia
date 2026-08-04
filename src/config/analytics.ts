@@ -8,6 +8,9 @@ export const analyticsEventNames = [
   "treatment_view",
   "professional_view",
   "result_interaction",
+  "pre_attendance_start",
+  "pre_attendance_step",
+  "pre_attendance_complete",
   "faq_open",
 ] as const;
 

@@ -13,6 +13,7 @@ interface Props {
   trackingEvent?: AnalyticsEventName;
   trackingLocation?: CtaLocation;
   trackingProfessional?: string;
+  preAttendance?: boolean;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   trackingEvent,
   trackingLocation,
   trackingProfessional,
+  preAttendance = false,
 } = Astro.props;
 ---
 
@@ -37,6 +39,7 @@ const {
       data-track-event={trackingEvent}
       data-cta-location={trackingLocation}
       data-professional={trackingProfessional}
+      data-open-preattendance={preAttendance ? "true" : undefined}
     >
       <slot />
       {icon && <Icon name={icon} />}

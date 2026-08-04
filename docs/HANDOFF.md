@@ -115,3 +115,28 @@ seção de profissionais, favicon e footer.
 
 QA 02C gerou capturas em `docs/audits/02c-final/` para 320, 360, 390, 430,
 1024, 1365 e 1440 px, sem overflow horizontal.
+
+# Evolução de conversão e resultados — 2026-08-04
+
+A home recebeu uma evolução visual e funcional mobile-first:
+
+- Central de conversão como seção 02, com pré-atendimento, resultados e
+  localização.
+- Quiz de pré-atendimento em `dialog`, com escolhas amplas, resumo e mensagem
+  codificada para o WhatsApp. Nenhuma resposta é persistida ou enviada ao
+  analytics.
+- Sete comparativos Cloudinary registrados e exibidos em carrossel automático
+  acessível, com pausa, setas, indicadores, próximo card visível e respeito a
+  `prefers-reduced-motion`.
+- Molduras padronizadas em 640 × 780 por contenção, sem crop clínico.
+- Dr. Lucas Ferreira e Dra. Amanda Perestelo lado a lado no mobile, sob o título
+  “Os Especialistas”.
+- Rollers verticais recuperados em 390/430 px e faixas automáticas presentes na
+  central, confiança, resultados, profissionais e processo.
+- Preloader curto com logo centralizada e entrada escalonada de foto, painel e
+  textos do hero.
+- Não foram adicionadas dependências.
+
+Pendências preservadas: contexto/tratamento e consentimento arquivado para cada
+comparativo, fotos reais da clínica/fachada, tratamentos confirmados,
+biografias/especialidades e Place ID oficial.

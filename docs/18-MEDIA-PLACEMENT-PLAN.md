@@ -81,3 +81,14 @@ dois profissionais visível.
   estruturais sem arquivo de mídia; screenshots de referência não são usados.
 - O mapa é um iframe temporário por endereço, marcado para substituição quando
   houver Place ID/URL oficial.
+
+# Atualização de resultados — 2026-08-04
+
+- Sete comparativos recebidos na coleção Cloudinary
+  `b3bee314bc97ec93ebf5a11f0e6c478a` foram inspecionados e registrados como
+  `result01` a `result07` em `src/config/media.ts`.
+- As origens têm largura de 640 px e alturas entre 640 e 853 px.
+- A entrega usa AVIF/WebP, `q_auto:good`, `c_pad`, fundo marfim e moldura
+  640 × 780, preservando a imagem completa.
+- Os comparativos permanecem sem nome de tratamento ou promessa clínica até a
+  equipe fornecer contexto e revisão individual de cada caso.

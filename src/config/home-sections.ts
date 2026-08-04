@@ -4,6 +4,7 @@ import { homeCopy } from "../content/home";
 export type HomeSectionKey =
   | "navbar"
   | "hero"
+  | "conversionHub"
   | "trust"
   | "needs"
   | "results"
@@ -38,6 +39,7 @@ const configuredSection = (
 export const homeSections = {
   navbar: configuredSection("topo", "ready"),
   hero: configuredSection("inicio", homeCopy.hero.status),
+  conversionHub: configuredSection("atalhos", "ready"),
   trust: configuredSection("confianca", homeCopy.trust.status),
   needs: configuredSection("necessidades", homeCopy.needs.status),
   results: configuredSection("resultados", homeCopy.results.status),

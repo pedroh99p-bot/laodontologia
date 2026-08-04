@@ -20,7 +20,7 @@ const needsCards = [
   <Container>
     <div class="needs-layout">
       <div class="copy-column">
-        <p class="section-index" aria-hidden="true">02</p>
+        <p class="section-index" aria-hidden="true">03 / 13</p>
         <SectionHeading
           headingId="needs-title"
           eyebrow={copy.eyebrow}
@@ -153,7 +153,18 @@ const needsCards = [
   }
 
   .needs-roller {
-    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 1rem;
+    right: 0.55rem;
+    display: block;
+    pointer-events: none;
+  }
+
+  @media (max-width: 22rem) {
+    .needs-roller {
+      display: none;
+    }
   }
 
   .needs-grid {
@@ -204,10 +215,8 @@ const needsCards = [
 
   @media (min-width: 88rem) {
     .needs-roller {
-      position: absolute;
       top: 50%;
       right: 1.35rem;
-      display: block;
       transform: translateY(-50%);
     }
 

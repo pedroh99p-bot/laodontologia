@@ -78,12 +78,11 @@ export const homeCopy = {
   results: {
     status: "partial",
     eyebrow: "Resultados",
-    heading: "Resultados apresentados com contexto e responsabilidade.",
-    body: null,
+    heading: "Resultados que respeitam cada sorriso.",
+    body: "Comparativos fornecidos pela equipe da LA Odontologia. Cada resultado é individual e depende de avaliação profissional.",
     primaryCta: null,
     secondaryCta: null,
     missing: [
-      "Casos clínicos reais.",
       "Consentimento documentado.",
       "Tratamento e contexto de cada caso.",
       "Validação clínica e ética.",
@@ -91,8 +90,8 @@ export const homeCopy = {
   },
   professionals: {
     status: "partial",
-    eyebrow: "Profissionais",
-    heading: "Conheça os profissionais da LA Odontologia.",
+    eyebrow: "Quem cuida do seu sorriso",
+    heading: "Os Especialistas",
     body: "Dr. Lucas Ferreira, CRO 43440, e Dra. Amanda Perestelo, CRO 42823.",
     primaryCta: {
       label: "Falar com a equipe",

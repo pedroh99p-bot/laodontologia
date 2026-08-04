@@ -1,0 +1,441 @@
+---
+import { siteConfig } from "../../config/site";
+---
+
+<dialog class="preattendance" data-preattendance-dialog>
+  <div class="preattendance-shell">
+    <header class="preattendance-header">
+      <div>
+        <span>LA Odontologia</span>
+        <strong>Pré-atendimento</strong>
+      </div>
+      <button type="button" data-quiz-close aria-label="Fechar pré-atendimento">
+        ×
+      </button>
+    </header>
+
+    <div class="quiz-progress" aria-hidden="true">
+      <span data-quiz-progress-bar></span>
+    </div>
+    <p class="quiz-step-label" data-quiz-step-label>Etapa 1 de 3</p>
+
+    <div class="quiz-step" data-quiz-step="0">
+      <p class="quiz-emoji" aria-hidden="true">👋</p>
+      <h2>Como podemos direcionar sua conversa?</h2>
+      <p>Escolha a opção que mais combina com o que você procura hoje.</p>
+      <div class="quiz-options">
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="objetivo"
+          data-answer-value="Cuidar da saúde bucal"
+        >
+          <span aria-hidden="true">🦷</span> Cuidar da saúde bucal
+        </button>
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="objetivo"
+          data-answer-value="Melhorar meu sorriso"
+        >
+          <span aria-hidden="true">✨</span> Melhorar meu sorriso
+        </button>
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="objetivo"
+          data-answer-value="Conhecer a clínica"
+        >
+          <span aria-hidden="true">🏡</span> Conhecer a clínica
+        </button>
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="objetivo"
+          data-answer-value="Tirar uma dúvida"
+        >
+          <span aria-hidden="true">💬</span> Tirar uma dúvida
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-step" data-quiz-step="1" hidden>
+      <p class="quiz-emoji" aria-hidden="true">💡</p>
+      <h2>Em que momento você está?</h2>
+      <p>Isso ajuda a equipe a começar a conversa no seu ritmo.</p>
+      <div class="quiz-options">
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="momento"
+          data-answer-value="Quero conversar agora"
+        >
+          <span aria-hidden="true">📲</span> Quero conversar agora
+        </button>
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="momento"
+          data-answer-value="Estou planejando com calma"
+        >
+          <span aria-hidden="true">🗓️</span> Estou planejando com calma
+        </button>
+        <button
+          type="button"
+          data-quiz-answer
+          data-answer-key="momento"
+          data-answer-value="Ainda estou pesquisando"
+        >
+          <span aria-hidden="true">🔎</span> Ainda estou pesquisando
+        </button>
+      </div>
+      <button class="quiz-back" type="button" data-quiz-back>← Voltar</button>
+    </div>
+
+    <div class="quiz-step quiz-complete" data-quiz-step="2" hidden>
+      <p class="quiz-emoji" aria-hidden="true">✅</p>
+      <h2>Seu pré-atendimento está pronto.</h2>
+      <p>
+        Confira as escolhas abaixo e abra a conversa com a equipe no WhatsApp.
+      </p>
+      <dl class="quiz-summary">
+        <div>
+          <dt>Objetivo</dt>
+          <dd data-quiz-summary="objetivo">—</dd>
+        </div>
+        <div>
+          <dt>Momento</dt>
+          <dd data-quiz-summary="momento">—</dd>
+        </div>
+      </dl>
+      <a
+        class="quiz-whatsapp"
+        href={siteConfig.whatsappUrl}
+        data-quiz-whatsapp
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span aria-hidden="true">📲</span> Continuar no WhatsApp
+      </a>
+      <button class="quiz-back" type="button" data-quiz-back
+        >← Alterar resposta</button
+      >
+      <small>
+        Este fluxo organiza o primeiro contato e não realiza diagnóstico ou
+        substitui uma avaliação profissional.
+      </small>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { trackEvent } from "../../lib/analytics";
+  import { buildWhatsAppUrl } from "../../lib/whatsapp";
+
+  document
+    .querySelectorAll<HTMLDialogElement>("[data-preattendance-dialog]")
+    .forEach((dialog) => {
+      const openers = document.querySelectorAll<HTMLAnchorElement>(
+        "[data-open-preattendance]",
+      );
+      const close =
+        dialog.querySelector<HTMLButtonElement>("[data-quiz-close]");
+      const steps = Array.from(
+        dialog.querySelectorAll<HTMLElement>("[data-quiz-step]"),
+      );
+      const progress = dialog.querySelector<HTMLElement>(
+        "[data-quiz-progress-bar]",
+      );
+      const stepLabel = dialog.querySelector<HTMLElement>(
+        "[data-quiz-step-label]",
+      );
+      const whatsapp = dialog.querySelector<HTMLAnchorElement>(
+        "[data-quiz-whatsapp]",
+      );
+      const answers: Record<string, string> = {};
+      let currentStep = 0;
+
+      const renderStep = (nextStep: number) => {
+        currentStep = Math.max(0, Math.min(nextStep, steps.length - 1));
+        steps.forEach((step, index) => {
+          step.hidden = index !== currentStep;
+        });
+        if (progress) {
+          progress.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+        }
+        if (stepLabel) {
+          stepLabel.textContent = `Etapa ${currentStep + 1} de ${steps.length}`;
+        }
+        steps[currentStep]?.querySelector<HTMLElement>("button, a")?.focus();
+      };
+
+      const updateSummary = () => {
+        Object.entries(answers).forEach(([key, value]) => {
+          const target = dialog.querySelector<HTMLElement>(
+            `[data-quiz-summary="${key}"]`,
+          );
+          if (target) target.textContent = value;
+        });
+
+        if (!whatsapp) return;
+        const message = [
+          "Olá, equipe da LA Odontologia! 👋",
+          "Concluí o pré-atendimento pelo site.",
+          `Meu objetivo: ${answers.objetivo ?? "Quero conversar com a equipe"}`,
+          `Meu momento: ${answers.momento ?? "Quero entender os próximos passos"}`,
+          "Gostaria de continuar a conversa por aqui.",
+        ].join("\n");
+        whatsapp.href = buildWhatsAppUrl(message);
+      };
+
+      openers.forEach((opener) => {
+        opener.addEventListener("click", (event) => {
+          event.preventDefault();
+          currentStep = 0;
+          Object.keys(answers).forEach((key) => delete answers[key]);
+          renderStep(0);
+          if (!dialog.open) dialog.showModal();
+        });
+      });
+
+      dialog
+        .querySelectorAll<HTMLButtonElement>("[data-quiz-answer]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            const key = button.dataset.answerKey;
+            const value = button.dataset.answerValue;
+            if (key && value) answers[key] = value;
+            const nextStep = currentStep + 1;
+            if (nextStep === steps.length - 1) updateSummary();
+            renderStep(nextStep);
+            trackEvent("pre_attendance_step", { cta_location: "section" });
+          });
+        });
+
+      dialog
+        .querySelectorAll<HTMLButtonElement>("[data-quiz-back]")
+        .forEach((button) => {
+          button.addEventListener("click", () => renderStep(currentStep - 1));
+        });
+
+      whatsapp?.addEventListener("click", () => {
+        trackEvent("pre_attendance_complete", { cta_location: "section" });
+      });
+
+      close?.addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
+</script>
+
+<style>
+  .preattendance {
+    width: min(100%, 38rem);
+    max-width: none;
+    max-height: min(92dvh, 48rem);
+    margin: auto 0 0;
+    padding: 0;
+    overflow: auto;
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
+    border: 0;
+    border-radius: 1.75rem 1.75rem 0 0;
+    box-shadow: 0 -1.5rem 4rem rgb(36 35 33 / 22%);
+  }
+
+  .preattendance::backdrop {
+    background: rgb(36 35 33 / 64%);
+    backdrop-filter: blur(5px);
+  }
+
+  .preattendance-shell {
+    display: grid;
+    gap: var(--space-4);
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+
+  .preattendance-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .preattendance-header > div {
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .preattendance-header span {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .preattendance-header strong {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+  }
+
+  .preattendance-header button {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    color: var(--color-graphite);
+    background: var(--color-ivory);
+    border: 1px solid var(--color-warm-border);
+    border-radius: 50%;
+    font-size: 1.5rem;
+  }
+
+  .quiz-progress {
+    height: 0.3rem;
+    overflow: hidden;
+    background: var(--color-warm-border);
+    border-radius: var(--radius-pill);
+  }
+
+  .quiz-progress span {
+    display: block;
+    width: 33.333%;
+    height: 100%;
+    background: var(--color-copper-dark);
+    border-radius: inherit;
+    transition: width var(--duration-standard) var(--ease-standard);
+  }
+
+  .quiz-step-label {
+    color: var(--color-muted-text);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .quiz-step {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .quiz-step[hidden] {
+    display: none;
+  }
+
+  .quiz-step h2 {
+    max-width: 15ch;
+    font-size: clamp(1.75rem, 7vw, 2.6rem);
+    letter-spacing: -0.025em;
+  }
+
+  .quiz-step > p:not(.quiz-emoji) {
+    color: var(--color-muted-text);
+  }
+
+  .quiz-emoji {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    background: rgb(168 84 47 / 10%);
+    border-radius: 50%;
+    font-size: 1.45rem;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .quiz-options button {
+    display: flex;
+    min-height: 3.5rem;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0.85rem 1rem;
+    color: var(--color-graphite);
+    background: var(--color-ivory);
+    border: 1px solid var(--color-warm-border);
+    border-radius: var(--radius-md);
+    font-weight: 650;
+    text-align: left;
+  }
+
+  .quiz-options button:hover,
+  .quiz-options button:focus-visible {
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+    border-color: var(--color-copper-dark);
+  }
+
+  .quiz-options button span {
+    font-size: 1.2rem;
+  }
+
+  .quiz-back {
+    width: fit-content;
+    min-height: 2.75rem;
+    padding-inline: var(--space-2);
+    color: var(--color-copper-dark);
+    background: transparent;
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .quiz-summary {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .quiz-summary > div {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    background: var(--color-ivory);
+    border-radius: var(--radius-md);
+  }
+
+  .quiz-summary dt {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .quiz-summary dd {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .quiz-whatsapp {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0.8rem 1rem;
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .quiz-complete small {
+    color: var(--color-muted-text);
+    font-size: var(--text-xs);
+  }
+
+  @media (min-width: 40rem) {
+    .preattendance {
+      margin: auto;
+      border-radius: 1.75rem;
+      box-shadow: var(--shadow-elevated);
+    }
+  }
+</style>

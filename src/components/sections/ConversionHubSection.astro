@@ -1,0 +1,424 @@
+---
+import { media } from "../../config/media";
+import { siteConfig } from "../../config/site";
+import { transformCloudinaryUrl } from "../../lib/cloudinary";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+import Icon from "../ui/Icon.astro";
+import Roller from "../ui/Roller.astro";
+import TextRoller from "../ui/TextRoller.astro";
+
+const heroAsset = media.heroImage.asset;
+const resultAsset = media.result01.asset;
+
+if (!heroAsset || !resultAsset) {
+  throw new Error("Assets confirmados ausentes na central de conversão.");
+}
+
+const hubImage = transformCloudinaryUrl(heroAsset.url, [
+  "f_auto",
+  "q_auto:good",
+  "c_fill",
+  "g_auto",
+  "w_480",
+  "h_600",
+]);
+
+const resultPreview = transformCloudinaryUrl(resultAsset.url, [
+  "f_auto",
+  "q_auto:good",
+  "c_pad",
+  "b_rgb:f7f2ec",
+  "w_320",
+  "h_390",
+]);
+---
+
+<section class="conversion-hub" id="atalhos" aria-labelledby="hub-title">
+  <Container>
+    <div class="hub-heading" data-reveal>
+      <p>02 / 13 · ACESSO RÁPIDO</p>
+      <h2 id="hub-title">O que você procura hoje?</h2>
+      <span
+        >Três caminhos diretos para você encontrar as informações mais
+        importantes.</span
+      >
+    </div>
+
+    <div class="hub-grid">
+      <article class="hub-card hub-card--primary" data-reveal>
+        <div class="hub-card__copy">
+          <span class="hub-card__number">01</span>
+          <p class="hub-card__eyebrow">Comece por aqui</p>
+          <h3>Pré-atendimento em poucos passos.</h3>
+          <p>
+            Escolha o que faz sentido para você e continue a conversa com a
+            equipe pelo WhatsApp.
+          </p>
+          <Button
+            href={siteConfig.whatsappUrl}
+            class="hub-quiz-button"
+            icon="chat"
+            trackingEvent="pre_attendance_start"
+            trackingLocation="section"
+            preAttendance
+          >
+            Iniciar pré-atendimento
+          </Button>
+        </div>
+        <figure class="hub-card__media">
+          <img
+            src={hubImage}
+            width="480"
+            height="600"
+            alt={heroAsset.alt}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </article>
+
+      <article class="hub-card hub-card--shortcut" data-reveal>
+        <a href="#resultados" aria-label="Ver resultados da LA Odontologia">
+          <figure class="shortcut-media">
+            <img
+              src={resultPreview}
+              width="320"
+              height="390"
+              alt="Prévia de um comparativo de resultado odontológico"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </figure>
+          <div class="shortcut-copy">
+            <span class="hub-card__number">02</span>
+            <h3>Ver resultados</h3>
+            <span class="shortcut-link"
+              >Explorar comparativos <span aria-hidden="true">→</span></span
+            >
+          </div>
+        </a>
+      </article>
+
+      <article
+        class="hub-card hub-card--shortcut hub-card--location"
+        data-reveal
+      >
+        <a href="#localizacao" aria-label="Ver localização da LA Odontologia">
+          <div class="location-visual" aria-hidden="true">
+            <span class="location-orbit location-orbit--one"></span>
+            <span class="location-orbit location-orbit--two"></span>
+            <span class="location-pin"><Icon name="location" size={28} /></span>
+          </div>
+          <div class="shortcut-copy">
+            <span class="hub-card__number">03</span>
+            <h3>Como chegar</h3>
+            <p>
+              {siteConfig.address.building} · {siteConfig.address.neighborhood}
+            </p>
+            <span class="shortcut-link"
+              >Endereço e rota <span aria-hidden="true">→</span></span
+            >
+          </div>
+        </a>
+      </article>
+    </div>
+
+    <TextRoller
+      items={["Pré-atendimento", "Resultados", "Profissionais", "Localização"]}
+    />
+    <div class="hub-roller"><Roller label="Escolha" /></div>
+  </Container>
+</section>
+
+<style>
+  .conversion-hub {
+    position: relative;
+    padding-block: var(--section-space);
+    background:
+      radial-gradient(
+        circle at 10% 10%,
+        rgb(168 84 47 / 8%),
+        transparent 20rem
+      ),
+      var(--color-ivory);
+    overflow: clip;
+  }
+
+  .conversion-hub :global(.container) {
+    position: relative;
+  }
+
+  .hub-heading {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 44rem;
+    margin-bottom: clamp(1.75rem, 5vw, 3rem);
+    padding-right: 2.7rem;
+  }
+
+  .hub-heading > p {
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+
+  .hub-heading h2 {
+    max-width: 12ch;
+    letter-spacing: -0.03em;
+  }
+
+  .hub-heading > span {
+    max-width: 36rem;
+    color: var(--color-muted-text);
+  }
+
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.65rem, 2.5vw, 1rem);
+  }
+
+  .hub-card {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: clamp(1.25rem, 4vw, 2rem);
+    box-shadow: var(--shadow-surface);
+  }
+
+  .hub-card--primary {
+    position: relative;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.35fr) minmax(7rem, 0.65fr);
+    min-height: 20rem;
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+  }
+
+  .hub-card__copy {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: var(--space-3);
+    padding: clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  .hub-card__copy h3 {
+    max-width: 11ch;
+    color: var(--color-white);
+    font-size: clamp(1.65rem, 7vw, 3rem);
+    letter-spacing: -0.025em;
+  }
+
+  .hub-card__copy > p:last-of-type {
+    max-width: 29rem;
+    color: rgb(255 255 255 / 78%);
+    font-size: var(--text-sm);
+  }
+
+  .hub-card__number,
+  .hub-card__eyebrow {
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .hub-card__number {
+    opacity: 0.72;
+  }
+
+  .hub-card__media {
+    position: relative;
+    min-width: 0;
+  }
+
+  .hub-card__media::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background: linear-gradient(
+      90deg,
+      var(--color-copper-dark),
+      transparent 55%
+    );
+  }
+
+  .hub-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 52% 50%;
+  }
+
+  .hub-card--primary :global(.button) {
+    color: var(--color-copper-dark);
+    background: var(--color-warm-white);
+  }
+
+  .hub-card--shortcut {
+    background: var(--color-warm-white);
+    border: 1px solid var(--color-white);
+  }
+
+  .hub-card--shortcut > a {
+    display: grid;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .shortcut-media,
+  .location-visual {
+    aspect-ratio: 1 / 0.92;
+    overflow: hidden;
+    background: #eaded4;
+  }
+
+  .shortcut-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  .shortcut-copy {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: clamp(0.9rem, 3.5vw, 1.4rem);
+  }
+
+  .shortcut-copy h3 {
+    font-size: clamp(1.05rem, 4.8vw, 1.55rem);
+  }
+
+  .shortcut-copy p {
+    color: var(--color-muted-text);
+    font-size: var(--text-xs);
+  }
+
+  .shortcut-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .location-visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    color: var(--color-white);
+    background: var(--color-graphite);
+  }
+
+  .location-orbit {
+    position: absolute;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 50%;
+  }
+
+  .location-orbit--one {
+    width: 78%;
+    aspect-ratio: 1;
+  }
+
+  .location-orbit--two {
+    width: 48%;
+    aspect-ratio: 1;
+  }
+
+  .location-pin {
+    position: relative;
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    place-items: center;
+    color: var(--color-white);
+    background: var(--color-copper-dark);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+  }
+
+  .location-pin :global(svg) {
+    transform: rotate(45deg);
+  }
+
+  .hub-roller {
+    position: absolute;
+    z-index: 3;
+    top: 3.5rem;
+    right: 0.2rem;
+    pointer-events: none;
+  }
+
+  @media (max-width: 22rem) {
+    .hub-card--primary {
+      grid-template-columns: minmax(0, 1fr) 5.5rem;
+    }
+
+    .hub-roller {
+      display: none;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .hub-card--primary {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
+      min-height: 27rem;
+    }
+
+    .shortcut-media,
+    .location-visual {
+      aspect-ratio: 16 / 9;
+    }
+
+    .hub-card--shortcut > a {
+      grid-template-columns: minmax(10rem, 0.85fr) minmax(0, 1.15fr);
+    }
+  }
+
+  @media (min-width: 70rem) {
+    .hub-grid {
+      grid-template-columns: 1.35fr 1fr 1fr;
+      align-items: stretch;
+    }
+
+    .hub-card--primary {
+      grid-row: 1;
+      grid-column: 1;
+      min-height: 31rem;
+    }
+
+    .hub-card--shortcut {
+      grid-row: 1;
+    }
+
+    .hub-card--shortcut > a {
+      grid-template-columns: 1fr;
+    }
+
+    .shortcut-media,
+    .location-visual {
+      aspect-ratio: auto;
+      min-height: 18rem;
+    }
+
+    .hub-roller {
+      top: 50%;
+      right: -4.6rem;
+      transform: translateY(-50%);
+    }
+  }
+</style>
