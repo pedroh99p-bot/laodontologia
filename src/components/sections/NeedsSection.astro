@@ -9,7 +9,6 @@ import SectionHeading from "../ui/SectionHeading.astro";
   <Container>
     <div class="needs-layout">
       <div class="needs-intro" data-reveal>
-        <p class="section-index" aria-hidden="true">03 / 13</p>
         <SectionHeading
           headingId="needs-title"
           eyebrow="Pré-atendimento"
@@ -20,7 +19,7 @@ import SectionHeading from "../ui/SectionHeading.astro";
 
       <ul class="needs-grid" role="list">
         {
-          preAttendanceIntents.map((card, index) => (
+          preAttendanceIntents.map((card) => (
             <li data-reveal>
               <button
                 type="button"
@@ -32,9 +31,6 @@ import SectionHeading from "../ui/SectionHeading.astro";
                 <span class="card-topline">
                   <span class="card-emoji" aria-hidden="true">
                     {card.emoji}
-                  </span>
-                  <span class="card-index" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
                   </span>
                 </span>
                 <strong>{card.title}</strong>
@@ -98,13 +94,6 @@ import SectionHeading from "../ui/SectionHeading.astro";
     display: grid;
     gap: var(--space-3);
     padding-right: 3.8rem;
-  }
-
-  .section-index {
-    color: var(--color-copper);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.18em;
   }
 
   .needs-intro :global(.section-heading) {
@@ -174,13 +163,6 @@ import SectionHeading from "../ui/SectionHeading.astro";
     background: rgb(168 84 47 / 10%);
     border-radius: 50%;
     font-size: 1.2rem;
-  }
-
-  .card-index {
-    color: var(--color-copper-dark);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.12em;
   }
 
   .needs-grid strong {

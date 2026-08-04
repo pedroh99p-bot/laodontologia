@@ -12,11 +12,8 @@ import TextRoller from "../ui/TextRoller.astro";
   <Container>
     <ul role="list" data-reveal>
       {
-        homeTrustItems.map((item, index) => (
+        homeTrustItems.map((item) => (
           <li>
-            <span class="index" aria-hidden="true">
-              {String(index + 1).padStart(2, "0")}
-            </span>
             <span class="text">
               <span class="label">{item.label}</span>
               <strong>{item.value}</strong>
@@ -47,28 +44,13 @@ import TextRoller from "../ui/TextRoller.astro";
 
   li {
     display: grid;
-    grid-template-columns: 2.2rem 1fr;
     align-items: center;
-    gap: var(--space-3);
     padding-block: var(--space-4);
     border-bottom: 1px solid var(--color-warm-border);
   }
 
   li:last-child {
     border-bottom: 0;
-  }
-
-  .index {
-    display: grid;
-    width: 2.05rem;
-    height: 2.05rem;
-    place-items: center;
-    color: var(--color-white);
-    background: var(--color-copper-dark);
-    border-radius: 50%;
-    font-size: 0.66rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
   }
 
   .text {

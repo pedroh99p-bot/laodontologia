@@ -25,9 +25,8 @@ const items = [
       />
       <ul class="differentials-grid" role="list">
         {
-          items.map((item, index) => (
+          items.map((item) => (
             <li>
-              <span>{String(index + 1).padStart(2, "0")}</span>
               <h3>{item}</h3>
               <small>Validação institucional pendente</small>
             </li>
@@ -62,7 +61,6 @@ const items = [
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-surface);
   }
-  .differentials-grid span,
   .differentials-grid small {
     color: var(--color-copper-dark);
     font-size: var(--text-xs);

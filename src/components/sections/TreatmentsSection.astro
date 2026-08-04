@@ -20,11 +20,8 @@ const categories = [
       />
       <ul class="category-grid" role="list">
         {
-          categories.map((category, index) => (
+          categories.map((category) => (
             <li>
-              <span class="category-number">
-                {String(index + 1).padStart(2, "0")}
-              </span>
               <h3>{category}</h3>
               <p>Descrição e indicação serão publicadas após validação.</p>
             </li>
@@ -59,12 +56,6 @@ const categories = [
     background: var(--color-warm-white);
     border: 1px solid var(--color-warm-border);
     border-radius: var(--radius-lg);
-  }
-  .category-number {
-    color: var(--color-copper);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.15em;
   }
   .category-grid p {
     color: var(--color-muted-text);

@@ -22,10 +22,6 @@ if (!assistantLogo) {
   aria-controls="preattendance-dialog"
   aria-label="Abrir assistente de pré-atendimento"
 >
-  <span class="assistant-prompt" aria-hidden="true">
-    <small>Assistente LA</small>
-    <strong>Posso ajudar?</strong>
-  </span>
   <span class="assistant-avatar" aria-hidden="true">
     <img
       src={assistantLogo.url}
@@ -36,6 +32,10 @@ if (!assistantLogo) {
       decoding="async"
     />
     <span></span>
+  </span>
+  <span class="assistant-prompt" aria-hidden="true">
+    <small>Assistente</small>
+    <strong>LA Odontologia</strong>
   </span>
 </button>
 
@@ -301,8 +301,9 @@ if (!assistantLogo) {
     bottom: max(0.85rem, env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.35rem;
+    gap: 0.55rem;
+    min-width: 10.75rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.35rem;
     color: var(--color-graphite);
     background: var(--color-warm-white);
     border: 1px solid rgb(142 63 34 / 20%);
@@ -320,9 +321,8 @@ if (!assistantLogo) {
   }
 
   .assistant-prompt {
-    display: none;
-    padding-left: 0.7rem;
-    text-align: right;
+    display: block;
+    text-align: left;
   }
 
   .assistant-prompt small,
@@ -332,21 +332,23 @@ if (!assistantLogo) {
 
   .assistant-prompt small {
     color: var(--color-copper-dark);
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 800;
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
 
   .assistant-prompt strong {
-    font-size: var(--text-sm);
+    font-size: 0.82rem;
+    line-height: 1.15;
   }
 
   .assistant-avatar {
     position: relative;
     display: grid;
-    width: 3.55rem;
-    height: 3.55rem;
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 3rem;
     place-items: center;
     overflow: visible;
     background: var(--color-ivory);
@@ -640,12 +642,6 @@ if (!assistantLogo) {
   .quiz-complete > small {
     color: var(--color-muted-text);
     font-size: var(--text-xs);
-  }
-
-  @media (min-width: 28rem) {
-    .assistant-prompt {
-      display: block;
-    }
   }
 
   @media (min-width: 40rem) {

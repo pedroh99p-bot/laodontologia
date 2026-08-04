@@ -9,6 +9,18 @@ lado a lado no mobile.
 
 Mudanças mais recentes:
 
+- removidas as numerações decorativas de seções, atalhos, cards de intenção,
+  prova institucional, especialistas, cuidados e diferenciais; somente os
+  números das etapas do processo permanecem por terem função sequencial;
+- títulos de seção receberam escala tipográfica maior, peso reforçado e traço
+  de destaque cobre;
+- os cards dos dois profissionais agora usam a mesma altura em todos os
+  breakpoints, ficam limitados a 25 rem em telas amplas e são seguidos por um
+  CTA destacado de pré-atendimento;
+- o acionador fixo do assistente passou a ser uma pílula horizontal com o selo e
+  “Assistente / LA Odontologia” em duas linhas;
+- o atalho de Resultados na seção 02 passou a usar o segundo comparativo, com
+  enquadramento centrado nos dentes;
 - corrigida a condição em que o loop de Resultados avançava fora da tela sobre
   imagens com `loading="lazy"`; os sete arquivos agora têm carregamento
   determinístico, fallback para a URL original e a animação só roda enquanto a

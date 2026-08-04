@@ -36,7 +36,6 @@ const gallery = results.map((result) => {
   <Container>
     <div class="results-shell" data-reveal>
       <div class="results-heading">
-        <p class="section-index" aria-hidden="true">04 / 13</p>
         <SectionHeading
           headingId="results-title"
           eyebrow="Resultados"
@@ -179,13 +178,6 @@ const gallery = results.map((result) => {
     gap: var(--space-3);
     max-width: 52rem;
     padding-right: 4rem;
-  }
-
-  .section-index {
-    color: var(--color-copper);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.18em;
   }
 
   .results-heading :global(h2) {

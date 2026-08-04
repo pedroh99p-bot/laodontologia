@@ -14,7 +14,6 @@ const copy = homeCopy.location;
   <Container>
     <div class="location-shell" data-reveal>
       <div class="location-copy">
-        <p class="section-index" aria-hidden="true">04</p>
         <SectionHeading
           headingId="location-title"
           eyebrow={copy.eyebrow}
@@ -121,13 +120,6 @@ const copy = homeCopy.location;
     display: grid;
     align-content: center;
     gap: var(--space-5);
-  }
-
-  .section-index {
-    color: #e0b59f;
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.18em;
   }
 
   .location :global(.eyebrow),

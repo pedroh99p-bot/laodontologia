@@ -253,3 +253,16 @@ Disponibilizar um acionador fixo no canto inferior direito e reutilizar o mesmo
 diálogo aberto pela seção 03 e pela central de conversão. O fluxo solicita apenas
 motivo amplo e momento de contato, mantém respostas somente em memória e gera a
 mensagem final para WhatsApp sem enviar dados a analytics.
+
+## D-035 — Hierarquia sem numeração decorativa
+
+Remover índices de seção e números ornamentais dos cards, preservando somente a
+numeração das etapas em “Como funciona”. Reforçar os títulos com escala maior e
+um traço cobre para que a hierarquia dependa de tipografia e espaçamento, não de
+contadores sem função.
+
+## D-036 — Especialistas simétricos e CTA contextual
+
+Manter os dois profissionais lado a lado, com cards de altura idêntica e largura
+máxima controlada no desktop. Usar um bloco de CTA logo após os perfis para abrir
+o pré-atendimento compartilhado, sem inventar especialidades ou biografias.

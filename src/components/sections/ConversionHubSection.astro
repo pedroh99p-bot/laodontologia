@@ -9,7 +9,7 @@ import Roller from "../ui/Roller.astro";
 import TextRoller from "../ui/TextRoller.astro";
 
 const heroAsset = media.heroImage.asset;
-const resultAsset = media.result01.asset;
+const resultAsset = media.result02.asset;
 
 if (!heroAsset || !resultAsset) {
   throw new Error("Assets confirmados ausentes na central de conversão.");
@@ -37,7 +37,7 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
 <section class="conversion-hub" id="atalhos" aria-labelledby="hub-title">
   <Container>
     <div class="hub-heading" data-reveal>
-      <p>02 / 13 · ACESSO RÁPIDO</p>
+      <p>ACESSO RÁPIDO</p>
       <h2 id="hub-title">O que você procura hoje?</h2>
       <span
         >Três caminhos diretos para você encontrar as informações mais
@@ -48,7 +48,6 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
     <div class="hub-grid">
       <article class="hub-card hub-card--primary" data-reveal>
         <div class="hub-card__copy">
-          <span class="hub-card__number">01</span>
           <p class="hub-card__eyebrow">Comece por aqui</p>
           <h3>Pré-atendimento em poucos passos.</h3>
           <p>
@@ -92,7 +91,6 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
             />
           </figure>
           <div class="shortcut-copy">
-            <span class="hub-card__number">02</span>
             <h3>Ver resultados</h3>
             <span class="shortcut-link"
               >Explorar comparativos <span aria-hidden="true">→</span></span
@@ -112,7 +110,6 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
             <span class="location-pin"><Icon name="location" size={28} /></span>
           </div>
           <div class="shortcut-copy">
-            <span class="hub-card__number">03</span>
             <h3>Como chegar</h3>
             <p>
               {siteConfig.address.building} · {siteConfig.address.neighborhood}
@@ -167,7 +164,20 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
 
   .hub-heading h2 {
     max-width: 12ch;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.15rem, 1.35rem + 3.3vw, 4rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .hub-heading h2::after {
+    display: block;
+    width: clamp(2.75rem, 12vw, 4.5rem);
+    height: 0.2rem;
+    margin-top: var(--space-3);
+    content: "";
+    background: var(--color-copper);
+    border-radius: var(--radius-pill);
   }
 
   .hub-heading > span {
@@ -221,16 +231,11 @@ const resultPreview = transformCloudinaryUrl(resultAsset.url, [
     font-size: var(--text-sm);
   }
 
-  .hub-card__number,
   .hub-card__eyebrow {
     font-size: var(--text-xs);
     font-weight: 800;
     letter-spacing: 0.13em;
     text-transform: uppercase;
-  }
-
-  .hub-card__number {
-    opacity: 0.72;
   }
 
   .hub-card__media {
