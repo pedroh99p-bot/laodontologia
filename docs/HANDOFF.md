@@ -9,6 +9,10 @@ lado a lado no mobile.
 
 Mudanças mais recentes:
 
+- corrigida a condição em que o loop de Resultados avançava fora da tela sobre
+  imagens com `loading="lazy"`; os sete arquivos agora têm carregamento
+  determinístico, fallback para a URL original e a animação só roda enquanto a
+  galeria está próxima/visível;
 - removido o `scrollIntoView()` do autoplay que deslocava a página da seção 02
   para Resultados sem interação;
 - Resultados agora exibe somente os sete comparativos em uma faixa automática,
@@ -36,6 +40,10 @@ QA no navegador cobriu 320, 390, 430, 768 e 1365 px, sem overflow horizontal.
 O teste de regressão manteve a posição vertical exatamente igual após 7,5 s na
 seção 02. Os cards da seção 03 abrem o quiz na etapa 2 com a intenção já
 preenchida; o assistente flutuante abre na etapa 1.
+
+O alias público que acompanha a versão atual é
+`https://laodontologia.vercel.app`. O endereço de deployment único registrado
+na documentação histórica não acompanha novos commits da `main`.
 
 ## Atualização de marca
 

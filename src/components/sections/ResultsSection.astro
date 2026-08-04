@@ -27,7 +27,6 @@ const gallery = results.map((result) => {
   return {
     ...result,
     asset,
-    avif: buildSource("avif"),
     webp: buildSource("webp"),
   };
 });
@@ -61,18 +60,17 @@ const gallery = results.map((result) => {
                   data-protected-result
                   aria-label={`Resultado ${index + 1} de ${gallery.length}`}
                 >
-                  <picture>
-                    <source type="image/avif" srcset={result.avif} />
-                    <img
-                      src={result.webp}
-                      width="640"
-                      height="780"
-                      alt={result.asset.alt}
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </picture>
+                  <img
+                    src={result.webp}
+                    data-result-image
+                    data-fallback-src={result.asset.url}
+                    width="640"
+                    height="780"
+                    alt={result.asset.alt}
+                    loading="eager"
+                    decoding="async"
+                    draggable="false"
+                  />
                 </figure>
               ))
             }
@@ -82,18 +80,17 @@ const gallery = results.map((result) => {
             {
               gallery.map((result) => (
                 <figure class="result-frame" data-protected-result>
-                  <picture>
-                    <source type="image/avif" srcset={result.avif} />
-                    <img
-                      src={result.webp}
-                      width="640"
-                      height="780"
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                    />
-                  </picture>
+                  <img
+                    src={result.webp}
+                    data-result-image
+                    data-fallback-src={result.asset.url}
+                    width="640"
+                    height="780"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                    draggable="false"
+                  />
                 </figure>
               ))
             }
@@ -110,6 +107,42 @@ const gallery = results.map((result) => {
 </section>
 
 <script>
+  document
+    .querySelectorAll<HTMLElement>("[data-results-gallery]")
+    .forEach((gallery) => {
+      const images = Array.from(
+        gallery.querySelectorAll<HTMLImageElement>("[data-result-image]"),
+      );
+
+      images.forEach((image) => {
+        image.addEventListener(
+          "error",
+          () => {
+            const fallback = image.dataset.fallbackSrc;
+            if (fallback && image.src !== fallback) image.src = fallback;
+          },
+          { once: true },
+        );
+      });
+
+      if (!("IntersectionObserver" in window)) {
+        gallery.classList.add("is-running");
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          gallery.classList.toggle(
+            "is-running",
+            entry?.isIntersecting ?? false,
+          );
+        },
+        { rootMargin: "20% 0px" },
+      );
+
+      observer.observe(gallery);
+    });
+
   document
     .querySelectorAll<HTMLElement>("[data-protected-result]")
     .forEach((media) => {
@@ -174,7 +207,12 @@ const gallery = results.map((result) => {
     gap: 0.65rem;
     padding-block: 0.5rem 1.5rem;
     animation: results-gallery-loop 44s linear infinite;
+    animation-play-state: paused;
     will-change: transform;
+  }
+
+  .results-viewport.is-running .results-track {
+    animation-play-state: running;
   }
 
   .results-sequence {
@@ -194,7 +232,6 @@ const gallery = results.map((result) => {
     user-select: none;
   }
 
-  .result-frame picture,
   .result-frame img {
     width: 100%;
     height: 100%;

@@ -236,6 +236,9 @@ pelas sete imagens. Duplicar a sequência somente para manter o loop visual,
 ocultar a duplicata da árvore acessível, impedir arraste/menu de contexto e
 desligar a animação em `prefers-reduced-motion`. Esta decisão substitui a parte
 da D-031 que previa controle de pausa. Nenhuma troca usa `scrollIntoView()`.
+Para evitar quadros vazios, as sete URLs transformadas carregam de forma
+determinística, possuem fallback para o ativo original e o movimento fica
+pausado até a galeria entrar na margem de observação do viewport.
 
 ## D-033 — Seção 03 como entrada do pré-atendimento
 
