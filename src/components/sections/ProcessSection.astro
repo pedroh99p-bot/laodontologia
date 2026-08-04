@@ -71,7 +71,7 @@ const steps = [
     display: grid;
     gap: var(--space-6);
     max-width: 60rem;
-    padding-right: 2.5rem;
+    padding-right: 4rem;
   }
   .process-heading {
     display: grid;
@@ -131,9 +131,13 @@ const steps = [
     position: absolute;
     z-index: 2;
     top: 5rem;
-    right: 0.2rem;
+    right: 0.45rem;
     display: block;
     pointer-events: none;
+  }
+
+  .process :global(.text-roller) {
+    margin-top: clamp(2.25rem, 6vw, 4rem);
   }
 
   @media (max-width: 22rem) {

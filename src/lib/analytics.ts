@@ -1,7 +1,15 @@
 import type { AnalyticsEventName } from "../config/analytics";
 
 export type CtaLocation =
-  "header" | "hero" | "section" | "location" | "final" | "footer" | "thank_you";
+  | "header"
+  | "hero"
+  | "section"
+  | "needs"
+  | "floating_assistant"
+  | "location"
+  | "final"
+  | "footer"
+  | "thank_you";
 
 export type AnalyticsEventParameters = {
   page_path?: string;

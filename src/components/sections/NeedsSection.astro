@@ -1,61 +1,66 @@
 ---
-import { homeCopy } from "../../content/home";
-import Button from "../ui/Button.astro";
+import { preAttendanceIntents } from "../../content/preAttendance";
 import Container from "../ui/Container.astro";
 import Roller from "../ui/Roller.astro";
 import SectionHeading from "../ui/SectionHeading.astro";
-
-const copy = homeCopy.needs;
-const needsCards = [
-  "Necessidade em validação",
-  "Categoria de cuidado",
-  "Imagem aprovada pendente",
-  "Descrição clínica pendente",
-  "Conteúdo para confirmar",
-  "Conversa com a equipe",
-];
 ---
 
 <section class="needs" id="necessidades" aria-labelledby="needs-title">
   <Container>
     <div class="needs-layout">
-      <div class="copy-column">
+      <div class="needs-intro" data-reveal>
         <p class="section-index" aria-hidden="true">03 / 13</p>
         <SectionHeading
           headingId="needs-title"
-          eyebrow={copy.eyebrow}
-          title={copy.heading}
-          description={copy.body}
+          eyebrow="Pré-atendimento"
+          title="O que você precisa cuidar hoje?"
+          description="Escolha o ponto que mais se aproxima do seu momento. Em duas etapas, organizamos o início da conversa com a equipe — sem diagnóstico pelo site."
         />
-        <Button
-          href={copy.primaryCta.href}
-          variant="secondary"
-          icon="chat"
-          trackingEvent="whatsapp_click"
-          trackingLocation="section"
-        >
-          {copy.primaryCta.label}
-        </Button>
-      </div>
-
-      <div class="editorial-mark" aria-hidden="true">
-        <span class="orbit orbit--one"></span>
-        <span class="orbit orbit--two"></span>
-        <span class="orbit orbit--three"></span>
-        <span class="monogram">LA</span>
       </div>
 
       <ul class="needs-grid" role="list">
         {
-          needsCards.map((card, index) => (
+          preAttendanceIntents.map((card, index) => (
             <li data-reveal>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{card}</strong>
-              <small>Preview estrutural</small>
+              <button
+                type="button"
+                data-open-preattendance
+                data-quiz-intent={card.title}
+                data-quiz-location="needs"
+                aria-label={`${card.title}: ${card.description}`}
+              >
+                <span class="card-topline">
+                  <span class="card-emoji" aria-hidden="true">
+                    {card.emoji}
+                  </span>
+                  <span class="card-index" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </span>
+                <strong>{card.title}</strong>
+                <small>{card.description}</small>
+                <span class="card-action" aria-hidden="true">
+                  Começar <span>↗</span>
+                </span>
+              </button>
             </li>
           ))
         }
       </ul>
+
+      <button
+        class="needs-fallback"
+        type="button"
+        data-open-preattendance
+        data-quiz-location="needs"
+      >
+        <span aria-hidden="true">👋</span>
+        <span>
+          <strong>Não sabe qual escolher?</strong>
+          Comece pelo assistente de pré-atendimento
+        </span>
+        <span aria-hidden="true">→</span>
+      </button>
 
       <div class="needs-roller">
         <Roller label="Escuta" />
@@ -74,22 +79,25 @@ const needsCards = [
   .needs-layout {
     position: relative;
     display: grid;
-    gap: var(--space-6);
-    align-items: center;
-    padding: clamp(1.5rem, 6vw, 4rem);
+    gap: clamp(var(--space-5), 6vw, var(--space-7));
+    padding: clamp(1.35rem, 5vw, 4rem);
     overflow: hidden;
-    background: var(--color-warm-white);
+    background:
+      radial-gradient(
+        circle at 90% 4%,
+        rgb(168 84 47 / 10%),
+        transparent 18rem
+      ),
+      var(--color-warm-white);
     border: var(--border-width) solid var(--color-white);
     border-radius: clamp(1.5rem, 5vw, 2.5rem);
     box-shadow: var(--shadow-surface);
   }
 
-  .copy-column {
-    position: relative;
-    z-index: 2;
+  .needs-intro {
     display: grid;
-    justify-items: start;
-    gap: var(--space-5);
+    gap: var(--space-3);
+    padding-right: 3.8rem;
   }
 
   .section-index {
@@ -99,129 +107,185 @@ const needsCards = [
     letter-spacing: 0.18em;
   }
 
-  .copy-column :global(.section-heading) {
-    max-width: 40rem;
+  .needs-intro :global(.section-heading) {
+    max-width: 46rem;
   }
 
-  .copy-column :global(h2) {
-    max-width: 13ch;
+  .needs-intro :global(h2) {
+    max-width: 15ch;
     letter-spacing: -0.025em;
   }
 
-  .copy-column :global(.description) {
-    max-width: 33rem;
-    font-size: var(--text-lg);
-  }
-
-  .editorial-mark {
-    position: relative;
-    width: min(100%, 20rem);
-    aspect-ratio: 1;
-    justify-self: center;
-  }
-
-  .orbit {
-    position: absolute;
-    border: 1px solid rgb(142 63 34 / 20%);
-    border-radius: 50%;
-  }
-
-  .orbit--one {
-    inset: 5%;
-  }
-
-  .orbit--two {
-    inset: 18%;
-    border-style: dashed;
-  }
-
-  .orbit--three {
-    inset: 34%;
-    background: rgb(168 84 47 / 8%);
-    border-color: rgb(142 63 34 / 34%);
-  }
-
-  .monogram {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: var(--color-copper-dark);
-    font-family: var(--font-display);
-    font-size: clamp(3.8rem, 16vw, 6rem);
-    letter-spacing: -0.12em;
-  }
-
-  .needs-roller {
-    position: absolute;
-    z-index: 2;
-    top: 1rem;
-    right: 0.55rem;
-    display: block;
-    pointer-events: none;
-  }
-
-  @media (max-width: 22rem) {
-    .needs-roller {
-      display: none;
-    }
+  .needs-intro :global(.description) {
+    max-width: 38rem;
   }
 
   .needs-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2);
+    gap: clamp(0.65rem, 2.5vw, 1rem);
   }
 
   .needs-grid li {
-    display: grid;
-    gap: var(--space-2);
-    min-height: 8rem;
-    padding: var(--space-3);
-    background: rgb(168 84 47 / 7%);
-    border: 1px dashed rgb(142 63 34 / 32%);
-    border-radius: var(--radius-md);
+    min-width: 0;
   }
 
-  .needs-grid span,
-  .needs-grid small {
+  .needs-grid button {
+    display: grid;
+    width: 100%;
+    min-height: 12.5rem;
+    align-content: start;
+    gap: var(--space-2);
+    padding: clamp(0.85rem, 3vw, 1.3rem);
+    color: var(--color-graphite);
+    background: rgb(255 255 255 / 74%);
+    border: 1px solid rgb(142 63 34 / 16%);
+    border-radius: clamp(1rem, 3.5vw, 1.45rem);
+    box-shadow: 0 0.7rem 1.8rem rgb(80 37 20 / 6%);
+    text-align: left;
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast),
+      box-shadow var(--duration-fast),
+      background var(--duration-fast);
+  }
+
+  .needs-grid button:hover,
+  .needs-grid button:focus-visible {
+    background: var(--color-white);
+    border-color: rgb(142 63 34 / 45%);
+    box-shadow: 0 1rem 2.25rem rgb(80 37 20 / 12%);
+    transform: translateY(-0.2rem);
+  }
+
+  .card-topline,
+  .card-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .card-emoji {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    background: rgb(168 84 47 / 10%);
+    border-radius: 50%;
+    font-size: 1.2rem;
+  }
+
+  .card-index {
     color: var(--color-copper-dark);
     font-size: var(--text-xs);
     font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .needs-grid strong {
+    max-width: 12ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 4.5vw, 1.45rem);
+    font-weight: 500;
+    line-height: 1.08;
   }
 
   .needs-grid small {
-    align-self: end;
     color: var(--color-muted-text);
-    font-weight: 600;
-    letter-spacing: 0;
-    text-transform: none;
+    font-size: clamp(0.72rem, 2.8vw, var(--text-sm));
+    line-height: 1.45;
   }
 
-  @media (min-width: 48rem) {
-    .needs-layout {
-      grid-template-columns: minmax(0, 1.05fr) minmax(15rem, 0.8fr);
-      min-height: 34rem;
+  .card-action {
+    align-self: end;
+    margin-top: auto;
+    color: var(--color-copper-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .needs-fallback {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 4.5rem;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-white);
+    background: var(--color-graphite);
+    border: 0;
+    border-radius: var(--radius-lg);
+    text-align: left;
+  }
+
+  .needs-fallback > span:first-child {
+    font-size: 1.45rem;
+  }
+
+  .needs-fallback > span:nth-child(2) {
+    display: grid;
+    gap: 0.1rem;
+    color: #d8c6ba;
+    font-size: var(--text-xs);
+  }
+
+  .needs-fallback strong {
+    color: var(--color-white);
+    font-size: var(--text-sm);
+  }
+
+  .needs-roller {
+    position: absolute;
+    z-index: 2;
+    top: 2rem;
+    right: 0.45rem;
+    display: block;
+    pointer-events: none;
+  }
+
+  @media (max-width: 22rem) {
+    .needs-intro {
+      padding-right: 0;
+    }
+
+    .needs-roller {
+      display: none;
     }
 
     .needs-grid {
-      grid-column: 1 / -1;
-      grid-row: 2;
+      grid-template-columns: 1fr;
+    }
+
+    .needs-grid button {
+      min-height: 10.5rem;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .needs-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .needs-grid button {
+      min-height: 13.5rem;
+    }
+
+    .needs-fallback {
+      width: fit-content;
+      max-width: 30rem;
     }
   }
 
   @media (min-width: 88rem) {
-    .needs-roller {
-      top: 50%;
-      right: 1.35rem;
-      transform: translateY(-50%);
+    .needs-intro {
+      padding-right: 0;
     }
 
-    .editorial-mark {
-      margin-right: 4rem;
+    .needs-roller {
+      top: 50%;
+      right: -4.6rem;
+      transform: translateY(-50%);
     }
   }
 </style>

@@ -1,13 +1,66 @@
 ---
+import { media } from "../../config/media";
 import { siteConfig } from "../../config/site";
+import {
+  preAttendanceIntents,
+  preAttendanceMoments,
+} from "../../content/preAttendance";
+
+const assistantLogo = media.logoSeal.asset;
+
+if (!assistantLogo) {
+  throw new Error("O selo da marca não está disponível para o assistente.");
+}
 ---
 
-<dialog class="preattendance" data-preattendance-dialog>
+<button
+  class="assistant-launcher"
+  type="button"
+  data-open-preattendance
+  data-quiz-location="floating_assistant"
+  aria-haspopup="dialog"
+  aria-controls="preattendance-dialog"
+  aria-label="Abrir assistente de pré-atendimento"
+>
+  <span class="assistant-prompt" aria-hidden="true">
+    <small>Assistente LA</small>
+    <strong>Posso ajudar?</strong>
+  </span>
+  <span class="assistant-avatar" aria-hidden="true">
+    <img
+      src={assistantLogo.url}
+      width="1080"
+      height="1080"
+      alt=""
+      loading="lazy"
+      decoding="async"
+    />
+    <span></span>
+  </span>
+</button>
+
+<dialog
+  class="preattendance"
+  id="preattendance-dialog"
+  data-preattendance-dialog
+  aria-labelledby="preattendance-title"
+>
   <div class="preattendance-shell">
     <header class="preattendance-header">
-      <div>
-        <span>LA Odontologia</span>
-        <strong>Pré-atendimento</strong>
+      <div class="assistant-identity">
+        <img
+          src={assistantLogo.url}
+          width="1080"
+          height="1080"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div>
+          <span>Assistente LA</span>
+          <strong>Pré-atendimento</strong>
+          <small><i aria-hidden="true"></i> Fluxo rápido e seguro</small>
+        </div>
       </div>
       <button type="button" data-quiz-close aria-label="Fechar pré-atendimento">
         ×
@@ -20,87 +73,76 @@ import { siteConfig } from "../../config/site";
     <p class="quiz-step-label" data-quiz-step-label>Etapa 1 de 3</p>
 
     <div class="quiz-step" data-quiz-step="0">
-      <p class="quiz-emoji" aria-hidden="true">👋</p>
-      <h2>Como podemos direcionar sua conversa?</h2>
-      <p>Escolha a opção que mais combina com o que você procura hoje.</p>
-      <div class="quiz-options">
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="objetivo"
-          data-answer-value="Cuidar da saúde bucal"
-        >
-          <span aria-hidden="true">🦷</span> Cuidar da saúde bucal
-        </button>
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="objetivo"
-          data-answer-value="Melhorar meu sorriso"
-        >
-          <span aria-hidden="true">✨</span> Melhorar meu sorriso
-        </button>
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="objetivo"
-          data-answer-value="Conhecer a clínica"
-        >
-          <span aria-hidden="true">🏡</span> Conhecer a clínica
-        </button>
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="objetivo"
-          data-answer-value="Tirar uma dúvida"
-        >
-          <span aria-hidden="true">💬</span> Tirar uma dúvida
-        </button>
+      <div class="assistant-message">
+        <span aria-hidden="true">👋</span>
+        <p>
+          Olá! Vou organizar o motivo do seu contato antes de abrir o WhatsApp.
+        </p>
+      </div>
+      <h2 id="preattendance-title">O que você precisa hoje?</h2>
+      <p>Escolha a opção que mais se aproxima do seu momento.</p>
+      <div class="quiz-options quiz-options--grid">
+        {
+          preAttendanceIntents.map((intent) => (
+            <button
+              type="button"
+              data-quiz-answer
+              data-answer-key="objetivo"
+              data-answer-value={intent.title}
+            >
+              <span class="option-emoji" aria-hidden="true">
+                {intent.emoji}
+              </span>
+              <span>
+                <strong>{intent.title}</strong>
+                <small>{intent.description}</small>
+              </span>
+            </button>
+          ))
+        }
       </div>
     </div>
 
     <div class="quiz-step" data-quiz-step="1" hidden>
-      <p class="quiz-emoji" aria-hidden="true">💡</p>
-      <h2>Em que momento você está?</h2>
+      <div class="assistant-message">
+        <span aria-hidden="true">💡</span>
+        <p>Entendi. Agora só preciso saber como você quer continuar.</p>
+      </div>
+      <h2>Qual é o seu momento?</h2>
       <p>Isso ajuda a equipe a começar a conversa no seu ritmo.</p>
       <div class="quiz-options">
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="momento"
-          data-answer-value="Quero conversar agora"
-        >
-          <span aria-hidden="true">📲</span> Quero conversar agora
-        </button>
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="momento"
-          data-answer-value="Estou planejando com calma"
-        >
-          <span aria-hidden="true">🗓️</span> Estou planejando com calma
-        </button>
-        <button
-          type="button"
-          data-quiz-answer
-          data-answer-key="momento"
-          data-answer-value="Ainda estou pesquisando"
-        >
-          <span aria-hidden="true">🔎</span> Ainda estou pesquisando
-        </button>
+        {
+          preAttendanceMoments.map((moment) => (
+            <button
+              type="button"
+              data-quiz-answer
+              data-answer-key="momento"
+              data-answer-value={moment.title}
+            >
+              <span class="option-emoji" aria-hidden="true">
+                {moment.emoji}
+              </span>
+              <span>
+                <strong>{moment.title}</strong>
+                <small>{moment.description}</small>
+              </span>
+            </button>
+          ))
+        }
       </div>
       <button class="quiz-back" type="button" data-quiz-back>← Voltar</button>
     </div>
 
     <div class="quiz-step quiz-complete" data-quiz-step="2" hidden>
-      <p class="quiz-emoji" aria-hidden="true">✅</p>
-      <h2>Seu pré-atendimento está pronto.</h2>
-      <p>
-        Confira as escolhas abaixo e abra a conversa com a equipe no WhatsApp.
-      </p>
+      <div class="assistant-message assistant-message--complete">
+        <span aria-hidden="true">✅</span>
+        <p>Pronto! Sua mensagem inicial já está organizada.</p>
+      </div>
+      <h2>Continue com a equipe.</h2>
+      <p>Confira as escolhas e abra a conversa no WhatsApp.</p>
       <dl class="quiz-summary">
         <div>
-          <dt>Objetivo</dt>
+          <dt>Motivo do contato</dt>
           <dd data-quiz-summary="objetivo">—</dd>
         </div>
         <div>
@@ -115,13 +157,13 @@ import { siteConfig } from "../../config/site";
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span aria-hidden="true">📲</span> Continuar no WhatsApp
+        <span aria-hidden="true">📲</span> Enviar e continuar no WhatsApp
       </a>
-      <button class="quiz-back" type="button" data-quiz-back
-        >← Alterar resposta</button
-      >
+      <button class="quiz-back" type="button" data-quiz-back>
+        ← Alterar resposta
+      </button>
       <small>
-        Este fluxo organiza o primeiro contato e não realiza diagnóstico ou
+        Este fluxo organiza o primeiro contato. Não realiza diagnóstico nem
         substitui uma avaliação profissional.
       </small>
     </div>
@@ -129,13 +171,14 @@ import { siteConfig } from "../../config/site";
 </dialog>
 
 <script>
+  import type { CtaLocation } from "../../lib/analytics";
   import { trackEvent } from "../../lib/analytics";
   import { buildWhatsAppUrl } from "../../lib/whatsapp";
 
   document
     .querySelectorAll<HTMLDialogElement>("[data-preattendance-dialog]")
     .forEach((dialog) => {
-      const openers = document.querySelectorAll<HTMLAnchorElement>(
+      const openers = document.querySelectorAll<HTMLElement>(
         "[data-open-preattendance]",
       );
       const close =
@@ -154,6 +197,12 @@ import { siteConfig } from "../../config/site";
       );
       const answers: Record<string, string> = {};
       let currentStep = 0;
+      let activeLocation: CtaLocation = "section";
+
+      const getQuizLocation = (value: string | undefined): CtaLocation => {
+        if (value === "needs" || value === "floating_assistant") return value;
+        return "section";
+      };
 
       const renderStep = (nextStep: number) => {
         currentStep = Math.max(0, Math.min(nextStep, steps.length - 1));
@@ -166,7 +215,13 @@ import { siteConfig } from "../../config/site";
         if (stepLabel) {
           stepLabel.textContent = `Etapa ${currentStep + 1} de ${steps.length}`;
         }
-        steps[currentStep]?.querySelector<HTMLElement>("button, a")?.focus();
+        window.requestAnimationFrame(() => {
+          steps[currentStep]?.querySelector<HTMLElement>("button, a")?.focus();
+        });
+      };
+
+      const resetAnswers = () => {
+        Object.keys(answers).forEach((key) => delete answers[key]);
       };
 
       const updateSummary = () => {
@@ -181,8 +236,8 @@ import { siteConfig } from "../../config/site";
         const message = [
           "Olá, equipe da LA Odontologia! 👋",
           "Concluí o pré-atendimento pelo site.",
-          `Meu objetivo: ${answers.objetivo ?? "Quero conversar com a equipe"}`,
-          `Meu momento: ${answers.momento ?? "Quero entender os próximos passos"}`,
+          `Motivo do contato: ${answers.objetivo ?? "Quero conversar com a equipe"}`,
+          `Momento: ${answers.momento ?? "Quero entender os próximos passos"}`,
           "Gostaria de continuar a conversa por aqui.",
         ].join("\n");
         whatsapp.href = buildWhatsAppUrl(message);
@@ -191,10 +246,15 @@ import { siteConfig } from "../../config/site";
       openers.forEach((opener) => {
         opener.addEventListener("click", (event) => {
           event.preventDefault();
-          currentStep = 0;
-          Object.keys(answers).forEach((key) => delete answers[key]);
-          renderStep(0);
+          resetAnswers();
+          activeLocation = getQuizLocation(opener.dataset.quizLocation);
+          const intent = opener.dataset.quizIntent;
+          if (intent) answers.objetivo = intent;
           if (!dialog.open) dialog.showModal();
+          renderStep(intent ? 1 : 0);
+          trackEvent("pre_attendance_start", {
+            cta_location: activeLocation,
+          });
         });
       });
 
@@ -208,7 +268,9 @@ import { siteConfig } from "../../config/site";
             const nextStep = currentStep + 1;
             if (nextStep === steps.length - 1) updateSummary();
             renderStep(nextStep);
-            trackEvent("pre_attendance_step", { cta_location: "section" });
+            trackEvent("pre_attendance_step", {
+              cta_location: activeLocation,
+            });
           });
         });
 
@@ -219,7 +281,9 @@ import { siteConfig } from "../../config/site";
         });
 
       whatsapp?.addEventListener("click", () => {
-        trackEvent("pre_attendance_complete", { cta_location: "section" });
+        trackEvent("pre_attendance_complete", {
+          cta_location: activeLocation,
+        });
       });
 
       close?.addEventListener("click", () => dialog.close());
@@ -230,10 +294,87 @@ import { siteConfig } from "../../config/site";
 </script>
 
 <style>
+  .assistant-launcher {
+    position: fixed;
+    z-index: 80;
+    right: max(0.85rem, env(safe-area-inset-right));
+    bottom: max(0.85rem, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.35rem;
+    color: var(--color-graphite);
+    background: var(--color-warm-white);
+    border: 1px solid rgb(142 63 34 / 20%);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 1rem 2.5rem rgb(36 35 33 / 24%);
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast);
+  }
+
+  .assistant-launcher:hover,
+  .assistant-launcher:focus-visible {
+    box-shadow: 0 1.25rem 3rem rgb(36 35 33 / 30%);
+    transform: translateY(-0.18rem);
+  }
+
+  .assistant-prompt {
+    display: none;
+    padding-left: 0.7rem;
+    text-align: right;
+  }
+
+  .assistant-prompt small,
+  .assistant-prompt strong {
+    display: block;
+  }
+
+  .assistant-prompt small {
+    color: var(--color-copper-dark);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .assistant-prompt strong {
+    font-size: var(--text-sm);
+  }
+
+  .assistant-avatar {
+    position: relative;
+    display: grid;
+    width: 3.55rem;
+    height: 3.55rem;
+    place-items: center;
+    overflow: visible;
+    background: var(--color-ivory);
+    border-radius: 50%;
+  }
+
+  .assistant-avatar img {
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .assistant-avatar > span {
+    position: absolute;
+    right: 0.1rem;
+    bottom: 0.2rem;
+    width: 0.72rem;
+    height: 0.72rem;
+    background: #4e9c70;
+    border: 2px solid var(--color-warm-white);
+    border-radius: 50%;
+  }
+
   .preattendance {
-    width: min(100%, 38rem);
+    width: min(100%, 42rem);
     max-width: none;
-    max-height: min(92dvh, 48rem);
+    max-height: min(94dvh, 52rem);
     margin: auto 0 0;
     padding: 0;
     overflow: auto;
@@ -245,8 +386,8 @@ import { siteConfig } from "../../config/site";
   }
 
   .preattendance::backdrop {
-    background: rgb(36 35 33 / 64%);
-    backdrop-filter: blur(5px);
+    background: rgb(36 35 33 / 66%);
+    backdrop-filter: blur(6px);
   }
 
   .preattendance-shell {
@@ -262,29 +403,59 @@ import { siteConfig } from "../../config/site";
     gap: var(--space-4);
   }
 
-  .preattendance-header > div {
-    display: grid;
-    gap: 0.1rem;
+  .assistant-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
 
-  .preattendance-header span {
+  .assistant-identity > img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+    background: var(--color-ivory);
+    border-radius: 50%;
+  }
+
+  .assistant-identity > div {
+    display: grid;
+    gap: 0.05rem;
+  }
+
+  .assistant-identity span {
     color: var(--color-copper-dark);
-    font-size: var(--text-xs);
+    font-size: 0.65rem;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
-  .preattendance-header strong {
+  .assistant-identity strong {
     font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 400;
+    font-size: var(--text-lg);
+    font-weight: 500;
   }
 
-  .preattendance-header button {
+  .assistant-identity small {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-muted-text);
+    font-size: 0.68rem;
+  }
+
+  .assistant-identity i {
+    width: 0.45rem;
+    height: 0.45rem;
+    background: #4e9c70;
+    border-radius: 50%;
+  }
+
+  .preattendance-header > button {
     display: grid;
     width: 2.75rem;
     height: 2.75rem;
+    flex: 0 0 auto;
     place-items: center;
     color: var(--color-graphite);
     background: var(--color-ivory);
@@ -327,23 +498,32 @@ import { siteConfig } from "../../config/site";
   }
 
   .quiz-step h2 {
-    max-width: 15ch;
+    max-width: 16ch;
     font-size: clamp(1.75rem, 7vw, 2.6rem);
     letter-spacing: -0.025em;
   }
 
-  .quiz-step > p:not(.quiz-emoji) {
+  .quiz-step > p {
     color: var(--color-muted-text);
   }
 
-  .quiz-emoji {
+  .assistant-message {
     display: grid;
-    width: 3rem;
-    height: 3rem;
-    place-items: center;
-    background: rgb(168 84 47 / 10%);
-    border-radius: 50%;
-    font-size: 1.45rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-2);
+    align-items: start;
+    width: min(100%, 31rem);
+    padding: 0.8rem 1rem;
+    background: rgb(168 84 47 / 9%);
+    border-radius: 0.4rem 1.1rem 1.1rem;
+  }
+
+  .assistant-message p {
+    font-size: var(--text-sm);
+  }
+
+  .assistant-message--complete {
+    background: rgb(78 156 112 / 12%);
   }
 
   .quiz-options {
@@ -351,29 +531,59 @@ import { siteConfig } from "../../config/site";
     gap: var(--space-2);
   }
 
+  .quiz-options--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .quiz-options button {
-    display: flex;
-    min-height: 3.5rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 4.5rem;
     align-items: center;
     gap: var(--space-3);
-    padding: 0.85rem 1rem;
+    padding: 0.75rem;
     color: var(--color-graphite);
     background: var(--color-ivory);
     border: 1px solid var(--color-warm-border);
     border-radius: var(--radius-md);
-    font-weight: 650;
     text-align: left;
+    transition:
+      border-color var(--duration-fast),
+      background var(--duration-fast),
+      transform var(--duration-fast) var(--ease-standard);
   }
 
   .quiz-options button:hover,
   .quiz-options button:focus-visible {
-    color: var(--color-white);
-    background: var(--color-copper-dark);
+    background: var(--color-white);
     border-color: var(--color-copper-dark);
+    transform: translateY(-0.1rem);
   }
 
-  .quiz-options button span {
-    font-size: 1.2rem;
+  .option-emoji {
+    display: grid;
+    width: 2.35rem;
+    height: 2.35rem;
+    place-items: center;
+    background: rgb(168 84 47 / 10%);
+    border-radius: 50%;
+    font-size: 1.1rem;
+  }
+
+  .quiz-options button > span:last-child {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .quiz-options strong {
+    font-size: var(--text-sm);
+    line-height: 1.25;
+  }
+
+  .quiz-options small {
+    color: var(--color-muted-text);
+    font-size: 0.7rem;
+    line-height: 1.35;
   }
 
   .quiz-back {
@@ -414,21 +624,28 @@ import { siteConfig } from "../../config/site";
 
   .quiz-whatsapp {
     display: inline-flex;
-    min-height: 3.25rem;
+    min-height: 3.5rem;
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    padding: 0.8rem 1rem;
+    padding: 0.85rem 1rem;
     color: var(--color-white);
     background: var(--color-copper-dark);
     border-radius: var(--radius-pill);
     font-weight: 700;
+    text-align: center;
     text-decoration: none;
   }
 
-  .quiz-complete small {
+  .quiz-complete > small {
     color: var(--color-muted-text);
     font-size: var(--text-xs);
+  }
+
+  @media (min-width: 28rem) {
+    .assistant-prompt {
+      display: block;
+    }
   }
 
   @media (min-width: 40rem) {
@@ -436,6 +653,27 @@ import { siteConfig } from "../../config/site";
       margin: auto;
       border-radius: 1.75rem;
       box-shadow: var(--shadow-elevated);
+    }
+  }
+
+  @media (max-width: 22rem) {
+    .quiz-options--grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quiz-options button {
+      min-height: 4rem;
+    }
+
+    .quiz-options small {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assistant-launcher,
+    .quiz-options button {
+      transition: none;
     }
   }
 </style>

@@ -1,5 +1,42 @@
 # Handoff — LA Odontologia
 
+## Estado atual — 2026-08-04
+
+Esta atualização prevalece sobre os registros históricos abaixo. A home está
+com a central de conversão na seção 02, pré-atendimento por intenção na seção
+03, galeria automática de sete resultados na seção 04 e os dois profissionais
+lado a lado no mobile.
+
+Mudanças mais recentes:
+
+- removido o `scrollIntoView()` do autoplay que deslocava a página da seção 02
+  para Resultados sem interação;
+- Resultados agora exibe somente os sete comparativos em uma faixa automática,
+  contínua, não focável e não arrastável, sem cards, textos, botões ou CTA dentro
+  do carrossel;
+- a seção 03 foi convertida em seis intenções claras de pré-atendimento: dor ou
+  desconforto, melhoria do sorriso, dente quebrado ou ausente, revisão e
+  prevenção, avaliação de uma situação e outro assunto;
+- o assistente fixo inferior direito e os cards da seção 03 compartilham o mesmo
+  quiz de duas escolhas e resumo para WhatsApp;
+- o quiz não coleta nem persiste dados clínicos e não realiza diagnóstico;
+- rollers verticais ganharam faixa de segurança em relação a títulos, cards e
+  botões; faixas horizontais ganharam margem editorial própria;
+- a assinatura do footer foi reduzida e centralizada.
+
+Validação desta etapa:
+
+```text
+pnpm format:check  PASS
+pnpm check         PASS — 51 arquivos, 0 errors, 0 warnings, 0 hints
+pnpm build         PASS — 3 páginas + robots
+```
+
+QA no navegador cobriu 320, 390, 430, 768 e 1365 px, sem overflow horizontal.
+O teste de regressão manteve a posição vertical exatamente igual após 7,5 s na
+seção 02. Os cards da seção 03 abrem o quiz na etapa 2 com a intenção já
+preenchida; o assistente flutuante abre na etapa 1.
+
 ## Atualização de marca
 
 Os quatro assets Cloudinary fornecidos em 2026-07-27 estão aplicados:
@@ -7,7 +44,7 @@ favicon, assinatura horizontal na navbar, selo redondo na seção de profissiona
 e assinatura institucional no footer escuro. Os registros correspondentes em
 `src/config/media.ts` estão `confirmed`.
 
-Última atualização: **2026-07-27**
+Última atualização: **2026-08-04**
 
 ## Estado real encontrado
 

@@ -226,3 +226,27 @@ Manter rollers verticais e faixas automáticas em seções editoriais, desligar
 movimento contínuo com `prefers-reduced-motion` e oferecer pausa no carrossel de
 resultados. O preloader é curto, centraliza a marca e desaparece sem bloquear a
 página caso o JavaScript falhe.
+
+# Decisões adicionadas na revisão do pré-atendimento
+
+## D-032 — Resultados automáticos sem interação
+
+Substituir o carrossel controlável por uma faixa CSS contínua formada apenas
+pelas sete imagens. Duplicar a sequência somente para manter o loop visual,
+ocultar a duplicata da árvore acessível, impedir arraste/menu de contexto e
+desligar a animação em `prefers-reduced-motion`. Esta decisão substitui a parte
+da D-031 que previa controle de pausa. Nenhuma troca usa `scrollIntoView()`.
+
+## D-033 — Seção 03 como entrada do pré-atendimento
+
+Substituir os seis placeholders editoriais por categorias amplas de intenção,
+sem diagnosticar ou afirmar tratamentos. Cada card abre o quiz com a primeira
+resposta preenchida; o botão auxiliar abre o fluxo completo. As opções ficam
+centralizadas e tipadas em `src/content/preAttendance.ts`.
+
+## D-034 — Assistente e quiz como fluxo único
+
+Disponibilizar um acionador fixo no canto inferior direito e reutilizar o mesmo
+diálogo aberto pela seção 03 e pela central de conversão. O fluxo solicita apenas
+motivo amplo e momento de contato, mantém respostas somente em memória e gera a
+mensagem final para WhatsApp sem enviar dados a analytics.
